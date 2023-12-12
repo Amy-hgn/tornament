@@ -191,7 +191,7 @@ turnierSchema.virtual('platzierungen', {
 const Person = mongoose.model('Person', personSchema);
 const Team = mongoose.model('Team', teamSchema);
 const Platzierung = mongoose.model('Platzierung', platzierungSchema);
-const KORunde = mongoose.model('KORunde', koRundeSchema);
+const KoRunde = mongoose.model('KORunde', koRundeSchema);
 const Spiel = mongoose.model('Spiel', spielSchema);
 const Turnier = mongoose.model('Turnier', turnierSchema);
 
@@ -199,7 +199,7 @@ module.exports = {
     Person,
     Team,
     Platzierung,
-    KORunde,
+    KoRunde,
     Spiel,
     Turnier,
 };
