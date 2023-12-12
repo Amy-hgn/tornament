@@ -12,6 +12,8 @@ app.use(express.json());
 
 app.use(express.static('public'));
 
+app.use(express.static('models'));
+
 app.use('/node_modules', express.static(path.join(__dirname, 'node_modules')));
 
 app.get('/create-turnier', (req, res) => {
@@ -33,6 +35,10 @@ app.get('/recent-turniereMaster', async (req, res) => {
     await turnierController.getRecentTurniereMaster(req, res);
 });
 
+app.get('/turniernummer', async (req, res) => {
+    await turnierController.getHighestTurnierNummer(req, res);
+});
+
 app.get('/freie-turniere', async (req, res) => {
     await turnierController.getTurniereMitTeilnehmerAnzahl(req, res);
 });
@@ -40,6 +46,10 @@ app.get('/freie-turniere', async (req, res) => {
 app.post('/api/create-turnier', async (req, res) => {
    await turnierController.createTurnier(req,res);
 });
+
+app.post('/api/create-platzierung', async (req, res) => {
+    await turnierController.createPlatzierung(req,res);
+ });
 
 mongoose
     .connect(process.env.DATABASE_URL)
