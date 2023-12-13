@@ -1,13 +1,16 @@
 document.addEventListener("DOMContentLoaded", async function () {
   try {
+    const container = document.querySelector("#declarative-example-root");
+    const searchInput = container.querySelector("#search-input");
+
     await fetchRecentTurniere();
     displayMeineTurniereHeading();
     await fetchMeineTurniere();
     displayFreiePlaetzeHeading();
     await fetchFreiePlaetze();
-} catch (error) {
+  } catch (error) {
     console.error('Fehler:', error);
-}
+  }
 });
 
 async function fetchRecentTurniere() {
@@ -31,18 +34,21 @@ function displayMeineTurniereHeading() {
 }
 
 async function fetchMeineTurniere() {
-  try {
-    //TODO auch hier solange nicht die UserID von Smartwe übernommen wird 
+
+      
       const hostname = window.location.hostname;
-      const response = await fetch(`/recent-turniereMaster?hostname=${hostname}`);
+
+      const personResponse = await fetch(`/myId?personId=${hostname}`);
+      const personData = await personResponse.json();
+      
+      const response = await fetch(`/recent-turniereMaster?turnierMaster=${personData._id}`);
       const meineTurniere = await response.json();
 
       const turnierListe = document.querySelector('sd-list');
       displayTurniere(meineTurniere, turnierListe);
-  } catch (error) {
-      throw new Error('Fehler beim Abrufen der Turnierliste:' + error);
-  }
+
 }
+
 
 function fetchFreiePlaetze() {
 
@@ -75,3 +81,58 @@ async function fetchFreiePlaetze() {
   } catch (error) {
       throw new Error('Fehler beim Abrufen der freien Plätze:' + error);
   }}
+
+
+  function handleSearchInput() {
+    const container = document.querySelector("#declarative-example-root");
+    const searchInput = container.querySelector("#search-input");
+    const list = container.querySelector("sd-virtual-list");
+  
+    const dataProvider = new LazyLoadingDataProvider((hasItems) => updateVisibilities(hasItems));
+  
+    const fetchTurniere = async (searchTerm) => {
+      try {
+        const response = await fetch(`/recent-turniere?searchTerm=${searchTerm}`);
+        const turniere = await response.json();
+  
+        const items = [];
+        for (const turnier of turniere) {
+          const listItem = createListItem(turnier);
+          items.push(listItem);
+        }
+        dataProvider.updateItems(items);
+      } catch (error) {
+        console.error("Fehler beim Abrufen der Turnierliste:", error);
+      }
+    };
+  
+    const search = async () => {
+      if (searchInput.value.trim().length === 0) {
+        return;
+      }
+  
+      await fetchTurniere(searchInput.value.trim());
+      list.scrollToItem(0, "start");
+      list.selectedIndices = [];
+    };
+  
+    updateVisibilities(false);
+  
+    searchInput.addEventListener("input", (event) => {
+      dataProvider.search(event.target.value);
+    });
+  
+    searchInput.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        search();
+      }
+    });
+  
+    const createListItem = (turnier) => {
+      const listItem = document.createElement("sd-list-item");
+      listItem.caption = turnier.turnierName;
+      listItem.description = `Startdatum: ${turnier.startDatum}, Enddatum: ${turnier.endDatum}, Veranstaltungsort: ${turnier.veranstaltungsort}`;
+      return listItem;
+    };
+  }

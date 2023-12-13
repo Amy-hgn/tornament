@@ -39,6 +39,14 @@ app.get('/turniernummer', async (req, res) => {
     await turnierController.getHighestTurnierNummer(req, res);
 });
 
+app.get('/person', async (req, res) => {
+    await turnierController.getPerson(req, res);
+});
+
+app.get('/myId', async (req, res) => {
+    await turnierController.getMyId(req, res);
+});
+
 app.get('/freie-turniere', async (req, res) => {
     await turnierController.getTurniereMitTeilnehmerAnzahl(req, res);
 });
@@ -51,6 +59,9 @@ app.post('/api/create-platzierung', async (req, res) => {
     await turnierController.createPlatzierung(req,res);
  });
 
+ app.post('/api/create-person', async (req, res) => {
+    await turnierController.createPerson(req,res);
+ });
 mongoose
     .connect(process.env.DATABASE_URL)
     .then(() => {

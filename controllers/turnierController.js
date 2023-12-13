@@ -1,13 +1,5 @@
 const Turnier = require('../models/turnierModel');
 
-function getBefuellteIndizes(array) {
-    return array.reduce((acc, _, index) => {
-        if (array[index]) {
-            acc.push(index);
-        }
-        return acc;
-    }, []);
-}
 
 class TurnierController {
     async getRecentTurniere(req, res) {
@@ -22,24 +14,33 @@ class TurnierController {
 
     async getRecentTurniereMaster(req, res) {
         try {
-            // Hier gehen wir davon aus, dass der TurnierMaster im Header als "turnierMaster" vorhanden ist.
-            const turnierMaster = req.query.hostname;
-
-            const recentTurniere = await Turnier.Turnier.find({ turnierMaster }).sort({ _id: -1 }).limit(5);
+            const turnierMasterId = req.query.turnierMaster;
+    
+            const recentTurniere = await Turnier.Turnier
+                .find({ turnierMaster: turnierMasterId })
+                .populate('turnierMaster'); // Hier wird die turnierMaster-Referenz aufgelöst
+    
             res.status(200).json(recentTurniere);
         } catch (error) {
-            console.log(error.message);
-            res.status(500).json({  message: 'Fehler beim Erstellen des Turniers' });
+            console.error(error.message);
+            res.status(500).json({ message: 'Fehler beim Abrufen der Turniere des Turniermasters' });
         }
     }
     
     async getTurniereMitTeilnehmerAnzahl(req, res) {
         try {
             const turniere = await Turnier.Turnier.find();
-            const turniereMitTeilnehmerAnzahl = turniere.filter(turnier => {
-                const befuellteIndizes = getBefuellteIndizes(turnier.turnierTeilnehmer);
-                return befuellteIndizes.length < turnier.turnierTeilnehmerAnzahl;
-            });
+    
+            const currentDate = new Date();
+            
+            const turniereMitTeilnehmerAnzahl = turniere
+                .filter(turnier => 
+                    turnier.startDatum > currentDate && // Startdatum liegt in der Zukunft
+                    turnier.teilnehmer.length < turnier.turnierTeilnehmerAnzahl
+                )
+                .sort((a, b) => a.createdAt - b.createdAt) // Sortiere nach dem Erstellungsdatum
+                .slice(0, 5); // Nur die ersten fünf Elemente
+    
             res.status(200).json(turniereMitTeilnehmerAnzahl);
         } catch (error) {
             console.log(error.message);
@@ -53,6 +54,28 @@ class TurnierController {
             
                 res.status(200).json({ highestTurnierNummer: highestTurnier.turnierNummer });
             
+        } catch (error) {
+            console.error("Fehler beim Abrufen der höchsten TurnierNummer:", error);
+            res.status(500).json({ message: 'Fehler beim Abrufen der höchsten TurnierNummer' });
+        }
+    }
+
+    async getPerson(req, res) {
+        try {
+            const personId = req.query.personId;
+            const person= await Turnier.Person.find({personId}).limit(1);
+                res.status(200).json({person});
+        } catch (error) {
+            console.error("Fehler beim Abrufen der höchsten TurnierNummer:", error);
+            res.status(500).json({ message: 'Fehler beim Abrufen der höchsten TurnierNummer' });
+        }
+    }
+
+    async getMyId(req, res) {
+        try {
+            const personId = req.query.personId;
+            const person= await Turnier.Person.findOne({personId}).findOne();
+                res.status(200).json({_id: person._id});
         } catch (error) {
             console.error("Fehler beim Abrufen der höchsten TurnierNummer:", error);
             res.status(500).json({ message: 'Fehler beim Abrufen der höchsten TurnierNummer' });
@@ -75,6 +98,17 @@ class TurnierController {
             console.log('Received data:', req.body);
             const platzierung = await Turnier.Platzierung.create(req.body);
             res.status(200).json(platzierung);
+        } catch (error) {
+            console.log(error.message);
+            res.status(500).json({ message: error.message });
+        }
+    }
+
+    async createPerson(req, res) {
+        try {
+            console.log('Received data:', req.body);
+            const person = await Turnier.Person.create(req.body);
+            res.status(200).json(person);
         } catch (error) {
             console.log(error.message);
             res.status(500).json({ message: error.message });

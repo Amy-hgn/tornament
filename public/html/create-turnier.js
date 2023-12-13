@@ -25,15 +25,36 @@ function validateForm() {
 }
 
 async function createTurnier() {
-    const teilnehmerAnzahl =8;
+    const teilnehmerAnzahl = 8;
+
+    // Platzierungen erstellen
     const platzierungen = await createPlatzierungen(teilnehmerAnzahl);
 
+    // Nächste Turniernummer abrufen
     const highestTurnierNummerResponse = await fetch("/turniernummer");
-        const highestTurnierNummerData = await highestTurnierNummerResponse.json();
-        const nextTurnierNummer = highestTurnierNummerData.highestTurnierNummer + 1;
+    const highestTurnierNummerData = await highestTurnierNummerResponse.json();
+    const nextTurnierNummer = highestTurnierNummerData.highestTurnierNummer + 1;
+
+    //TODO solange keine Smartwe ID
+    const hostname = window.location.hostname;
+
+    let master = await fetch(`/person?personId=${hostname}`);
+    const isMaster = await master.json();
+    console.log(isMaster)
+
+    if (isMaster.person._id === null || isMaster.person.length === 0) {
+        // JSON-Body ist leer, also createPerson() aufrufen
+        master = await createPerson();
+    } else {
+        // JSON-Body enthält Daten, also master auf _id setzen
+        console.log(isMaster);
+        master = isMaster.person[0]._id;
+    }
+
 
         const tournamentData = {
         turnierNummer: nextTurnierNummer,
+        turnierMaster: master,
         turnierName: document.getElementById("turnierName").value,
         startDatum: document.getElementById("startDatum").value,
         endDatum: document.getElementById("endDatum").value,
@@ -104,6 +125,37 @@ async function createPlatzierungen(teilnehmerAnzahl) {
 
     return platzierungen;
 }
+
+async function createPerson() {
+  
+    
+    const personData = {
+        personId: window.location.hostname,
+        name: window.location.hostname
+    }
+
+        try {
+            const response = await fetch("/api/create-person", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(personData),
+            });
+    
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+    
+            const data = await response.json();
+            console.log("Person erstellt:", data);
+            const person = data._id;
+            return person;
+        } catch (error) {
+            console.error("Fehler beim Senden der Daten:", error);
+            alert("Fehler beim Erstellen des Turniers. Bitte versuche es erneut.");
+        }
+    }
 
 function submitForm() {
     if (validateForm()) {
