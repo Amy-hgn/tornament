@@ -13,6 +13,10 @@ document.addEventListener("DOMContentLoaded", async function () {
   }
 });
 
+function redirectToCreateTurnier() {
+  window.location.href = "./create-turnier";
+}
+
 async function fetchRecentTurniere() {
   try {
       const response = await fetch("/recent-turniere");
