@@ -44,7 +44,7 @@ async function createTurnier() {
 
     if (isMaster.person._id === null || isMaster.person.length === 0) {
         // JSON-Body ist leer, also createPerson() aufrufen
-        master = await createPerson();
+        master = await createPerson(hostname);
     } else {
         // JSON-Body enthält Daten, also master auf _id setzen
         console.log(isMaster);
@@ -126,11 +126,11 @@ async function createPlatzierungen(teilnehmerAnzahl) {
     return platzierungen;
 }
 
-async function createPerson() {
+async function createPerson(id) {
   
     
     const personData = {
-        personId: window.location.hostname,
+        personId: id,
         name: window.location.hostname
     }
 
@@ -162,3 +162,13 @@ function submitForm() {
         createTurnier();
     }
 }
+async function getIPAddress() {
+    try {
+        const response = await fetch("https://ipinfo.io/json");
+        const data = await response.json();
+        return data.ip;
+    } catch (error) {
+        console.error("Fehler beim Abrufen der IP-Adresse:", error);
+        return null;
+    }
+  }
