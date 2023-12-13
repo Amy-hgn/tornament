@@ -36,7 +36,7 @@ async function createTurnier() {
     const nextTurnierNummer = highestTurnierNummerData.highestTurnierNummer + 1;
 
     //TODO solange keine Smartwe ID
-    const hostname = window.location.hostname;
+    const hostname = await getIPAddress();
 
     let master = await fetch(`/person?personId=${hostname}`);
     const isMaster = await master.json();

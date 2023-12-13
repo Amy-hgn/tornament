@@ -37,10 +37,26 @@ function displayMeineTurniereHeading() {
   turnierListe.appendChild(meineTurniereHeading);
 }
 
+async function getIPAddress() {
+  try {
+      const response = await fetch("https://ipinfo.io/json");
+      const data = await response.json();
+      return data.ip;
+  } catch (error) {
+      console.error("Fehler beim Abrufen der IP-Adresse:", error);
+      return null;
+  }
+}
+
+// Beispielaufruf
+getIPAddress().then(ipAddress => {
+  console.log("IP-Adresse:", ipAddress);
+  // Hier können Sie die IP-Adresse verwenden, wie Sie möchten
+});
 async function fetchMeineTurniere() {
 
       
-      const hostname = window.location.hostname;
+      const hostname = await getIPAddress();
 
       const personResponse = await fetch(`/myId?personId=${hostname}`);
       const personData = await personResponse.json();
