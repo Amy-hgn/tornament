@@ -208,3 +208,10 @@ option[selected] {
     padding-bottom: 10px;
     padding-top: 10px;
 }
+.loading-indicator-container {
+	position: relative;
+}
+sd-login-loading-indicator {
+	height: 200px;
+	display: block;
+}
