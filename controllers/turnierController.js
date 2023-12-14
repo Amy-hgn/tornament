@@ -73,8 +73,10 @@ class TurnierController {
 
     async getMyId(req, res) {
         try {
-            const personId = req.query.personId;
-            const person= await Turnier.Person.findOne({personId}).findOne();
+            console.debug(req)
+            const personId = req;
+            
+            const person= await Turnier.Person.find({personId}).limit(1);
                 res.status(200).json({_id: person._id});
         } catch (error) {
             console.error("Fehler beim Abrufen der höchsten TurnierNummer:", error);

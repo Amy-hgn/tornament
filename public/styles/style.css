@@ -208,3 +208,32 @@ option[selected] {
     padding-bottom: 10px;
     padding-top: 10px;
 }
+.loading-indicator-container {
+	position: relative;
+}
+sd-login-loading-indicator {
+	height: 200px;
+	display: block;
+}
+.examples {
+    display: block;
+   
+}
+
+.hidden {
+    display: none;
+}
+sd-combo-box {
+	width: 100%;
+	padding-top: 8px;
+	padding-bottom: 16px;
+	padding-right: 16px;
+	box-sizing: border-box;
+}
+sd-lit-slider {
+	margin: 0 16px;
+	width: 400px;
+}
+.Seite2{
+    display: none;
+}

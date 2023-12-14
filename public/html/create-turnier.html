@@ -6,7 +6,10 @@
     <script src="/node_modules/@smartdesign/header-layout/dist/header-layout-with-externals.js"></script>
     <script src="/node_modules/@smartdesign/button/dist/button-with-externals.js"></script>
     <script src="/node_modules/@smartdesign/lit-input/dist/input-with-externals.js"></script>
+    <script src="/node_modules\@smartdesign\combo-box\dist\combo-box-with-externals.js"></script>
+    <script src="/node_modules\@smartdesign\lit-slider\dist\slider-with-externals.js"></script>
     <script src="/html/create-turnier.js"></script>
+    <script src="/html/test.js"></script>
     <link rel="stylesheet" href="../styles/style.css">
 </head>
 <body>
@@ -17,8 +20,10 @@
             <sd-button icon="/node_modules/@smartdesign/icons/toolbar/cancel.svg" slot="right" onclick="redirectToHomePage()"></sd-button>
         </sd-toolbar>
     </div>
-    <div class="examples">
-        <div class="example-container">
+
+
+    <div class="examples" >
+        <div class="example-container" >
             <span>Turniername</span>
             <sd-lit-input id="turnierName" type="text" name="turnierName" required placeholder="Fußballturnier Controlling"></sd-lit-input>
         </div>
@@ -44,9 +49,75 @@
         </div>
         <form id="tournamentForm">
             <div class="parent-container">
-                <sd-button type="submit" primary onclick="submitForm()">Turnier erstellen</sd-button>
+                <sd-button type="submit" primary onclick="versteckeSeite1();">Weiter</sd-button>
             </div>
         </form>        
+    </div>
+    <div class="Seite2">
+        <div id="basic-examples-container" style="display: grid; grid-template-columns: repeat(2, 1fr)">
+            <div class="combobox-example" declarative>
+                <sd-combo-box label="Tunierart">
+                    <sd-list-item caption="Bierpong" description="Wurfspiel mit Bällen und Bechern."></sd-list-item>
+                </sd-combo-box>
+            </div>
+            <div class="combobox-example" declarative>
+                    <sd-combo-box label="Turnierformat">
+                        <sd-list-item caption="KO-System" description="Verlierer geht, Sieger steigt"></sd-list-item>
+                    </sd-combo-box>
+                </form>
+            </div>
+            <div class="combobox-example" declarative>
+                <sd-combo-box label="Teams" display-value-path="caption">
+                    <sd-list-item caption="4"></sd-list-item>
+                    <sd-list-item caption="8"></sd-list-item>
+                    <sd-list-item caption="16"></sd-list-item>
+                    <sd-list-item caption="32"></sd-list-item>
+                </sd-combo-box>
+            </form>
+        </div>
+        <div class="combobox-example" declarative>
+            <sd-combo-box label="Platzierungen">
+                <sd-list-item caption="1 bis 3"></sd-list-item>
+                <sd-list-item caption="1 bis 5"></sd-list-item>
+             </sd-combo-box>
+        </form>
+
+        </div>
+        </div>
+        <form id="tournamentForm">
+            <div class="parent-container">
+                <sd-button type="submit" primary onclick="versteckeSeite2();zeigeSeite1()">Zurück</sd-button>
+            </div>
+        </form>  
+    <hr>
+
+        <form id="tournamentForm">
+            <div class="parent-container">
+                <sd-button type="submit" primary onclick="submitForm()">Weiter</sd-button>
+            </div>
+        </form>  
+    </div>
+
+    <div class="Seite3">
+        <div id="basic-examples-container" style="display: grid; grid-template-columns: repeat(2, 1fr)">
+           
+        HIEER
+
+        </div>
+        <form id="tournamentForm">
+            <div class="parent-container">
+                <sd-button type="submit" primary onclick="versteckeSeite2();zeigeSeite1()">Zurück</sd-button>
+            </div>
+        </form>  
+    <hr>
+
+        <form id="tournamentForm">
+            <div class="parent-container">
+                <sd-button type="submit" primary onclick="submitForm()">Weiter</sd-button>
+            </div>
+        </form>  
+    </div>
+   
     </div>
     <script src="./create-turnier.js"></script>
 </body>

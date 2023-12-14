@@ -16,6 +16,7 @@ app.use(express.static('models'));
 
 app.use('/node_modules', express.static(path.join(__dirname, 'node_modules')));
 
+
 app.get('/create-turnier', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'html', 'create-turnier.html'));
 });

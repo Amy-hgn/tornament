@@ -157,11 +157,127 @@ async function createPerson(id) {
         }
     }
 
+
+    function generiereTeamInputFelder() {
+        // Hole das ausgewählte Team-Anzahl-Element
+        var teamAnzahlElement = document.querySelector('sd-combo-box[label="Teams"]');
+    
+        // Überprüfe, ob das Element existiert
+        if (teamAnzahlElement) {
+            // Hole den ausgewählten Wert
+            var ausgewaehlteAnzahl = parseInt(teamAnzahlElement.value, 10);
+    
+            // Hole das Container-Element, in dem die Input-Felder erstellt werden sollen
+            var containerElement = document.getElementById('basic-examples-container');
+    
+            // Lösche vorhandene Elemente im Container
+            containerElement.innerHTML = '';
+    
+            // Erstelle neue Input-Felder basierend auf der ausgewählten Anzahl
+            for (var i = 1; i <= ausgewaehlteAnzahl; i++) {
+                var inputElement = document.createElement('sd-lit-input');
+                inputElement.id = 'team' + i;
+                inputElement.type = 'text';
+                inputElement.name = 'team' + i;
+                inputElement.currentText = 'Team' + i;
+    
+                // Füge das Input-Feld dem Container hinzu
+                containerElement.appendChild(inputElement);
+            }
+        }
+    }
+    
+    // Rufe die Funktion auf, wenn sich die Auswahl ändert
 function submitForm() {
     if (validateForm()) {
         createTurnier();
     }
 }
+
+// Funktion, um den Wert des Combo-Box-Elements zu extrahieren
+function leseComboWert() {
+    // Hole das sd-combo-box-Element
+    var comboBoxElement = document.querySelector('sd-combo-box[label="Teams"]');
+
+    // Überprüfe, ob das Element existiert
+    if (comboBoxElement) {
+        // Hole den Wert aus dem ComboBoxValue-Attribut
+        var comboBoxValue = comboBoxElement.comboBoxValue;
+
+        // Überprüfe, ob ein Wert ausgewählt wurde
+        if (comboBoxValue) {
+            // Hier kannst du auf die Informationen zugreifen
+            console.log('Index:', comboBoxValue.index);
+            console.log('Ausgewählter Wert:', comboBoxValue.value);
+            console.log('Ganzer Datensatz:', comboBoxValue.item.caption);
+        } else {
+            console.log('Kein Wert ausgewählt.');
+        }
+    }
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    // Hole das sd-combo-box-Element
+    var comboBoxElement = document.querySelector('sd-combo-box[label="Teams"]');
+
+    // Überprüfe, ob das Element existiert, bevor ein Event-Listener hinzugefügt wird
+    if (comboBoxElement) {
+        // Füge den Event-Listener hinzu, wenn das Element vorhanden ist
+        comboBoxElement.addEventListener('selection-change', leseComboWert,generiereTeamInputFelder);
+    }
+});
+
+function sindAlleFelderGefuellt() {
+    // Array mit den IDs der Eingabefelder
+    var feldIDs = ["turnierName", "startDatum", "endDatum", "veranstaltungsort", "startZeit", "kosten"];
+
+    // Überprüfe jedes Feld
+    for (var i = 0; i < feldIDs.length; i++) {
+        var feldID = feldIDs[i];
+        var feld = document.getElementById(feldID);
+
+        // Überprüfe, ob das Feld gefüllt ist
+        if (!feld.value.trim()) {
+            // Wenn nicht, zeige eine Meldung und kehre zurück
+            alert("Bitte füllen Sie alle Felder aus!");
+            return false;
+        }
+    }
+
+    // Wenn alle Felder gefüllt sind, gib true zurück
+    return true;
+}
+
+function versteckeSeite1() {
+    
+    if (sindAlleFelderGefuellt()){var seite2Element = document.querySelector('.examples');
+    if (seite2Element) {
+        seite2Element.style.display = 'none';
+    }
+    zeigeSeite2();
+}}
+
+function zeigeSeite1() {
+    var seite2Element = document.querySelector('.examples');
+    if (seite2Element) {
+        seite2Element.style.display = 'block';
+    }
+}
+
+function versteckeSeite2() {
+    var seite2Element = document.querySelector('.Seite2');
+    if (seite2Element) {
+        seite2Element.style.display = 'none';
+    }
+}
+
+function zeigeSeite2() {
+    var seite2Element = document.querySelector('.Seite2');
+    if (seite2Element) {
+        seite2Element.style.display = 'block';
+    }
+}
+
 async function getIPAddress() {
     try {
         const response = await fetch("https://ipinfo.io/json");
