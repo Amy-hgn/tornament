@@ -78,7 +78,7 @@ function displayTurniere(turniere, turnierListe) {
   turniere.forEach(turnier => {
       const listItem = document.createElement('sd-list-item');
       listItem.caption = turnier.turnierName;
-      listItem.description = `Startdatum: ${turnier.startDatum}, Enddatum: ${turnier.endDatum}, Veranstaltungsort: ${turnier.veranstaltungsort}`;
+      listItem.description = `Veranstaltungsort: ${turnier.veranstaltungsort} | Anmeldeschluss: ${formatiereDatum(turnier.endDatum)} | Startdatum: ${formatiereDatum(turnier.startDatum)} `;
       turnierListe.appendChild(listItem);
   });
 }
@@ -155,4 +155,15 @@ async function fetchFreiePlaetze() {
       listItem.description = `Startdatum: ${turnier.startDatum}, Enddatum: ${turnier.endDatum}, Veranstaltungsort: ${turnier.veranstaltungsort}`;
       return listItem;
     };
+  }
+  function formatiereDatum(datumString) {
+    const wochentage = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
+    const datum = new Date(datumString);
+    const tag = datum.getDate().toString().padStart(2, '0');
+    const monatsname = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'][datum.getMonth()];
+    const jahr = datum.getFullYear();
+    const stunde = datum.getHours().toString().padStart(2, '0');
+    const minute = datum.getMinutes().toString().padStart(2, '0');
+  
+    return `${stunde}:${minute} Uhr ${tag}.${monatsname}.${jahr}`;
   }
