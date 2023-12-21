@@ -1,0 +1,33 @@
+/* Verbindung zur html-Datei herstellen 
+roter Balken oben #E2001A oder #CC0017*/
+
+body{
+    /*TD CAS Schriftformat einfügen*/
+    padding-left: 100px;
+    padding-right: 100px;
+}
+
+/*.headline{
+    Schriftfarbe
+    Schriftgröße
+    Ausrichtung
+}
+*/
+
+.group-example {
+	box-sizing: border-box;
+	background-color: #f0f0f0;
+	width: 100%;
+	font-size: 14px;
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	column-gap: 16px;
+	row-gap: 16px;
+	padding: 16px;
+}
+label {
+	font-size: 12px;
+}
+div[slot="caption"] {
+	font-size: 28px;
+}
