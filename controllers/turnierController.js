@@ -82,6 +82,22 @@ class TurnierController {
         }
     }
 
+    async findTurniere(req, res, turnier){
+        try {
+            const suchbegriff = req.query.suchbegriff;
+    
+            const Turnier = turnier;
+    
+            // Suche nach Turnieren mit dem angegebenen Turniernamen (case-insensitive)
+            const ergebnisse = await Turnier.find({ turnierName: new RegExp(suchbegriff, 'i') });
+    
+            res.json(ergebnisse);
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Interner Serverfehler' });
+        }
+    }
+
     async createTurnier(req, res) {
         try {
             console.log('Received data:', req.body);
@@ -93,6 +109,7 @@ class TurnierController {
         }
     }
 
+    
     async createPlatzierung(req, res) {
         try {
             console.log('Received data:', req.body);
@@ -109,6 +126,7 @@ class TurnierController {
             console.log('Received data:', req.body);
             const person = await Turnier.Person.create(req.body);
             res.status(200).json(person);
+        
         } catch (error) {
             console.log(error.message);
             res.status(500).json({ message: error.message });

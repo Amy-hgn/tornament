@@ -1,8 +1,6 @@
 document.addEventListener("DOMContentLoaded", async function () {
   try {
     const container = document.querySelector("#declarative-example-root");
-    const searchInput = container.querySelector("#search-input");
-
     await fetchRecentTurniere();
     displayMeineTurniereHeading();
     await fetchMeineTurniere();
@@ -102,60 +100,95 @@ async function fetchFreiePlaetze() {
       throw new Error('Fehler beim Abrufen der freien Plätze:' + error);
   }}
 
-
-  function handleSearchInput() {
-    const container = document.querySelector("#declarative-example-root");
-    const searchInput = container.querySelector("#search-input");
-    const list = container.querySelector("sd-virtual-list");
   
-    const dataProvider = new LazyLoadingDataProvider((hasItems) => updateVisibilities(hasItems));
+  async function sucheTurnier(event) {
+    event.preventDefault(); // Verhindert das Standardverhalten des Formulars (Seitenneuladen)
   
-    const fetchTurniere = async (searchTerm) => {
-      try {
-        const response = await fetch(`/recent-turniere?searchTerm=${searchTerm}`);
-        const turniere = await response.json();
+    // Extrahiere den Suchbegriff aus dem Input-Feld
+    const suchbegriff = document.getElementById('search-input-form').value;
   
-        const items = [];
-        for (const turnier of turniere) {
+    // Rufe die findTurniere-Funktion auf und übergebe den Suchbegriff
+    try {
+      const response = await fetch(`/suche?suchbegriff=${suchbegriff}`);
+      const data = await response.json();
+  
+      // Holen Sie den Container, in dem die Suchergebnisse angezeigt werden sollen
+      const searchResultsContainer = document.getElementById('search-results');
+  
+      // Leere den Container, um vorherige Ergebnisse zu entfernen
+      searchResultsContainer.innerHTML = '';
+  
+      // Rufe die renderSearchResults-Funktion auf und übergebe die Ergebnisse und den Container
+      renderSearchResults(data, searchResultsContainer);
+    } catch (error) {
+      console.error('Fehler beim Abrufen der Suchergebnisse:', error);
+    }
+  }
+  
+  
+  async function handleSearchInput() {
+      const searchInput = document.getElementById('search-input');
+      const searchResultsContainer = document.getElementById('search-results');
+  
+      const suchbegriff = searchInput.value;
+  
+      // Prüfe, ob der Suchbegriff mindestens zwei Zeichen lang ist
+      if (suchbegriff.length >= 2) {
+        // Rufe die Server-Seite auf, um nach Turnieren zu suchen
+        const response = await fetch(`/suche?suchbegriff=${suchbegriff}`);
+        const turnierErgebnisse = await response.json();
+  
+        // Zeige die Suchergebnisse an (hier musst du die Anzeige-Logik implementieren)
+        renderSearchResults(turnierErgebnisse, searchResultsContainer);
+      } else {
+        // Wenn der Suchbegriff zu kurz ist, leere die Suchergebnisse
+        searchResultsContainer.innerHTML = '';
+      }
+    }
+  
+    function renderSearchResults(results, container) {
+      // Leere den Container zuerst, um vorherige Ergebnisse zu entfernen
+      container.innerHTML = '';
+    
+      // Überprüfe, ob Ergebnisse vorhanden sind
+      if (results.length === 0) {
+        const noResultsMessage = document.createElement('div');
+        noResultsMessage.innerText = 'Keine Ergebnisse gefunden.';
+        container.appendChild(noResultsMessage);
+      } else {
+        // Erstelle für jedes Suchergebnis ein Listenelement und füge es dem Container hinzu
+        results.forEach(turnier => {
           const listItem = createListItem(turnier);
-          items.push(listItem);
-        }
-        dataProvider.updateItems(items);
-      } catch (error) {
-        console.error("Fehler beim Abrufen der Turnierliste:", error);
+          container.appendChild(listItem);
+        });
       }
-    };
-  
-    const search = async () => {
-      if (searchInput.value.trim().length === 0) {
-        return;
-      }
-  
-      await fetchTurniere(searchInput.value.trim());
-      list.scrollToItem(0, "start");
-      list.selectedIndices = [];
-    };
-  
-    updateVisibilities(false);
-  
-    searchInput.addEventListener("input", (event) => {
-      dataProvider.search(event.target.value);
-    });
-  
-    searchInput.addEventListener("keydown", (event) => {
-      if (event.key === "Enter") {
-        event.preventDefault();
-        search();
-      }
-    });
+    }
   
     const createListItem = (turnier) => {
       const listItem = document.createElement("sd-list-item");
       listItem.caption = turnier.turnierName;
-      listItem.description = `Startdatum: ${turnier.startDatum}, Enddatum: ${turnier.endDatum}, Veranstaltungsort: ${turnier.veranstaltungsort}`;
+      listItem.description = `Startdatum: ${formatiereDatum(turnier.startDatum)}, Enddatum: ${formatiereDatum(turnier.endDatum)}, Veranstaltungsort: ${turnier.veranstaltungsort}`;
       return listItem;
     };
-  }
+    
+    function renderSearchResults(results, container) {
+      // Leere den Container zuerst, um vorherige Ergebnisse zu entfernen
+      container.innerHTML = '';
+    
+      // Überprüfe, ob Ergebnisse vorhanden sind
+      if (results.length === 0) {
+        const noResultsMessage = document.createElement('div');
+        noResultsMessage.innerText = 'Keine Ergebnisse gefunden.';
+        container.appendChild(noResultsMessage);
+      } else {
+        // Erstelle für jedes Suchergebnis ein Listenelement und füge es dem Container hinzu
+        results.forEach(turnier => {
+          const listItem = createListItem(turnier);
+          container.appendChild(listItem);
+        });
+      }
+    }
+    
   function formatiereDatum(datumString) {
     const wochentage = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
     const datum = new Date(datumString);
