@@ -1,5 +1,3 @@
-
-
 function redirectToHomePage () {
   window.location.href = window.location.origin
 }
@@ -21,34 +19,33 @@ function validateForm () {
   return true
 }
 
-function formatCurrency(input) {
-        // Entferne alle Zeichen außer Ziffern, Komma und Punkt
-        const cleanedInput = input.value.replace(/[^\d.,]/g, '');
-      
-        // Teile den Input in Ganzzahl- und Dezimalteil auf
-        const parts = cleanedInput.split(/[.,]/);
-        let integerPart = parts[0] || '0';
-        let decimalPart = parts[1] || '';
-      
-        // Entferne führende Nullen aus dem Ganzzahlteil
-        integerPart = integerPart.replace(/^0+/, '');
-      
-        // Setze den formatierten Wert ins Eingabefeld ohne Euro-Symbol
-        const formattedValue = (integerPart || '0') + (decimalPart ? ',' + decimalPart : '');
-      
-        // Setze den formatierten Wert ins Eingabefeld mit Euro-Symbol, wenn der Benutzer das Feld verlässt
-        input.addEventListener('blur', function () {
-          const numberValue = Number(formattedValue.replace(',', '.')); // Konvertiere Komma zu Punkt für toLocaleString
-          const formattedCurrency = numberValue.toFixed(2).replace('.', ',') + ' €';
-      
-          input.value = formattedCurrency;
-        });
-      
-        return formattedValue;
-      }
-      
-  
-  
+function formatCurrency (input) {
+  // Entferne alle Zeichen außer Ziffern, Komma und Punkt
+  const cleanedInput = input.value.replace(/[^\d.,]/g, '')
+
+  // Teile den Input in Ganzzahl- und Dezimalteil auf
+  const parts = cleanedInput.split(/[.,]/)
+  let integerPart = parts[0] || '0'
+  let decimalPart = parts[1] || ''
+
+  // Entferne führende Nullen aus dem Ganzzahlteil
+  integerPart = integerPart.replace(/^0+/, '')
+
+  // Setze den formatierten Wert ins Eingabefeld ohne Euro-Symbol
+  const formattedValue =
+    (integerPart || '0') + (decimalPart ? ',' + decimalPart : '')
+
+  // Setze den formatierten Wert ins Eingabefeld mit Euro-Symbol, wenn der Benutzer das Feld verlässt
+  input.addEventListener('blur', function () {
+    const numberValue = Number(formattedValue.replace(',', '.')) // Konvertiere Komma zu Punkt für toLocaleString
+    const formattedCurrency = numberValue.toFixed(2).replace('.', ',') + ' €'
+
+    input.value = formattedCurrency
+  })
+
+  return formattedValue
+}
+
 async function createTurnier () {
   const teilnehmerAnzahl = 8
 
