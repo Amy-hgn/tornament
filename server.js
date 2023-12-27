@@ -27,7 +27,8 @@ app.get('/anzeige-turnier', (req, res) => {
 
 app.get('/startseite', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'html', 'startseite.html'));
-});app.get('/smartwe', (req, res) => {
+});
+app.get('/smartwe', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'html', 'smartwe.html'));
 });
 app.get('/', (req, res) => {
