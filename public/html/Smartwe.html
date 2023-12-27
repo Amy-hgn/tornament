@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>User ID Anzeige</title>
+</head>
+<body>
+  <div>
+    <h1>User ID: <span id="userID"></span></h1>
+  </div>
+
+  <script>
+    let thisUserID;
+
+    const initialize = async () => {
+      const api = await smartdesign.connect();
+      try {
+        const userDetails = await api.fetch("v7.0/user/self").then((p) => p.json());
+        thisUserID = userDetails.id;
+
+        // Nachdem die ID erhalten wurde, setze sie in das HTML-Element ein
+        document.getElementById('userID').innerText = thisUserID;
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    // Rufe die initialize-Funktion auf, wenn die DOM-Inhalte geladen sind
+    document.addEventListener("DOMContentLoaded", initialize);
+  </script>
+</body>
+</html>
