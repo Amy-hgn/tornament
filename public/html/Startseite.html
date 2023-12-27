@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <script src="/node_modules/@smartdesign/lit-input/dist/input-with-externals.js"></script>
+  <script src="/node_modules/@smartdesign/list/dist/list-with-externals.js"></script>
+  <script src="/node_modules/@smartdesign/header-layout/dist/header-layout-with-externals.js"></script>
+  <script src="/node_modules/@smartdesign/button/dist/button-with-externals.js"></script>
+
+  <link rel="stylesheet" href="../styles/style.css">
+
+  <title>Alle Turniere</title>
+</head>
+<body>
+  <div id="declarative-example-root">
+    <sd-toolbar>
+      <h2 slot="middle">Alle Turniere</h2>
+      <sd-button icon="/node_modules/@smartdesign/icons/toolbar/new.svg" slot="right" onclick="redirectToCreateTurnier()"></sd-button>
+    </sd-toolbar>
+
+    <sd-list class="declarative" tabindex="0">
+      <div class="sd-content-heading">Meine Turniere</div>
+      <div id="meine-turniere-results"></div>
+    </sd-list>
+
+    <sd-list class="declarative" tabindex="0">
+        <div class="sd-content-heading">Kürzlich hinzugefügt</div>
+        <div id="recent-results"></div>
+    </sd-list>
+      
+    <sd-list class="declarative" tabindex="0">
+      <div class="sd-content-heading">Plätze frei</div>
+      <div id="freiePlätze-results"></div>
+    </sd-list>
+
+    <script src="/html/anzeige-turnier.js"></script>
+  </div>
+</body>
+</html>

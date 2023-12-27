@@ -1,3 +1,4 @@
+
 const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
@@ -55,7 +56,6 @@ app.get('/suche', async (req, res) => {
    const Turnier = mongoose.model('Turnier'); // Verwende das Mongoose-Modell für Turnier
     await turnierController.findTurniere(req,res,Turnier);
 });
-
 
 app.post('/api/create-turnier', async (req, res) => {
    await turnierController.createTurnier(req,res);
