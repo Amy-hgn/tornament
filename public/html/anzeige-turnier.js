@@ -76,7 +76,7 @@ function displayTurniere(turniere, turnierListe) {
   turniere.forEach(turnier => {
       const listItem = document.createElement('sd-list-item');
       listItem.caption = turnier.turnierName;
-      listItem.description = `Veranstaltungsort: ${turnier.veranstaltungsort} | Anmeldeschluss: ${formatiereDatum(turnier.endDatum)} | Startdatum: ${formatiereDatum(turnier.startDatum)} `;
+      listItem.description = `Veranstaltungsort: ${turnier.veranstaltungsort} | Anmeldeschluss: ${formatiereDatum(turnier.anmeldeschluss)} | Startdatum: ${formatiereDatum(turnier.startDatum)} `;
       turnierListe.appendChild(listItem);
   });
 }
@@ -142,7 +142,7 @@ async function fetchFreiePlaetze() {
     const createListItem = (turnier) => {
       const listItem = document.createElement("sd-list-item");
       listItem.caption = turnier.turnierName;
-      listItem.description = `Startdatum: ${formatiereDatum(turnier.startDatum)}, Enddatum: ${formatiereDatum(turnier.endDatum)}, Veranstaltungsort: ${turnier.veranstaltungsort}`;
+      listItem.description = `Startdatum: ${formatiereDatum(turnier.startDatum)}, Anmeldeschluss: ${formatiereDatum(turnier.anmeldeschluss)}, Veranstaltungsort: ${turnier.veranstaltungsort}`;
       return listItem;
     };
     

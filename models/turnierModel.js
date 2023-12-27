@@ -97,9 +97,9 @@ const turnierSchema = mongoose.Schema(
             type: Date, 
             required: [true, "Bitte das Startdatum angeben."] 
         },
-        endDatum: {
+        anmeldeschluss: {
             type: Date, 
-            required: [true, "Bitte das Enddatum angeben."] 
+            required: [true, "Bitte den Anmeldeschluss angeben."] 
         },
         veranstaltungsort:{
             type: String,

@@ -78,7 +78,7 @@ async function createTurnier () {
     turnierMaster: master,
     turnierName: document.getElementById('turnierName').value,
     startDatum: document.getElementById('startDatum').value,
-    endDatum: document.getElementById('endDatum').value,
+    anmeldeschluss: document.getElementById('anmeldeschluss').value,
     veranstaltungsort: document.getElementById('veranstaltungsort').value,
     startZeit: document.getElementById('startZeit').value,
     kosten: document.getElementById('kosten').value,
