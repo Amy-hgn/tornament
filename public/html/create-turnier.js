@@ -173,6 +173,15 @@ async function createPerson (id) {
 
 function submitForm () {
   if (validateForm()) {
+    const startDatum = new Date(document.getElementById('startDatum').value)
+    const anmeldeschluss = new Date(document.getElementById('anmeldeschluss').value)
+
+    // Überprüfe, ob das Startdatum vor dem Anmeldeschluss liegt
+    if (anmeldeschluss >= startDatum) {
+      alert('Der Anmeldeschluss muss vor dem Startdatum liegen.')
+      return 
+    }
+
     createTurnier()
   }
 }
