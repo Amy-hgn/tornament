@@ -12,9 +12,9 @@ document.addEventListener('DOMContentLoaded', async function () {
   }
 })
 
-function redirectToCreateTurnier () {
-  window.location.href = './create-turnier.html'
-}
+function redirectToCreateTurnier() {
+    window.location.href = "./create-turnier";
+  }
 
 async function fetchRecentTurniere () {
   try {
