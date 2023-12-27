@@ -101,50 +101,25 @@ async function fetchFreiePlaetze() {
   }}
 
   
-  async function sucheTurnier(event) {
-    event.preventDefault(); // Verhindert das Standardverhalten des Formulars (Seitenneuladen)
-  
-    // Extrahiere den Suchbegriff aus dem Input-Feld
-    const suchbegriff = document.getElementById('search-input-form').value;
-  
-    // Rufe die findTurniere-Funktion auf und übergebe den Suchbegriff
-    try {
+  async function handleSearchInput() {
+    const searchInput = document.getElementById('search-input');
+    const searchResultsContainer = document.getElementById('search-results');
+
+    const suchbegriff = searchInput.value;
+
+    // Prüfe, ob der Suchbegriff mindestens zwei Zeichen lang ist
+    if (suchbegriff.length >= 2) {
+      // Rufe die Server-Seite auf, um nach Turnieren zu suchen
       const response = await fetch(`/suche?suchbegriff=${suchbegriff}`);
-      const data = await response.json();
-  
-      // Holen Sie den Container, in dem die Suchergebnisse angezeigt werden sollen
-      const searchResultsContainer = document.getElementById('search-results');
-  
-      // Leere den Container, um vorherige Ergebnisse zu entfernen
+      const turnierErgebnisse = await response.json();
+
+      // Zeige die Suchergebnisse an (hier musst du die Anzeige-Logik implementieren)
+      renderSearchResults(turnierErgebnisse, searchResultsContainer);
+    } else {
+      // Wenn der Suchbegriff zu kurz ist, leere die Suchergebnisse
       searchResultsContainer.innerHTML = '';
-  
-      // Rufe die renderSearchResults-Funktion auf und übergebe die Ergebnisse und den Container
-      renderSearchResults(data, searchResultsContainer);
-    } catch (error) {
-      console.error('Fehler beim Abrufen der Suchergebnisse:', error);
     }
   }
-  
-  
-  async function handleSearchInput() {
-      const searchInput = document.getElementById('search-input');
-      const searchResultsContainer = document.getElementById('search-results');
-  
-      const suchbegriff = searchInput.value;
-  
-      // Prüfe, ob der Suchbegriff mindestens zwei Zeichen lang ist
-      if (suchbegriff.length >= 2) {
-        // Rufe die Server-Seite auf, um nach Turnieren zu suchen
-        const response = await fetch(`/suche?suchbegriff=${suchbegriff}`);
-        const turnierErgebnisse = await response.json();
-  
-        // Zeige die Suchergebnisse an (hier musst du die Anzeige-Logik implementieren)
-        renderSearchResults(turnierErgebnisse, searchResultsContainer);
-      } else {
-        // Wenn der Suchbegriff zu kurz ist, leere die Suchergebnisse
-        searchResultsContainer.innerHTML = '';
-      }
-    }
   
     function renderSearchResults(results, container) {
       // Leere den Container zuerst, um vorherige Ergebnisse zu entfernen
