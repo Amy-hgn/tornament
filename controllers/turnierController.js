@@ -26,6 +26,29 @@ class TurnierController {
             res.status(500).json({ message: 'Fehler beim Abrufen der Turniere des Turniermasters' });
         }
     }
+
+    async getTurniereBySearchTerm(req, res) {
+        try {
+            const searchTerm = req.query.searchTerm;
+    
+            // Falls der Suchbegriff leer ist, gib eine leere Liste zurück
+            if (!searchTerm || searchTerm.trim() === "") {
+                return res.status(200).json([]);
+            }
+    
+            // Suche nach Turnieren, bei denen die Turniernummer oder der Turniername dem Suchbegriff entspricht
+            const turniere = await Turnier.Turnier.find({
+                $or: [
+                    { turnierNummer: searchTerm },
+                    { turnierName: searchTerm } 
+                ]
+            });
+            console.log(turniere)
+            res.status(200).json(turniere);
+        } catch (error) {
+            console.error("Fehler beim Abrufen der Turniere:", error);
+            res.status(500).json({ message: 'Fehler beim Abrufen der Turniere' });
+        }}
     
     async getTurniereMitTeilnehmerAnzahl(req, res) {
         try {
@@ -74,15 +97,24 @@ class TurnierController {
     async getMyId(req, res) {
         try {
             console.debug(req)
-            const personId = req;
-            
-            const person= await Turnier.Person.find({personId}).limit(1);
-                res.status(200).json({_id: person._id});
+            const personId = req.query.personId;
+            console.log(personId);
+            const person = await Turnier.Person.findOne({ personId });
+    
+            // Überprüfen, ob die Person gefunden wurde
+            if (person == null) {
+                console.warn("Person nicht gefunden.");
+                return res.status(200).json({}); // Leeres JSON-Objekt zurückgeben
+            }
+    
+            console.log(person);
+            res.status(200).json({ _id: person._id });
         } catch (error) {
             console.error("Fehler beim Abrufen der höchsten TurnierNummer:", error);
             res.status(500).json({ message: 'Fehler beim Abrufen der höchsten TurnierNummer' });
         }
-    }
+    }  
+    
 
     async createTurnier(req, res) {
         try {

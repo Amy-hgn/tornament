@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     const container = document.querySelector("#declarative-example-root");
     const searchInput = container.querySelector("#search-input");
     await fetchRecentTurniere();
-    displayMeineTurniereHeading();
+displayMeineTurniereHeading();
     await fetchMeineTurniere();
     displayFreiePlaetzeHeading();
     await fetchFreiePlaetze();
@@ -38,7 +38,14 @@ function displayMeineTurniereHeading() {
 
 async function getIPAddress() {
   try {
-      const response = await fetch("https://ipinfo.io/json?token=d0d00a3eec9969");
+      const response = await fetch("https://ipinfo.io/json");
+      
+      // Check if the response status is 429 (Too Many Requests)
+      if (response.status === 429) {
+          console.warn("Zu viele Anfragen. Verwende lokale IP-Adresse.");
+          return "127.0.0.1";
+      }
+
       const data = await response.json();
       return data.ip;
   } catch (error) {
@@ -48,26 +55,22 @@ async function getIPAddress() {
 }
 
 async function fetchMeineTurniere() {
+  try {
+    const hostname = await getIPAddress();
 
-      
-      const hostname = getIPAddress();
-      const hostiname = "123456";
+    const personResponse = await fetch(`/myId?personId=${hostname}`);
+    const personData = await personResponse.json();
+    if (!personData._id) {
+      console.error('Fehler: personData._id ist undefined');
+  }
+    const response = await fetch(`/recent-turniereMaster?turnierMaster=${personData._id}`);
+    const meineTurniere = await response.json();
 
-      
-      const personResponse = await fetch(`/myId?personId=${hostname}`);
-      const personData = await personResponse.json();
-      
-      const response = await fetch(`/recent-turniereMaster?turnierMaster=${personData._id}`);
-      const meineTurniere = await response.json();
-
-      const turnierListe = document.querySelector('sd-list');
-      displayTurniere(meineTurniere, turnierListe);
-
-}
-
-
-function fetchFreiePlaetze() {
-
+    const turnierListe = document.querySelector('sd-list');
+    displayTurniere(meineTurniere, turnierListe);
+  } catch (error) {
+    console.error('Fehler beim Abrufen der Turniere:', error);
+  }
 }
 
 function displayTurniere(turniere, turnierListe) {
@@ -86,6 +89,28 @@ function displayFreiePlaetzeHeading() {
   turnierListe.appendChild(freiePlaetzeHeading);
 }
 
+function displayDeineSucheHeading(searchTerm) {
+  const turnierListe = document.querySelector('sd-list');
+  const deineSucheHeading = document.querySelector('.deine-suche-heading');
+
+  // Überprüfen, ob ein Suchbegriff vorhanden ist
+  if (searchTerm && searchTerm.trim().length > 0) {
+    // Wenn ja, Anzeige aktualisieren oder erstellen
+    if (!deineSucheHeading) {
+      const heading = document.createElement('div');
+      heading.classList.add('sd-content-heading', 'deine-suche-heading');
+      heading.innerText = 'Deine Suche';
+      turnierListe.appendChild(heading);
+    }
+  } else {
+    // Wenn nicht, Anzeige entfernen
+    if (deineSucheHeading) {
+      deineSucheHeading.remove();
+    }
+  }
+}
+
+
 async function fetchFreiePlaetze() {
   try {
     // Ändern Sie den Fetch-Aufruf für 'freie-turniere'
@@ -98,52 +123,11 @@ async function fetchFreiePlaetze() {
       throw new Error('Fehler beim Abrufen der freien Plätze:' + error);
   }}
 
+  const searchInput = document.querySelector("#search-input");
 
   function handleSearchInput() {
-    const container = document.querySelector("#declarative-example-root");
-    const searchInput = container.querySelector("#search-input");
-    const list = container.querySelector("sd-virtual-list");
-  
-    const dataProvider = new LazyLoadingDataProvider((hasItems) => updateVisibilities(hasItems));
-  
-    const fetchTurniere = async (searchTerm) => {
-      try {
-        const response = await fetch(`/recent-turniere?searchTerm=${searchTerm}`);
-        const turniere = await response.json();
-  
-        const items = [];
-        for (const turnier of turniere) {
-          const listItem = createListItem(turnier);
-          items.push(listItem);
-        }
-        dataProvider.updateItems(items);
-      } catch (error) {
-        console.error("Fehler beim Abrufen der Turnierliste:", error);
-      }
-    };
-  
-    const search = async () => {
-      if (searchInput.value.trim().length === 0) {
-        return;
-      }
-  
-      await fetchTurniere(searchInput.value.trim());
-      list.scrollToItem(0, "start");
-      list.selectedIndices = [];
-    };
-  
-    updateVisibilities(false);
-  
-    searchInput.addEventListener("input", (event) => {
-      dataProvider.search(event.target.value);
-    });
-  
-    searchInput.addEventListener("keydown", (event) => {
-      if (event.key === "Enter") {
-        event.preventDefault();
-        search();
-      }
-    });
+    const turnierListe = document.querySelector('sd-list');
+    const deineSucheHeading = document.querySelector('.deine-suche-heading');
   
     const createListItem = (turnier) => {
       const listItem = document.createElement("sd-list-item");
@@ -151,7 +135,71 @@ async function fetchFreiePlaetze() {
       listItem.description = `Startdatum: ${turnier.startDatum}, Enddatum: ${turnier.endDatum}, Veranstaltungsort: ${turnier.veranstaltungsort}`;
       return listItem;
     };
+  
+    const displaySearchResultHeading = (searchTerm) => {
+      // Entferne vorhandene "Deine Suche" Überschrift
+      if (deineSucheHeading) {
+        deineSucheHeading.remove();
+      }
+    
+      // Falls ein Suchbegriff vorhanden ist, erstelle die Überschrift neu
+      if (searchTerm.trim().length > 0) {
+        const heading = document.createElement('div');
+        heading.classList.add('sd-content-heading', 'deine-suche-heading');
+        heading.innerText = 'Deine Suche';
+        turnierListe.insertBefore(heading, turnierListe.firstChild);
+      }
+    };
+  
+    const fetchTurniere = async (searchTerm) => {
+      try {
+        const response = await fetch(`/search-turniere?searchTerm=${searchTerm}`);
+        const turniere = await response.json();
+  
+        // Leere die bestehende Liste
+        turnierListe.innerHTML = '';
+  
+        // Zeige "Deine Suche" Überschrift basierend auf dem Suchbegriff
+        displaySearchResultHeading(searchTerm);
+  
+        // Füge die neuen Turniere hinzu
+        turniere.forEach(turnier => {
+          const listItem = createListItem(turnier);
+          turnierListe.appendChild(listItem);
+        });
+      } catch (error) {
+        console.error("Fehler beim Abrufen der Turnierliste:", error);
+      }
+    };
+  
+    const search = async () => {
+      if (searchInput.value.trim().length === 0) {
+        // Wenn die Suche leer ist, zeige die Standardüberschriften an
+        displayDefaultHeadings();
+        return;
+      }
+  
+      await fetchTurniere(searchInput.value.trim());
+    };
+  
+    async function displayDefaultHeadings () {
+      location.reload();
+    };
+  
+    searchInput.addEventListener("input", async () => {
+      await search();
+    });
+  
+    searchInput.addEventListener("keydown", async (event) => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        await search();
+      }
+    });
   }
+  
+
+  
   function formatiereDatum(datumString) {
     const wochentage = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
     const datum = new Date(datumString);

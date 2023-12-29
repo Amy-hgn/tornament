@@ -40,6 +40,10 @@ app.get('/turniernummer', async (req, res) => {
     await turnierController.getHighestTurnierNummer(req, res);
 });
 
+app.get('/search-turniere', async (req, res) => {
+    await turnierController.getTurniereBySearchTerm(req, res);
+});
+
 app.get('/person', async (req, res) => {
     await turnierController.getPerson(req, res);
 });

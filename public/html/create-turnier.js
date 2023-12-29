@@ -38,17 +38,17 @@ async function createTurnier() {
     //TODO solange keine Smartwe ID
     const hostname = await getIPAddress();
 
-    let master = await fetch(`/person?personId=${hostname}`);
+    let master = await fetch(`/myId?personId=${hostname}`);
     const isMaster = await master.json();
-    console.log(isMaster)
-
-    if (isMaster.person._id === null || isMaster.person.length === 0) {
+    console.log(isMaster);
+    
+    if (Object.keys(isMaster).length === 0) {
         // JSON-Body ist leer, also createPerson() aufrufen
         master = await createPerson(hostname);
     } else {
         // JSON-Body enthält Daten, also master auf _id setzen
         console.log(isMaster);
-        master = isMaster.person[0]._id;
+        master = isMaster._id;
     }
 
 
@@ -281,10 +281,17 @@ function zeigeSeite2() {
 async function getIPAddress() {
     try {
         const response = await fetch("https://ipinfo.io/json");
+        
+        // Check if the response status is 429 (Too Many Requests)
+        if (response.status === 429) {
+            console.warn("Zu viele Anfragen. Verwende lokale IP-Adresse.");
+            return "127.0.0.1";
+        }
+
         const data = await response.json();
         return data.ip;
     } catch (error) {
         console.error("Fehler beim Abrufen der IP-Adresse:", error);
         return null;
     }
-  }
+}
