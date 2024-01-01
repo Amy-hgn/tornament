@@ -124,6 +124,8 @@ async function fetchFreiePlaetze() {
   }}
 
   const searchInput = document.querySelector("#search-input");
+  let previousSearchTerm = ''; // Hält den vorherigen Suchbegriff
+  let abortController = null; // Für das Abbrechen von vorherigen Anfragen
 
   function handleSearchInput() {
     const turnierListe = document.querySelector('sd-list');
@@ -141,7 +143,7 @@ async function fetchFreiePlaetze() {
       if (deineSucheHeading) {
         deineSucheHeading.remove();
       }
-    
+  
       // Falls ein Suchbegriff vorhanden ist, erstelle die Überschrift neu
       if (searchTerm.trim().length > 0) {
         const heading = document.createElement('div');
@@ -152,8 +154,19 @@ async function fetchFreiePlaetze() {
     };
   
     const fetchTurniere = async (searchTerm) => {
+
+      if (abortController) {
+        abortController.abort();
+      }
+  
+      // Erstelle neuen AbortController
+      abortController = new AbortController();
+
       try {
-        const response = await fetch(`/search-turniere?searchTerm=${searchTerm}`);
+        const response = await fetch(`/search-turniere?searchTerm=${searchTerm}`, {
+          signal: abortController.signal,
+        });
+
         const turniere = await response.json();
   
         // Leere die bestehende Liste
@@ -168,8 +181,12 @@ async function fetchFreiePlaetze() {
           turnierListe.appendChild(listItem);
         });
       } catch (error) {
+        if (error.name === 'AbortError') {
+          // Ignoriere Abbruchfehler
+          console.warn('Aborted:', error.message);}
+          else{
         console.error("Fehler beim Abrufen der Turnierliste:", error);
-      }
+      }}
     };
   
     const search = async () => {
@@ -186,18 +203,11 @@ async function fetchFreiePlaetze() {
       location.reload();
     };
   
-    searchInput.addEventListener("input", async () => {
+    // Suchen, wenn der Benutzer einen Buchstaben loslässt
+    searchInput.addEventListener("keyup", async () => { 
       await search();
     });
-  
-    searchInput.addEventListener("keydown", async (event) => {
-      if (event.key === "Enter") {
-        event.preventDefault();
-        await search();
-      }
-    });
   }
-  
 
   
   function formatiereDatum(datumString) {
