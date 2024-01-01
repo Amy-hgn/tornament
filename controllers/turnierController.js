@@ -30,19 +30,28 @@ class TurnierController {
     async getTurniereBySearchTerm(req, res) {
         try {
             const searchTerm = req.query.searchTerm;
+            const regex = new RegExp(`^${searchTerm}.*$`, 'i');
     
             // Falls der Suchbegriff leer ist, gib eine leere Liste zurück
             if (!searchTerm || searchTerm.trim() === "") {
                 return res.status(200).json([]);
             }
-    
+            let turniere;
             // Suche nach Turnieren, bei denen die Turniernummer oder der Turniername dem Suchbegriff entspricht
-            const turniere = await Turnier.Turnier.find({
+            if (!isNaN(Number(searchTerm))){
+                turniere = await Turnier.Turnier.find({
+                    $or: [
+                        { turnierNummer: searchTerm },
+                        { turnierName: regex } 
+                    ]
+                });
+            }else{
+            turniere = await Turnier.Turnier.find({
                 $or: [
-                    { turnierNummer: searchTerm },
-                    { turnierName: searchTerm } 
+                    { turnierName: regex} 
                 ]
-            });
+            })};
+
             console.log(turniere)
             res.status(200).json(turniere);
         } catch (error) {
