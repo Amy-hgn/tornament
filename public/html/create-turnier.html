@@ -54,7 +54,7 @@
         </form>        
     </div>
     <div class="Seite2">
-        <div id="basic-examples-container" style="display: grid; grid-template-columns: repeat(2, 1fr)">
+        <div id="basics-examples-container" style="display: grid; grid-template-columns: repeat(2, 1fr)">
             <div class="combobox-example" declarative>
                 <sd-combo-box label="Tunierart">
                     <sd-list-item caption="Bierpong" description="Wurfspiel mit Bällen und Bechern."></sd-list-item>
@@ -83,7 +83,6 @@
         </form>
 
         </div>
-        </div>
         <form id="tournamentForm">
             <div class="parent-container">
                 <sd-button type="submit" primary onclick="versteckeSeite2();zeigeSeite1()">Zurück</sd-button>
@@ -93,14 +92,27 @@
 
         <form id="tournamentForm">
             <div class="parent-container">
-                <sd-button type="submit" primary onclick="submitForm()">Weiter</sd-button>
+                <sd-button type="submit" primary onclick="generiereTeamInputFelder();versteckeSeite2();zeigeSeite3()">Weiter</sd-button>
             </div>
         </form>  
+        </div>
     </div>
 
     <div class="Seite3">
-        <div id="basic-examples-container" style="display: grid; grid-template-columns: repeat(2, 1fr)">           
+        <div id="basic-examples-container" style="display: grid; grid-template-columns: repeat(4, 1fr)">           
     </div>
+    <form id="tournamentForm">
+        <div class="parent-container">
+            <sd-button type="submit" primary onclick="versteckeSeite3();zeigeSeite2()">Zurück</sd-button>
+        </div>
+    </form>  
+<hr>
+
+    <form id="tournamentForm">
+        <div class="parent-container">
+            <sd-button type="submit" primary onclick="submitForm();">Erstellen</sd-button>
+        </div>
+    </form>  
     </div>
     <script src="./create-turnier.js"></script>
 </body>

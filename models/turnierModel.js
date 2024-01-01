@@ -33,6 +33,10 @@ const teamSchema = mongoose.Schema(
                 type: mongoose.Schema.Types.ObjectId,
                 ref: 'Platzierung'
             }],
+            teamGröße: {
+                type: Number,
+                default: 4
+            },
     },
     {
         timestamps: true

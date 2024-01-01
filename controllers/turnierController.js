@@ -147,6 +147,17 @@ class TurnierController {
         }
     }
 
+    async createTeam(req, res) {
+        try {
+            console.log('Received data:', req.body);
+            const platzierung = await Turnier.Team.create(req.body);
+            res.status(200).json(platzierung);
+        } catch (error) {
+            console.log(error.message);
+            res.status(500).json({ message: error.message });
+        }
+    }
+
     async createPerson(req, res) {
         try {
             console.log('Received data:', req.body);

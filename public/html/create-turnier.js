@@ -63,7 +63,8 @@ async function createTurnier() {
         kosten: document.getElementById("kosten").value,
         //TODO Solange die Smartwe-ID noch nicht, verfügbar ist, wird die IP-Adresse des Hosts als Wert für turnierMaster verwendet.
         turnierTeilnehmerAnzahl: teilnehmerAnzahl,
-        turnierPlatzierungen: platzierungen
+        turnierPlatzierungen: platzierungen,
+        turnierTeams: await createTeams()
         
     };
 
@@ -83,6 +84,7 @@ async function createTurnier() {
         const data = await response.json();
         console.log("Turnier erstellt:", data);
         alert("Turnier erfolgreich erstellt!");
+        redirectToHomePage();
         return false;
     } catch (error) {
         console.error("Fehler beim Senden der Daten:", error);
@@ -160,18 +162,15 @@ async function createPerson(id) {
 
     function generiereTeamInputFelder() {
         // Hole das ausgewählte Team-Anzahl-Element
-        var teamAnzahlElement = document.querySelector('sd-combo-box[label="Teams"]');
+        var teamAnzahlElement = leseTeamAnzahlWert();
     
         // Überprüfe, ob das Element existiert
         if (teamAnzahlElement) {
             // Hole den ausgewählten Wert
-            var ausgewaehlteAnzahl = parseInt(teamAnzahlElement.value, 10);
+            var ausgewaehlteAnzahl = parseInt(teamAnzahlElement);
     
             // Hole das Container-Element, in dem die Input-Felder erstellt werden sollen
             var containerElement = document.getElementById('basic-examples-container');
-    
-            // Lösche vorhandene Elemente im Container
-            containerElement.innerHTML = '';
     
             // Erstelle neue Input-Felder basierend auf der ausgewählten Anzahl
             for (var i = 1; i <= ausgewaehlteAnzahl; i++) {
@@ -179,13 +178,51 @@ async function createPerson(id) {
                 inputElement.id = 'team' + i;
                 inputElement.type = 'text';
                 inputElement.name = 'team' + i;
-                inputElement.currentText = 'Team' + i;
+                inputElement.currentText = 'Team ' + i;
     
                 // Füge das Input-Feld dem Container hinzu
                 containerElement.appendChild(inputElement);
             }
         }
     }
+    
+async function createTeams() {
+    const teamInputContainer = document.getElementById('basic-examples-container');
+    const teamNameInputs = teamInputContainer.querySelectorAll('sd-lit-input');
+    const teamNames = Array.from(teamNameInputs).map(input => input.currentText);
+
+    const teams = [];
+
+    for (const teamName of teamNames) {
+        const teamData = {
+            name: teamName,
+            // ... (andere Team-Eigenschaften, falls benötigt)
+        };
+
+        try {
+            const response = await fetch("/api/create-team", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(teamData),
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            console.log("Team erstellt:", data);
+            teams.push(data._id);
+        } catch (error) {
+            console.error("Fehler beim Erstellen des Teams:", error);
+            alert("Fehler beim Erstellen des Turniers. Bitte versuche es erneut.");
+        }
+    }
+
+    return teams;
+}
     
     // Rufe die Funktion auf, wenn sich die Auswahl ändert
 function submitForm() {
@@ -195,25 +232,11 @@ function submitForm() {
 }
 
 // Funktion, um den Wert des Combo-Box-Elements zu extrahieren
-function leseComboWert() {
+function leseTeamAnzahlWert() {
     // Hole das sd-combo-box-Element
-    var comboBoxElement = document.querySelector('sd-combo-box[label="Teams"]');
+    var comboBoxElement = document.querySelector('sd-combo-box[label="Teams"]').comboBoxValue.item.caption;
 
-    // Überprüfe, ob das Element existiert
-    if (comboBoxElement) {
-        // Hole den Wert aus dem ComboBoxValue-Attribut
-        var comboBoxValue = comboBoxElement.comboBoxValue;
-
-        // Überprüfe, ob ein Wert ausgewählt wurde
-        if (comboBoxValue) {
-            // Hier kannst du auf die Informationen zugreifen
-            console.log('Index:', comboBoxValue.index);
-            console.log('Ausgewählter Wert:', comboBoxValue.value);
-            console.log('Ganzer Datensatz:', comboBoxValue.item.caption);
-        } else {
-            console.log('Kein Wert ausgewählt.');
-        }
-    }
+    return comboBoxElement;
 }
 
 document.addEventListener("DOMContentLoaded", function() {
@@ -273,6 +296,19 @@ function versteckeSeite2() {
 
 function zeigeSeite2() {
     var seite2Element = document.querySelector('.Seite2');
+    if (seite2Element) {
+        seite2Element.style.display = 'block';
+    }
+}
+function versteckeSeite3() {
+    var seite2Element = document.querySelector('.Seite3');
+    if (seite2Element) {
+        seite2Element.style.display = 'none';
+    }
+}
+
+function zeigeSeite3() {
+    var seite2Element = document.querySelector('.Seite3');
     if (seite2Element) {
         seite2Element.style.display = 'block';
     }

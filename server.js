@@ -60,6 +60,10 @@ app.post('/api/create-turnier', async (req, res) => {
    await turnierController.createTurnier(req,res);
 });
 
+app.post('/api/create-team', async (req, res) => {
+    await turnierController.createTeam(req,res);
+ });
+
 app.post('/api/create-platzierung', async (req, res) => {
     await turnierController.createPlatzierung(req,res);
  });
