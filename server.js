@@ -21,6 +21,10 @@ app.get('/anzeige-turnier', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'html', 'anzeige-turnier.html'));
 });
 
+app.get('/turnier-byID', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'html', 'turnier-detail.html'));
+});
+
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'html', 'anzeige-turnier.html'));
 });
@@ -30,8 +34,20 @@ app.get('/recent-turniere', async (req, res) => {
     await turnierController.getRecentTurniere(req, res);
 });
 
-app.get('/turnier-byID', async (req, res) => {
+app.get('/turnier-ID', async (req, res) => {
     await turnierController.getTurnierById(req, res);
+});
+
+app.get('/koRunde-ID', async (req, res) => {
+    await turnierController.getKoRundeById(req, res);
+});
+
+app.get('/spiel-ID', async (req, res) => {
+    await turnierController.getSpielById(req, res);
+});
+
+app.get('/team-ID', async (req, res) => {
+    await turnierController.getTeamById(req, res);
 });
 
 app.get('/recent-turniereMaster', async (req, res) => {

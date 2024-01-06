@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8" />
+    <title>Turnier erstellen</title>
+    <script src="/node_modules/@smartdesign/header-layout/dist/header-layout-with-externals.js"></script>
+    <script src="/node_modules/@smartdesign/button/dist/button-with-externals.js"></script>
+    <script src="/node_modules/@smartdesign/lit-input/dist/input-with-externals.js"></script>
+    <script src="/node_modules\@smartdesign\combo-box\dist\combo-box-with-externals.js"></script>
+    <script src="/node_modules\@smartdesign\lit-slider\dist\slider-with-externals.js"></script>
+    <link rel="stylesheet" href="../styles/style.css">
+</head>
+<body>
+    <div id="turnier-detail-root">
+        <!-- Bereich für Turnier-Details -->
+        <div id="turnier-details">
+            <h1 id="turnier-name"></h1>
+            <p id="veranstaltungsort"></p>
+            <p id="start-datum"></p>
+        </div>
+
+        <!-- Bereich für Ko-Runden -->
+        <div id="ko-runden">
+            <!-- Hier werden die Ko-Runden dynamisch eingefügt -->
+        </div>
+
+        <!-- Bereich für Spiele -->
+        <div id="spiele">
+            <!-- Hier werden die Spiele dynamisch eingefügt -->
+        </div>
+    </div>
+
+    <script src="/html/turnier-detail.js"></script>
+</body>
+</html>

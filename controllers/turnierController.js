@@ -27,6 +27,54 @@ class TurnierController {
         }
       }
 
+      async getKoRundeById(req, res) {
+        try {
+            const koRundeId = req.query.id;
+    
+            const foundKoRunde = await Turnier.KoRunde.findById(koRundeId); // Annahme: Das Modell für Ko-Runden heißt KoRunde
+    
+            if (!foundKoRunde) {
+                return res.status(404).json({ message: 'Ko-Runde nicht gefunden' });
+            }
+    
+            res.status(200).json(foundKoRunde);
+        } catch (error) {
+            this.handleError(res, 'Fehler beim Abrufen der Ko-Runde', error);
+        }
+    }
+    
+    async getSpielById(req, res) {
+        try {
+            const spielId = req.query.id;
+    
+            const foundSpiel = await Turnier.Spiel.findById(spielId); // Annahme: Das Modell für Spiele heißt Spiel
+    
+            if (!foundSpiel) {
+                return res.status(404).json({ message: 'Spiel nicht gefunden' });
+            }
+    
+            res.status(200).json(foundSpiel);
+        } catch (error) {
+            this.handleError(res, 'Fehler beim Abrufen des Spiels', error);
+        }
+    }
+
+    async getTeamById(req, res) {
+        try {
+            const spielId = req.query.id;
+    
+            const foundSpiel = await Turnier.Team.findById(spielId); // Annahme: Das Modell für Spiele heißt Spiel
+    
+            if (!foundSpiel) {
+                return res.status(404).json({ message: 'Spiel nicht gefunden' });
+            }
+    
+            res.status(200).json(foundSpiel);
+        } catch (error) {
+            this.handleError(res, 'Fehler beim Abrufen des Spiels', error);
+        }
+    }
+
     async getRecentTurniereMaster(req, res) {
         try {
             const turnierMasterId = req.query.turnierMaster;
