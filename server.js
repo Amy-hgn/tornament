@@ -30,6 +30,10 @@ app.get('/recent-turniere', async (req, res) => {
     await turnierController.getRecentTurniere(req, res);
 });
 
+app.get('/turnier-byID', async (req, res) => {
+    await turnierController.getTurnierById(req, res);
+});
+
 app.get('/recent-turniereMaster', async (req, res) => {
     await turnierController.getRecentTurniereMaster(req, res);
 });
@@ -70,6 +74,16 @@ app.post('/api/create-platzierung', async (req, res) => {
 app.post('/api/create-person', async (req, res) => {
     await turnierController.createPerson(req, res);
 });
+
+app.post('/api/create-spiel', async (req, res) => {
+    await turnierController.createSpiel(req, res);
+});
+
+app.post('/api/create-ko-runde', async (req, res) => {
+    await turnierController.createKORunde(req, res);
+});
+
+
 
 // MongoDB-Verbindung
 mongoose.connect(process.env.DATABASE_URL)

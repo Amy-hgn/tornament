@@ -11,6 +11,22 @@ class TurnierController {
         }
     }
 
+    async getTurnierById(req, res) {
+        try {
+          const turnierId = req.query.id; 
+      
+          const foundTurnier = await Turnier.Turnier.findById(turnierId).populate('turnierMaster');
+      
+          if (!foundTurnier) {
+            return res.status(404).json({ message: 'Turnier nicht gefunden' });
+          }
+      
+          res.status(200).json(foundTurnier);
+        } catch (error) {
+          this.handleError(res, 'Fehler beim Abrufen des Turniers', error);
+        }
+      }
+
     async getRecentTurniereMaster(req, res) {
         try {
             const turnierMasterId = req.query.turnierMaster;
@@ -147,6 +163,25 @@ class TurnierController {
             res.status(200).json(person);
         } catch (error) {
             this.handleError(res, 'Fehler beim Erstellen der Person', error);
+        }
+    }
+    async createSpiel(req, res) {
+        try {
+            console.log('Received data:', req.body);
+            const spiel = await Turnier.Spiel.create(req.body);
+            res.status(200).json(spiel);
+        } catch (error) {
+            this.handleError(res, 'Fehler beim Erstellen des Spieles', error);
+        }
+    }
+    
+    async createKORunde(req, res) {
+        try {
+            console.log('Received data:', req.body);
+            const koRunde = await Turnier.KoRunde.create(req.body);
+            res.status(200).json(koRunde);
+        } catch (error) {
+            this.handleError(res, 'Fehler beim Erstellen der Ko-Runde', error);
         }
     }
 

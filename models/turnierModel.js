@@ -44,12 +44,28 @@ const teamSchema = mongoose.Schema(
 );
 
 const spielSchema = mongoose.Schema(
-    {
-        teilnehmerTeam: [
-            {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'Team'
-            }],
+    {    
+        spielStatus: {
+            type: String,
+            enum: ['notStarted', 'ongoing', 'completed'],
+            default: 'notStarted'
+        },
+        team1: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Team'
+        },
+        team2: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Team'
+        },
+        punkteGewinner: {
+            type: Number,
+            enum: [1, 2]
+        },
+        naechsteRunde: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Spiel'
+        }
     },
     {
         timestamps: true
@@ -62,7 +78,10 @@ const koRundeSchema = mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Spiel',
         }],
-              
+        tiefe: {
+            type: Number,
+            required: true
+        }  
     },
     {
         timestamps: true
