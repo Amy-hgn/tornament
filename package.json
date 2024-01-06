@@ -16,9 +16,11 @@
   "license": "ISC",
   "dependencies": {
     "@smartdesign/button": "^4.10.0",
+    "@smartdesign/combo-box": "^6.3.3",
     "@smartdesign/header-layout": "^2.9.0",
     "@smartdesign/icons": "^2.7.0",
     "@smartdesign/list": "^5.1.0",
+    "@smartdesign/lit-slider": "^6.2.1",
     "@smartdesign/lit-input": "^6.2.7",
     "@smartdesign/styles": "^3.4.0",
     "@smartdesign/toolbar": "^3.7.1",
