@@ -1,4 +1,32 @@
-/**
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: public/html/anzeige-turnier.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: public/html/anzeige-turnier.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
  * Führt Aktionen aus, wenn das DOM vollständig geladen ist.
  */
 document.addEventListener("DOMContentLoaded", async function () {
@@ -78,7 +106,7 @@ function displayMeineTurniereHeading() {
 /**
  * Ruft die eigene IP-Adresse ab.
  *
- * @returns {Promise<string|"127.0.0.1">} - Die IP-Adresse oder 127.0.0.1 bei einem Fehler.
+ * @returns {Promise&lt;string|"127.0.0.1">} - Die IP-Adresse oder 127.0.0.1 bei einem Fehler.
  */
 async function getIPAddress() {
   try {
@@ -123,7 +151,7 @@ async function fetchMeineTurniere() {
 /**
  * Zeigt Turniere in der Liste an.
  *
- * @param {Array<Object>} turniere - Die Liste der Turniere.
+ * @param {Array&lt;Object>} turniere - Die Liste der Turniere.
  * @param {Element} turnierListe - Das HTML-Element der Turnierliste.
  */
 function displayTurniere(turniere, turnierListe) {
@@ -162,7 +190,7 @@ function displayDeineSucheHeading(searchTerm) {
   const deineSucheHeading = document.querySelector(".deine-suche-heading");
 
   // Überprüfen, ob ein Suchbegriff vorhanden ist
-  if (searchTerm && searchTerm.trim().length > 0) {
+  if (searchTerm &amp;&amp; searchTerm.trim().length > 0) {
     // Wenn ja, Anzeige aktualisieren oder erstellen
     if (!deineSucheHeading) {
       const heading = document.createElement("div");
@@ -330,3 +358,26 @@ function formatiereDatum(datumString) {
 
   return `${stunde}:${minute} Uhr ${tag}.${monatsname}.${jahr}`;
 }
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#app">app</a></li><li><a href="global.html#createKORunde">createKORunde</a></li><li><a href="global.html#createPerson">createPerson</a></li><li><a href="global.html#createPlatzierungen">createPlatzierungen</a></li><li><a href="global.html#createSpiel">createSpiel</a></li><li><a href="global.html#createTeams">createTeams</a></li><li><a href="global.html#createTurnier">createTurnier</a></li><li><a href="global.html#displayDeineSucheHeading">displayDeineSucheHeading</a></li><li><a href="global.html#displayFreiePlaetzeHeading">displayFreiePlaetzeHeading</a></li><li><a href="global.html#displayKoRunden">displayKoRunden</a></li><li><a href="global.html#displayMeineTurniereHeading">displayMeineTurniereHeading</a></li><li><a href="global.html#displaySpiele">displaySpiele</a></li><li><a href="global.html#displayTurnierDetails">displayTurnierDetails</a></li><li><a href="global.html#displayTurniere">displayTurniere</a></li><li><a href="global.html#fetchFreiePlaetze">fetchFreiePlaetze</a></li><li><a href="global.html#fetchKoRunden">fetchKoRunden</a></li><li><a href="global.html#fetchMeineTurniere">fetchMeineTurniere</a></li><li><a href="global.html#fetchRecentTurniere">fetchRecentTurniere</a></li><li><a href="global.html#fetchSpiele">fetchSpiele</a></li><li><a href="global.html#fetchTeamName">fetchTeamName</a></li><li><a href="global.html#fetchTurnierDetails">fetchTurnierDetails</a></li><li><a href="global.html#formatCurrency">formatCurrency</a></li><li><a href="global.html#formatiereDatum">formatiereDatum</a></li><li><a href="global.html#generateKORunden">generateKORunden</a></li><li><a href="global.html#generiereTeamInputFelder">generiereTeamInputFelder</a></li><li><a href="global.html#getIPAddress">getIPAddress</a></li><li><a href="global.html#handleSearchInput">handleSearchInput</a></li><li><a href="global.html#leseTeamAnzahlWert">leseTeamAnzahlWert</a></li><li><a href="global.html#redirectToCreateTurnier">redirectToCreateTurnier</a></li><li><a href="global.html#redirectToHomePage">redirectToHomePage</a></li><li><a href="global.html#redirectToTurnierDetailPage">redirectToTurnierDetailPage</a></li><li><a href="global.html#reloadPage">reloadPage</a></li><li><a href="global.html#setupTurnierListClickHandler">setupTurnierListClickHandler</a></li><li><a href="global.html#sindAlleFelderGefuellt">sindAlleFelderGefuellt</a></li><li><a href="global.html#submitForm">submitForm</a></li><li><a href="global.html#validateForm">validateForm</a></li><li><a href="global.html#versteckeSeite1">versteckeSeite1</a></li><li><a href="global.html#versteckeSeite2">versteckeSeite2</a></li><li><a href="global.html#versteckeSeite3">versteckeSeite3</a></li><li><a href="global.html#zeigeSeite1">zeigeSeite1</a></li><li><a href="global.html#zeigeSeite2">zeigeSeite2</a></li><li><a href="global.html#zeigeSeite3">zeigeSeite3</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Thu Jan 11 2024 02:42:55 GMT+0100 (Mitteleuropäische Normalzeit)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

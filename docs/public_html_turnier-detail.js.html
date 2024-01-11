@@ -1,4 +1,32 @@
-/**
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: public/html/turnier-detail.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: public/html/turnier-detail.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
  * Event-Listener für das DOMContentLoaded-Ereignis. Holt und zeigt Turnierdetails, KO-Runden und Spiele an.
  */
 document.addEventListener("DOMContentLoaded", async function () {
@@ -29,7 +57,7 @@ document.addEventListener("DOMContentLoaded", async function () {
  * Holt Turnierdetails vom Server.
  *
  * @param {string} turnierId - Die ID des Turniers.
- * @returns {Promise<Object>} - Ein Promise, das zu den Turnierdetails auflöst.
+ * @returns {Promise&lt;Object>} - Ein Promise, das zu den Turnierdetails auflöst.
  */
 async function fetchTurnierDetails(turnierId) {
     const response = await fetch(`/turnier-ID?id=${turnierId}`);
@@ -39,8 +67,8 @@ async function fetchTurnierDetails(turnierId) {
 /**
  * Holt KO-Runden vom Server basierend auf ihren IDs.
  *
- * @param {Array<string>} koRundenIds - Ein Array von KO-Runden-IDs.
- * @returns {Promise<Array<Object>>} - Ein Promise, das zu einem Array von KO-Runden auflöst.
+ * @param {Array&lt;string>} koRundenIds - Ein Array von KO-Runden-IDs.
+ * @returns {Promise&lt;Array&lt;Object>>} - Ein Promise, das zu einem Array von KO-Runden auflöst.
  */
 async function fetchKoRunden(koRundenIds) {
     const koRundenPromises = koRundenIds.map(async (koRundenId) => {
@@ -52,8 +80,8 @@ async function fetchKoRunden(koRundenIds) {
 /**
  * Spiele vom Server abrufen und Teamnamen ersetzen.
  *
- * @param {Array<string>} spieleIds - Ein Array von Spiel-IDs.
- * @returns {Promise<Array<Object>>} - Ein Promise, das zu einem Array von Spielen auflöst.
+ * @param {Array&lt;string>} spieleIds - Ein Array von Spiel-IDs.
+ * @returns {Promise&lt;Array&lt;Object>>} - Ein Promise, das zu einem Array von Spielen auflöst.
  */
 async function fetchSpiele(spieleIds) {
     try {
@@ -76,7 +104,7 @@ async function fetchSpiele(spieleIds) {
  * Teamnamen vom Server abrufen.
  *
  * @param {string} teamId - Die ID des Teams.
- * @returns {Promise<string>} - Ein Promise, das zu einem Teamnamen auflöst.
+ * @returns {Promise&lt;string>} - Ein Promise, das zu einem Teamnamen auflöst.
  */
 async function fetchTeamName(teamId) {
     const response = await fetch(`/team-ID?id=${teamId}`);
@@ -97,7 +125,7 @@ function displayTurnierDetails(turnierDetails) {
 /**
  * KO-Runden auf der Webseite anzeigen.
  *
- * @param {Array<Object>} koRunden - Ein Array von KO-Runden.
+ * @param {Array&lt;Object>} koRunden - Ein Array von KO-Runden.
  */
 function displayKoRunden(koRunden) {
     const koRundenContainer = document.getElementById('ko-runden');
@@ -113,7 +141,7 @@ function displayKoRunden(koRunden) {
 /**
  * Spiele auf der Webseite anzeigen.
  *
- * @param {Array<Object>} spiele - Ein Array von Spielen.
+ * @param {Array&lt;Object>} spiele - Ein Array von Spielen.
  * @param {HTMLElement} parentElement - Das übergeordnete HTML-Element, in dem die Spiele angezeigt werden sollen.
  */
 function displaySpiele(spiele, parentElement) {
@@ -163,3 +191,26 @@ function formatiereDatum(datumString) {
   
     return `${stunde}:${minute} Uhr ${tag}.${monatsname}.${jahr}`;
   }
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#app">app</a></li><li><a href="global.html#createKORunde">createKORunde</a></li><li><a href="global.html#createPerson">createPerson</a></li><li><a href="global.html#createPlatzierungen">createPlatzierungen</a></li><li><a href="global.html#createSpiel">createSpiel</a></li><li><a href="global.html#createTeams">createTeams</a></li><li><a href="global.html#createTurnier">createTurnier</a></li><li><a href="global.html#displayDeineSucheHeading">displayDeineSucheHeading</a></li><li><a href="global.html#displayFreiePlaetzeHeading">displayFreiePlaetzeHeading</a></li><li><a href="global.html#displayKoRunden">displayKoRunden</a></li><li><a href="global.html#displayMeineTurniereHeading">displayMeineTurniereHeading</a></li><li><a href="global.html#displaySpiele">displaySpiele</a></li><li><a href="global.html#displayTurnierDetails">displayTurnierDetails</a></li><li><a href="global.html#displayTurniere">displayTurniere</a></li><li><a href="global.html#fetchFreiePlaetze">fetchFreiePlaetze</a></li><li><a href="global.html#fetchKoRunden">fetchKoRunden</a></li><li><a href="global.html#fetchMeineTurniere">fetchMeineTurniere</a></li><li><a href="global.html#fetchRecentTurniere">fetchRecentTurniere</a></li><li><a href="global.html#fetchSpiele">fetchSpiele</a></li><li><a href="global.html#fetchTeamName">fetchTeamName</a></li><li><a href="global.html#fetchTurnierDetails">fetchTurnierDetails</a></li><li><a href="global.html#formatCurrency">formatCurrency</a></li><li><a href="global.html#formatiereDatum">formatiereDatum</a></li><li><a href="global.html#generateKORunden">generateKORunden</a></li><li><a href="global.html#generiereTeamInputFelder">generiereTeamInputFelder</a></li><li><a href="global.html#getIPAddress">getIPAddress</a></li><li><a href="global.html#handleSearchInput">handleSearchInput</a></li><li><a href="global.html#leseTeamAnzahlWert">leseTeamAnzahlWert</a></li><li><a href="global.html#redirectToCreateTurnier">redirectToCreateTurnier</a></li><li><a href="global.html#redirectToHomePage">redirectToHomePage</a></li><li><a href="global.html#redirectToTurnierDetailPage">redirectToTurnierDetailPage</a></li><li><a href="global.html#reloadPage">reloadPage</a></li><li><a href="global.html#setupTurnierListClickHandler">setupTurnierListClickHandler</a></li><li><a href="global.html#sindAlleFelderGefuellt">sindAlleFelderGefuellt</a></li><li><a href="global.html#submitForm">submitForm</a></li><li><a href="global.html#validateForm">validateForm</a></li><li><a href="global.html#versteckeSeite1">versteckeSeite1</a></li><li><a href="global.html#versteckeSeite2">versteckeSeite2</a></li><li><a href="global.html#versteckeSeite3">versteckeSeite3</a></li><li><a href="global.html#zeigeSeite1">zeigeSeite1</a></li><li><a href="global.html#zeigeSeite2">zeigeSeite2</a></li><li><a href="global.html#zeigeSeite3">zeigeSeite3</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Thu Jan 11 2024 02:42:55 GMT+0100 (Mitteleuropäische Normalzeit)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

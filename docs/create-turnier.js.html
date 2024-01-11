@@ -1,4 +1,32 @@
-/**
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: create-turnier.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: create-turnier.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
  * Formatieren des Werts einer Eingabe in Währungsformat (zwei Dezimalstellen).
  *
  * @param {HTMLInputElement} input - Das Eingabefeld, dessen Wert formatiert werden soll.
@@ -105,8 +133,8 @@ async function createTurnier() {
 /**
  * Generierung der K.O.-Runden für ein Turnier basierend auf den Team-IDs.
  *
- * @param {Array<string>} teamIDs - Die IDs der Teams im Turnier.
- * @returns {Array<string>} - Die IDs der erstellten K.O.-Runden.
+ * @param {Array&lt;string>} teamIDs - Die IDs der Teams im Turnier.
+ * @returns {Array&lt;string>} - Die IDs der erstellten K.O.-Runden.
  */
 async function generateKORunden(teamIDs) {
   const koRunden = [];
@@ -121,7 +149,7 @@ async function generateKORunden(teamIDs) {
     const spiele = [];
 
     if (i === 1) {
-      for (let j = 1; j <= teamIDs.length / 2; j++) {
+      for (let j = 1; j &lt;= teamIDs.length / 2; j++) {
         const spielData = {
           team1: remainingTeams.shift(),
           team2: remainingTeams.shift(),
@@ -138,7 +166,7 @@ async function generateKORunden(teamIDs) {
       spiele.push(spiel._id);
       teamKnoten.push(spiel._id);
     } else {
-      for (let j = 1; j <= Math.pow(2, koRundenAnzahl - i - 1); j++) {
+      for (let j = 1; j &lt;= Math.pow(2, koRundenAnzahl - i - 1); j++) {
         if (koRundenAnzahl - i === 2) {
           const spielData = {
             nächstesSpiel: [teamKnoten[0], teamKnoten[1]],
@@ -235,12 +263,12 @@ async function createKORunde(koRundeData) {
  * Erstellung von Platzierungen für die angegebene Anzahl von Teilnehmern.
  *
  * @param {number} teilnehmerAnzahl - Die Anzahl der Teilnehmer im Turnier.
- * @returns {Array<string>} - Die IDs der erstellten Platzierungen.
+ * @returns {Array&lt;string>} - Die IDs der erstellten Platzierungen.
  */
 async function createPlatzierungen(teilnehmerAnzahl) {
   const platzierungen = [];
 
-  for (let i = 1; i <= teilnehmerAnzahl; i++) {
+  for (let i = 1; i &lt;= teilnehmerAnzahl; i++) {
     const platzierungDaten = {
       platz: i,
     };
@@ -318,7 +346,7 @@ function generiereTeamInputFelder() {
     var containerElement = document.getElementById("basic-examples-container");
 
     // Erstelle neue Input-Felder basierend auf der ausgewählten Anzahl
-    for (var i = 1; i <= ausgewaehlteAnzahl; i++) {
+    for (var i = 1; i &lt;= ausgewaehlteAnzahl; i++) {
       var inputElement = document.createElement("sd-lit-input");
       inputElement.id = "team" + i;
       inputElement.type = "text";
@@ -333,7 +361,7 @@ function generiereTeamInputFelder() {
 /**
  * Erstellung von Teams basierend auf den eingegebenen Teamnamen.
  *
- * @returns {Array<string>} - Die IDs der erstellten Teams.
+ * @returns {Array&lt;string>} - Die IDs der erstellten Teams.
  */
 async function createTeams() {
   const teamInputContainer = document.getElementById(
@@ -432,7 +460,7 @@ function sindAlleFelderGefuellt() {
   ];
 
   // Überprüfe jedes Feld
-  for (var i = 0; i < feldIDs.length; i++) {
+  for (var i = 0; i &lt; feldIDs.length; i++) {
     var feldID = feldIDs[i];
     var feld = document.getElementById(feldID);
 
@@ -508,7 +536,7 @@ function zeigeSeite3() {
 /**
  * Abrufen der IP-Adresse des Benutzers.
  *
- * @returns {Promise<string|null>} - Die IP-Adresse oder null bei einem Fehler.
+ * @returns {Promise&lt;string|null>} - Die IP-Adresse oder null bei einem Fehler.
  */
 async function getIPAddress() {
   try {
@@ -527,3 +555,26 @@ async function getIPAddress() {
     return null;
   }
 }
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#createKORunde">createKORunde</a></li><li><a href="global.html#createPerson">createPerson</a></li><li><a href="global.html#createPlatzierungen">createPlatzierungen</a></li><li><a href="global.html#createSpiel">createSpiel</a></li><li><a href="global.html#createTeams">createTeams</a></li><li><a href="global.html#createTurnier">createTurnier</a></li><li><a href="global.html#displayDeineSucheHeading">displayDeineSucheHeading</a></li><li><a href="global.html#displayFreiePlaetzeHeading">displayFreiePlaetzeHeading</a></li><li><a href="global.html#displayKoRunden">displayKoRunden</a></li><li><a href="global.html#displayMeineTurniereHeading">displayMeineTurniereHeading</a></li><li><a href="global.html#displaySpiele">displaySpiele</a></li><li><a href="global.html#displayTurnierDetails">displayTurnierDetails</a></li><li><a href="global.html#displayTurniere">displayTurniere</a></li><li><a href="global.html#fetchFreiePlaetze">fetchFreiePlaetze</a></li><li><a href="global.html#fetchKoRunden">fetchKoRunden</a></li><li><a href="global.html#fetchMeineTurniere">fetchMeineTurniere</a></li><li><a href="global.html#fetchRecentTurniere">fetchRecentTurniere</a></li><li><a href="global.html#fetchSpiele">fetchSpiele</a></li><li><a href="global.html#fetchTeamName">fetchTeamName</a></li><li><a href="global.html#fetchTurnierDetails">fetchTurnierDetails</a></li><li><a href="global.html#formatCurrency">formatCurrency</a></li><li><a href="global.html#formatiereDatum">formatiereDatum</a></li><li><a href="global.html#generateKORunden">generateKORunden</a></li><li><a href="global.html#generiereTeamInputFelder">generiereTeamInputFelder</a></li><li><a href="global.html#getIPAddress">getIPAddress</a></li><li><a href="global.html#handleSearchInput">handleSearchInput</a></li><li><a href="global.html#leseTeamAnzahlWert">leseTeamAnzahlWert</a></li><li><a href="global.html#redirectToCreateTurnier">redirectToCreateTurnier</a></li><li><a href="global.html#redirectToHomePage">redirectToHomePage</a></li><li><a href="global.html#redirectToTurnierDetailPage">redirectToTurnierDetailPage</a></li><li><a href="global.html#reloadPage">reloadPage</a></li><li><a href="global.html#setupTurnierListClickHandler">setupTurnierListClickHandler</a></li><li><a href="global.html#sindAlleFelderGefuellt">sindAlleFelderGefuellt</a></li><li><a href="global.html#submitForm">submitForm</a></li><li><a href="global.html#validateForm">validateForm</a></li><li><a href="global.html#versteckeSeite1">versteckeSeite1</a></li><li><a href="global.html#versteckeSeite2">versteckeSeite2</a></li><li><a href="global.html#versteckeSeite3">versteckeSeite3</a></li><li><a href="global.html#zeigeSeite1">zeigeSeite1</a></li><li><a href="global.html#zeigeSeite2">zeigeSeite2</a></li><li><a href="global.html#zeigeSeite3">zeigeSeite3</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Thu Jan 11 2024 02:40:40 GMT+0100 (Mitteleuropäische Normalzeit)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

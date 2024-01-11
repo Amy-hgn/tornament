@@ -10,7 +10,8 @@
     "devStart": "nodemon server.js",
     "build": "npm install && node server.js",
     "start": "node server.js",
-    "test": "jest"
+    "test": "jest",
+    "generate-docs": "jsdoc -c jsdoc-config.json"
   },
   "author": "",
   "license": "ISC",
