@@ -5,19 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Turnieranmeldung</title>
-    <link rel="icon" type="image/png" href="./Logo.png"
-    
-    <script src="/node_modules/@smartdesign/header-layout/dist/header-layout-with-externals.js"></script>
-    <script src="/node_modules/@smartdesign/button/dist/button-with-externals.js"></script>
-    <script src="\node_modules@smartdesign\group\dist\group-with-externals.js"></script>
+    <link rel="icon" type="image/png" href="./Logo.png">
+
+    <script src="../../node_modules/@smartdesign/toolbar/dist/toolbar-with-externals.js"></script>
+    <script src="../../node_modules/@smartdesign/button/dist/button-with-externals.js"></script>
 
 
-    <link rel="stylesheet" href="style-anmelden-turnier.css">
+
+    <link rel="stylesheet" href="../styles/style-anmelden-turnier.css">
 
 </head>
 
 <body>
-    <h1 class="headline">Anmeldung</h1>
+    <div id="declarative-example-root">
+        <sd-toolbar>
+            <sd-button icon="cancel.svg" slot="left"></sd-button>
+            <sd-button slot="left" onclick="alert('Clicked!')">Abbrechen</sd-button>
+            <h2>Anmeldung</h2>
+            <sd-button icon="check.svg" slot="right" onclick="">Speichern</sd-button>
+        </sd-toolbar>
+    </div>
+
+    
+
+   
    
     <div class="group-example">
         <sd-group>
@@ -43,26 +54,6 @@
             <label>Abteilung</label>
             <div>Value 3</div>
         </sd-group>
-    </div>
-
-    <br><br> <br> <br>
-
-
-    <div class="teilnahme">
-        Teilnahme
-    </div>
-
-    <div class="preisdetails">
-        Preisdetails
-    </div>
-
-    <div class="teilnehmer">
-        Teilnehmer
-        Combo box aus Design Doku
-    </div>
-
-    <div class="x">
-        x
     </div>
     
 </body>

@@ -1,20 +1,26 @@
-/* Verbindung zur html-Datei herstellen 
-roter Balken oben #E2001A oder #CC0017
-
-NOTIZ: vor der Nutzung von einem Design Element muss dieses runtergeladen werden*/
 
 body{
-    /*TD CAS Schriftformat einfügen*/
     padding-left: 100px;
     padding-right: 100px;
 }
 
-/*.headline{
-    Schriftfarbe
-    Schriftgröße
-    Ausrichtung
+.title {
+    font-weight: 700;
+    font-size: 24px;
 }
-*/
+
+sd-toolbar {
+	border-bottom: 1px solid #ccc;
+}
+
+sd-toolbar h2 {
+	width: 100%;
+	margin: 0;
+	border: none;
+	text-align: center;
+	line-height: 32px;
+	font-weight: lighter;
+}
 
 .group-example {
 	box-sizing: border-box;
