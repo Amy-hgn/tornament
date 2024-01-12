@@ -1,39 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Turnierverwaltung</title>
-  <base href="/">
-  <link rel="stylesheet" href="../styles/style.css">
-</head>
-<body>
-  <h1>Willkommen zur TurnierCAScade </h1>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Turnierverwaltung</title>
+    <base href="/" />
+    <link rel="stylesheet" href="../styles/style.css" />
+  </head>
+  <body>
+    <h1>Willkommen zur TurnierCAScade</h1>
 
-  <div>
-    <button id="anzeigenButton">Turniere anzeigen</button>
-    <button id="erstellenButton">Turnier erstellen</button>
-    <button id="neueStartseite">Neue Startseite</button>
-    <button id="ID">ID</button>
-  </div>
+    <div>
+      <button id="anzeigenButton">Turniere anzeigen</button>
+      <button id="erstellenButton">Turnier erstellen</button>
+      <button id="neueStartseite">Neue Startseite</button>
+      <button id="ID">ID</button>
+    </div>
 
-  <script>
-    document.getElementById('anzeigenButton').addEventListener('click', function() {
-      // Weiterleitung zur Turnieranzeige-Seite
-      window.location.href = './anzeige-turnier';
-    });
+    <script>
+      document
+        .getElementById("anzeigenButton")
+        .addEventListener("click", function () {
+          // Weiterleitung zur Turnieranzeige-Seite
+          window.location.href = "./anzeige-turnier";
+        });
 
-    document.getElementById('erstellenButton').addEventListener('click', function() {
-      // Weiterleitung zur Turniererstellungs-Seite
-      window.location.href = './create-turnier';
-    });
-    document.getElementById('neueStartseite').addEventListener('click', function() {
-      window.location.href = './t';
-    });
-    document.getElementById('ID').addEventListener('click', function() {
-      window.location.href = './smartwe';
-    });
-    
-  </script>
-</body>
+      document
+        .getElementById("erstellenButton")
+        .addEventListener("click", function () {
+          // Weiterleitung zur Turniererstellungs-Seite
+          window.location.href = "./create-turnier";
+        });
+      document
+        .getElementById("neueStartseite")
+        .addEventListener("click", function () {
+          window.location.href = "./startseite";
+        });
+      document.getElementById("ID").addEventListener("click", function () {
+        window.location.href = "./smartwe";
+      });
+    </script>
+  </body>
 </html>
