@@ -128,6 +128,10 @@ const turnierSchema = mongoose.Schema(
             type: String,
             required: [true, "Bitte den Veranstaltungsort angeben."] 
         },
+        beschreibung:{
+            type: String,
+            required: [true, "Bitte die Beschreibung angeben."] 
+        },
         startZeit: {
             type: String, 
             required: [true, "Bitte die Startzeit angeben."]

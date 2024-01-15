@@ -69,6 +69,7 @@ async function createTurnier() {
     turnierName: document.getElementById("turnierName").value,
     startDatum: document.getElementById("startDatum").value,
     endDatum: document.getElementById("endDatum").value,
+    beschreibung: document.getElementById("beschreibung").value,
     veranstaltungsort: document.getElementById("veranstaltungsort").value,
     startZeit: document.getElementById("startZeit").value,
     kosten: document.getElementById("kosten").value,
@@ -428,6 +429,7 @@ function sindAlleFelderGefuellt() {
     "endDatum",
     "veranstaltungsort",
     "startZeit",
+    "beschreibung",
     "kosten",
   ];
 
