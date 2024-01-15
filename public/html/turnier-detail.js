@@ -120,7 +120,7 @@ function displaySpiele(spiele, parentElement) {
 
     spiele.forEach(spiel => {
         const spielElement = document.createElement('div');
-        spielElement.innerText = `Spiel zwischen Team ${spiel.team1} und Team ${spiel.team2} - Status: ${spiel.status}`;
+        spielElement.innerText = `Spiel zwischen Team ${spiel.team1} und Team ${spiel.team2} - Status: ${spiel.spielStatus}`;
 
         parentElement.appendChild(spielElement);
     });

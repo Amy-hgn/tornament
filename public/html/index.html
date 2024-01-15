@@ -1,31 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Turnierverwaltung</title>
-  <base href="/">
-  <link rel="stylesheet" href="../styles/style.css">
-</head>
-<body>
-  <h1>Willkommen zur TurnierCAScade </h1>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Turnierverwaltung</title>
+    <base href="/" />
+    <link rel="stylesheet" href="../styles/style.css" />
+  </head>
+  <body>
+    <h1>Willkommen zur TurnierCAScade</h1>
 
-  <div>
-    <button id="anzeigenButton">Turniere anzeigen</button>
-    <button id="erstellenButton">Turnier erstellen</button>
-  </div>
+    <div>
+      <button id="anzeigenButton">Turniere anzeigen</button>
+      <button id="erstellenButton">Turnier erstellen</button>
+    </div>
 
-  <script>
-    document.getElementById('anzeigenButton').addEventListener('click', function() {
-      // Weiterleitung zur Turnieranzeige-Seite
-      window.location.href = './anzeige-turnier';
-    });
+    <script>
+      document
+        .getElementById("anzeigenButton")
+        .addEventListener("click", function () {
+          // Weiterleitung zur Turnieranzeige-Seite
+          window.location.href = "./anzeige-turnier";
+        });
 
-    document.getElementById('erstellenButton').addEventListener('click', function() {
-      // Weiterleitung zur Turniererstellungs-Seite
-      window.location.href = './create-turnier';
-    });
-    
-  </script>
-</body>
+      document
+        .getElementById("erstellenButton")
+        .addEventListener("click", function () {
+          // Weiterleitung zur Turniererstellungs-Seite
+          window.location.href = "./create-turnier";
+        });
+    </script>
+  </body>
 </html>
