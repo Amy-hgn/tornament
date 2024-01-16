@@ -33,6 +33,10 @@ const teamSchema = mongoose.Schema(
                 type: mongoose.Schema.Types.ObjectId,
                 ref: 'Platzierung'
             }],
+            teamGröße: {
+                type: Number,
+                default: 4
+            },
     },
     {
         timestamps: true
@@ -40,12 +44,28 @@ const teamSchema = mongoose.Schema(
 );
 
 const spielSchema = mongoose.Schema(
-    {
-        teilnehmerTeam: [
-            {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'Team'
-            }],
+    {    
+        spielStatus: {
+            type: String,
+            enum: ['notStarted', 'ongoing', 'completed'],
+            default: 'notStarted'
+        },
+        team1: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Team'
+        },
+        team2: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Team'
+        },
+        punkteGewinner: {
+            type: Number,
+            enum: [1, 2]
+        },
+        naechsteRunde: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Spiel'
+        }
     },
     {
         timestamps: true
@@ -58,7 +78,10 @@ const koRundeSchema = mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Spiel',
         }],
-              
+        tiefe: {
+            type: Number,
+            required: true
+        }  
     },
     {
         timestamps: true
@@ -104,6 +127,10 @@ const turnierSchema = mongoose.Schema(
         veranstaltungsort:{
             type: String,
             required: [true, "Bitte den Veranstaltungsort angeben."] 
+        },
+        beschreibung:{
+            type: String,
+            required: [true, "Bitte die Beschreibung angeben."] 
         },
         startZeit: {
             type: String, 

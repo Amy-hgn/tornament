@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ansicht Turnier</title>
+    <script src="/node_modules/@smartdesign/button/dist/button-with-externals.js"></script>
+    <script src="/node_modules/@smartdesign/lit-input/dist/input-with-externals.js"></script>
+<style>
+    body {
+        margin: 40px;
+        height: calc(100vh - 80px);
+        font-family: "Segoe UI Light", "Segoe UI", "Lucida Sans", Arial, sans-serif;
+        background-color: rgba(240, 248, 255, 0.963);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin: 0;
+    }
+
+.Leiste-oben{
+    background-color: aliceblue;
+    padding: 16px;
+    height: 6vw;
+    width: 95%;
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.Anmeldebutton{
+    sd-button {
+		--sd-button-max-icon-size: 20px;
+	}
+	sd-button span {
+		margin: 8px;
+	}
+}
+
+
+.Beschreibung{
+    background-color: aliceblue;
+    height: 4vw;
+    width: 90%;
+    padding: 16px;
+    margin-top: 16px; 
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.Beschreibung h2 {
+    margin-bottom: 2px;
+}
+
+.Beschreibung p {
+    margin-top: 0.5px;
+   /* width: 85%;*/
+}
+
+.Block-Container{
+    width: 90%;
+    /*margin: 0.5px;
+    padding: 16px;*/
+    margin-top: 5px;
+    display:flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 16px;
+    margin-top: 16px; 
+}
+
+.Infos{
+    flex: 1;
+    background-color: aliceblue;
+   margin-right: 2%;
+    display: block;
+    padding: 16px;
+}
+
+
+.Anmeldungen{
+    flex: 1;
+    padding: 16px;
+    background-color: aliceblue;
+    margin: 0.5px;
+    box-sizing: border-box; 
+    overflow: auto; 
+    margin-bottom: 20px
+}
+
+.Teilnehmerliste {
+    list-style-type: none;
+    padding: 0;
+}
+
+.Teilnehmerliste li {
+    margin-bottom: 8px; 
+}
+
+</style>
+</head>
+<body>
+    <div class="Leiste-oben">
+        <h1 class = "Turniername">
+            Bierpongturnier
+        </h1>
+    <div class = "Anmeldebutton">
+        <sd-button primary icon="add-recipient.svg"><span>Anmelden</span></sd-button>
+    </div>
+    </div>
+
+    <div class="Beschreibung">
+        <h3>Beschreibung</h3>
+        <p>
+            Bierpongturnier ist ein Turnier für Bierpongspiele.
+        </p>
+    </div>
+
+    <div class="Block-Container">
+        <div class ="Infos">
+            <h3>Wichtigste Infos</h3>
+            <p>
+                <b>Startdatum:</b> 31.02.2024<br>
+                <b>Anmeldeschluss:</b> 30.02.2024<br>
+                <b>Veranstaltungsort:</b> Karlsruhe<br>
+                <b>Startzeit:</b> 15:00 Uhr<br>
+                <b>Kosten:</b> € 10<br>
+            </p>
+        </div>
+
+        <div class="Anmeldungen">
+            <h3>Anmeldungen</h3>
+            <p>
+                <b>Anzahl der Anmeldungen:</b> 2<br>
+
+            </p>
+            <ul class="Teilnehmerliste">
+                <li>Muster Maxmann</li>
+                <li>Mann Mustermax</li>
+            </ul>
+        </div>
+
+    </div>
+</body>
+</html>
