@@ -21,7 +21,7 @@ insertHTML('declarative-example-root');
 
 
 
-// Anbindung an die Datenbank
+// Verbindung zur Datenbank
 const mongoose = require('mongoose');
 
 // Ersetzen Sie die folgende URL durch die tatsächliche URL Ihrer Datenbank
@@ -44,5 +44,11 @@ connection.once('open', () => {
 function speichernButtonClick() {
     // Logik für den "Speichern"-Button 
     console.log("Speichern-Button wurde geklickt.");
+
+    // Kontrolle, ob noch Plätze frei sind
+
+// Logik für Zuweisung zu Teams (for schleife?)
+
+// Anpassung der freien Plätze -> Anbindung ans Frontend
 }
 
