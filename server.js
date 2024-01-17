@@ -66,6 +66,10 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "html", "anzeige-turnier.html"));
 });
 
+app.get("/anmeldung", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "html", "anmelden-turnier.html"));
+});
+
 // GET-Endpunkte
 
 /**
@@ -255,6 +259,10 @@ app.post("/api/create-spiel", async (req, res) => {
  */
 app.post("/api/create-ko-runde", async (req, res) => {
   await turnierController.createKORunde(req, res);
+});
+
+app.post('/api/turnier-anmelden', async (req, res) => {
+  await turnierController.turnierAnmeldung(req, res);
 });
 
 // MongoDB-Verbindung
