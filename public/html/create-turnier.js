@@ -562,19 +562,60 @@ document.addEventListener('DOMContentLoaded', function () {
       checkDate(endDatumInput, startDatumInput);
   });
 });
-
+/**
+ * Überprüfung des Datums, um sicherzustellen, dass der Anmeldeschluss vor dem Startdatum liegt.
+ * 
+ * @param {*} endDatumInput - Das HTML-Element für das Enddatum.
+ * @param {*} startDatumInput - Das HTML-Element für das Startdatum.
+ */
 function checkDate(endDatumInput, startDatumInput) {
   const startDatumValue = startDatumInput.value.trim();
   const endDatumValue = endDatumInput.value.trim();
 
   if (startDatumValue !== '' && endDatumValue !== '') {
-      const startDatum = new Date(startDatumValue);
-      const anmeldeschluss = new Date(endDatumValue);
+    const startDatum = new Date(startDatumValue);
+    const anmeldeschluss = new Date(endDatumValue);
 
-      if (anmeldeschluss >= startDatum) {
-          alert('Der Anmeldeschluss muss vor dem Startdatum liegen.');
-          endDatumInput.value = '';  // Setze die Eingabe auf einen leeren String zurück
-          endDatumInput.focus();
-      }
+    if (anmeldeschluss >= startDatum) {
+      alert('Der Anmeldeschluss muss vor dem Startdatum liegen.');
+      endDatumInput.value = '';  // Setze die Eingabe auf einen leeren String zurück
+      endDatumInput.focus();
+    }
   }
+}
+
+/**
+ * Validierung des Turniernamens unter Berücksichtigung von Länge und Großbuchstaben.
+ * 
+ * @param {*} turnierName - Der zu überprüfende Turniername.
+ * @returns {boolean} - True, wenn der Turniername den Anforderungen entspricht, sonst false.
+ */
+function validateTurnierName(turnierNameInput) {
+    const turnierName = turnierNameInput.trim();
+
+  // Überprüfe, ob der Turniername vorhanden ist
+  if (!turnierName || turnierName === '') {
+    alert('Bitte geben Sie einen Turniernamen ein.');
+    // Lösche den Wert des Turniernamens
+    turnierNameInput.value = '';
+    return false;
+  }
+
+  // Überprüfe die Länge des Turniernamens
+  if (turnierName.length < 2 || turnierName.length > 50) {
+    alert('Der Turniername muss mindestens zwei und maximal fünfzig Zeichen lang sein.');
+    // Lösche den Wert des Turniernamens
+    turnierNameInput.value = '';
+    return false;
+  }
+
+  // Überprüfe, ob der Turniername mit einem Großbuchstaben beginnt
+  if (!/^[A-Z]/.test(turnierName)) {
+    alert('Der Turniername muss mit einem Großbuchstaben beginnen.');
+    // Lösche den Wert des Turniernamens
+    turnierNameInput.value = '';
+    return false;
+  }
+
+  return true;
 }

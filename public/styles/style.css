@@ -240,3 +240,26 @@ sd-lit-slider {
 .Seite3{
     display: none;
 }
+#turnierbaum-container {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.turnierbaum-runde {
+    text-align: center;
+    display: inline-flex;
+    flex-wrap: nowrap;
+}
+
+.turnierbaum-spiel {
+    display: grid;
+    margin-bottom: 5px;
+    margin-left: 3px;
+    border: 1px solid black;
+}
+
+.turnierbaum-team {
+    flex: 1;
+    text-align: center;
+    display: table-caption;
+}

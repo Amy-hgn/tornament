@@ -61,14 +61,13 @@ describe('create-turnier', () => {
   });
 
   test('createTurnier sends data when called', async () => {
-    // Beispiel: Setze erforderliche Daten, die in der Funktion verwendet werden
+
     document.getElementById('turnierName').value = 'TestTurnier';
     document.getElementById('startDatum').value = '2023-01-01';
 
 
     await createTurnier();
 
-    // Überprüfe, ob fetch mit den erwarteten Daten aufgerufen wurde
     expect(fetch).toHaveBeenCalledWith('/api/create-turnier', {
       method: 'POST',
       headers: {

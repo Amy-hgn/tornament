@@ -2,28 +2,28 @@
  * Event-Listener für das DOMContentLoaded-Ereignis. Holt und zeigt Turnierdetails, KO-Runden und Spiele an.
  */
 document.addEventListener("DOMContentLoaded", async function () {
-    try {
-        const urlParams = new URLSearchParams(window.location.search);
-        const turnierId = urlParams.get('id');
+  try {
+    const urlParams = new URLSearchParams(window.location.search);
+    const turnierId = urlParams.get("id");
 
-        const turnierDetails = await fetchTurnierDetails(turnierId);
+    const turnierDetails = await fetchTurnierDetails(turnierId);
 
-        const koRundenIds = turnierDetails.koRunden;
-        const koRunden = await fetchKoRunden(koRundenIds);
+    const koRundenIds = turnierDetails.koRunden;
+    const koRunden = await fetchKoRunden(koRundenIds);
 
-        for (const koRunde of koRunden) {
-            const spieleIds = koRunde.koSpiele;
-            const spiele = await fetchSpiele(spieleIds);
-            koRunde.spiele = spiele;
-        }
-
-        // Funktionen zum Anzeigen von Turnierdetails, Ko-Runden und Spielen aufrufen
-        displayTurnierDetails(turnierDetails);
-        displayKoRunden(koRunden);
-        displaySpiele(spiele);
-    } catch (error) {
-        console.error("Fehler:", error);
+    for (const koRunde of koRunden) {
+      const spieleIds = koRunde.koSpiele;
+      const spiele = await fetchSpiele(spieleIds);
+      koRunde.spiele = spiele;
     }
+
+    // Funktionen zum Anzeigen von Turnierdetails, Ko-Runden und Spielen aufrufen
+    displayTurnierDetails(turnierDetails);
+    displayKoRunden(koRunden);
+    createTurnierbaum(koRunden);
+  } catch (error) {
+    console.error("Fehler:", error);
+  }
 });
 /**
  * Holt Turnierdetails vom Server.
@@ -32,9 +32,9 @@ document.addEventListener("DOMContentLoaded", async function () {
  * @returns {Promise<Object>} - Ein Promise, das zu den Turnierdetails auflöst.
  */
 async function fetchTurnierDetails(turnierId) {
-    const response = await fetch(`/turnier-ID?id=${turnierId}`);
-    const turnierDetails = await response.json();
-    return turnierDetails;
+  const response = await fetch(`/turnier-ID?id=${turnierId}`);
+  const turnierDetails = await response.json();
+  return turnierDetails;
 }
 /**
  * Holt KO-Runden vom Server basierend auf ihren IDs.
@@ -43,11 +43,11 @@ async function fetchTurnierDetails(turnierId) {
  * @returns {Promise<Array<Object>>} - Ein Promise, das zu einem Array von KO-Runden auflöst.
  */
 async function fetchKoRunden(koRundenIds) {
-    const koRundenPromises = koRundenIds.map(async (koRundenId) => {
-        const response = await fetch(`/koRunde-ID?id=${koRundenId}`);
-        return response.json();
-    });
-    return Promise.all(koRundenPromises);
+  const koRundenPromises = koRundenIds.map(async (koRundenId) => {
+    const response = await fetch(`/koRunde-ID?id=${koRundenId}`);
+    return response.json();
+  });
+  return Promise.all(koRundenPromises);
 }
 /**
  * Spiele vom Server abrufen und Teamnamen ersetzen.
@@ -56,21 +56,25 @@ async function fetchKoRunden(koRundenIds) {
  * @returns {Promise<Array<Object>>} - Ein Promise, das zu einem Array von Spielen auflöst.
  */
 async function fetchSpiele(spieleIds) {
-    try {
-        const spielePromises = spieleIds.map(async (spielId) => {
-            const response = await fetch(`/spiel-ID?id=${spielId}`);
-            const spiel = await response.json();
+  try {
+    const spielePromises = spieleIds.map(async (spielId) => {
+      const response = await fetch(`/spiel-ID?id=${spielId}`);
+      const spiel = await response.json();
 
-            const team1Name = spiel.team1 ? await fetchTeamName(spiel.team1) : 'Noch Offen';
-            const team2Name = spiel.team2 ? await fetchTeamName(spiel.team2) : 'Noch Offen';
-            return { ...spiel, team1: team1Name, team2: team2Name };
-        });
+      const team1Name = spiel.team1
+        ? await fetchTeamName(spiel.team1)
+        : "Noch Offen";
+      const team2Name = spiel.team2
+        ? await fetchTeamName(spiel.team2)
+        : "Noch Offen";
+      return { ...spiel, team1: team1Name, team2: team2Name };
+    });
 
-        return Promise.all(spielePromises);
-    } catch (error) {
-        console.error("Fehler beim Abrufen der Spiele:", error);
-        throw error;
-    }
+    return Promise.all(spielePromises);
+  } catch (error) {
+    console.error("Fehler beim Abrufen der Spiele:", error);
+    throw error;
+  }
 }
 /**
  * Teamnamen vom Server abrufen.
@@ -79,9 +83,9 @@ async function fetchSpiele(spieleIds) {
  * @returns {Promise<string>} - Ein Promise, das zu einem Teamnamen auflöst.
  */
 async function fetchTeamName(teamId) {
-    const response = await fetch(`/team-ID?id=${teamId}`);
-    const team = await response.json();
-    return team.name;
+  const response = await fetch(`/team-ID?id=${teamId}`);
+  const team = await response.json();
+  return team.name;
 }
 /**
  * Turnierdetails auf der Webseite anzeigen.
@@ -90,9 +94,14 @@ async function fetchTeamName(teamId) {
  */
 
 function displayTurnierDetails(turnierDetails) {
-    document.getElementById('turnier-name').innerText = turnierDetails.turnierName;
-    document.getElementById('veranstaltungsort').innerText = `Veranstaltungsort: ${turnierDetails.veranstaltungsort}`;
-    document.getElementById('start-datum').innerText = `Startdatum: ${formatiereDatum(turnierDetails.startDatum)}`;
+  document.getElementById("turnier-name").innerText =
+    turnierDetails.turnierName;
+  document.getElementById(
+    "veranstaltungsort"
+  ).innerText = `Veranstaltungsort: ${turnierDetails.veranstaltungsort}`;
+  document.getElementById(
+    "start-datum"
+  ).innerText = `Startdatum: ${formatiereDatum(turnierDetails.startDatum)}`;
 }
 /**
  * KO-Runden auf der Webseite anzeigen.
@@ -100,15 +109,15 @@ function displayTurnierDetails(turnierDetails) {
  * @param {Array<Object>} koRunden - Ein Array von KO-Runden.
  */
 function displayKoRunden(koRunden) {
-    const koRundenContainer = document.getElementById('ko-runden');
-    koRunden.forEach(koRunde => {
-        const koRundeElement = document.createElement('div');
-        koRundeElement.innerText = `KO-Runde ${koRunde.tiefe}`;
-        // Anzeigen der Spiele für jede KO-Runde
-        displaySpiele(koRunde.spiele, koRundeElement);
+  const koRundenContainer = document.getElementById("ko-runden");
+  koRunden.forEach((koRunde) => {
+    const koRundeElement = document.createElement("div");
+    koRundeElement.innerText = `KO-Runde ${koRunde.tiefe}`;
+    // Anzeigen der Spiele für jede KO-Runde
+    displaySpiele(koRunde.spiele, koRundeElement);
 
-        koRundenContainer.appendChild(koRundeElement);
-    });
+    koRundenContainer.appendChild(koRundeElement);
+  });
 }
 /**
  * Spiele auf der Webseite anzeigen.
@@ -117,13 +126,12 @@ function displayKoRunden(koRunden) {
  * @param {HTMLElement} parentElement - Das übergeordnete HTML-Element, in dem die Spiele angezeigt werden sollen.
  */
 function displaySpiele(spiele, parentElement) {
+  spiele.forEach((spiel) => {
+    const spielElement = document.createElement("div");
+    spielElement.innerText = `Spiel zwischen Team ${spiel.team1} und Team ${spiel.team2} - Status: ${spiel.spielStatus}`;
 
-    spiele.forEach(spiel => {
-        const spielElement = document.createElement('div');
-        spielElement.innerText = `Spiel zwischen Team ${spiel.team1} und Team ${spiel.team2} - Status: ${spiel.spielStatus}`;
-
-        parentElement.appendChild(spielElement);
-    });
+    parentElement.appendChild(spielElement);
+  });
 }
 /**
  * Formatieren eines Datums in ein benutzerfreundliches Format.
@@ -132,34 +140,90 @@ function displaySpiele(spiele, parentElement) {
  * @returns {string} - Das formatierte Datum.
  */
 function formatiereDatum(datumString) {
-    const wochentage = [
-      "Sonntag",
-      "Montag",
-      "Dienstag",
-      "Mittwoch",
-      "Donnerstag",
-      "Freitag",
-      "Samstag",
-    ];
-    const datum = new Date(datumString);
-    const tag = datum.getDate().toString().padStart(2, "0");
-    const monatsname = [
-      "Januar",
-      "Februar",
-      "März",
-      "April",
-      "Mai",
-      "Juni",
-      "Juli",
-      "August",
-      "September",
-      "Oktober",
-      "November",
-      "Dezember",
-    ][datum.getMonth()];
-    const jahr = datum.getFullYear();
-    const stunde = datum.getHours().toString().padStart(2, "0");
-    const minute = datum.getMinutes().toString().padStart(2, "0");
-  
-    return `${stunde}:${minute} Uhr ${tag}.${monatsname}.${jahr}`;
-  }
+  const wochentage = [
+    "Sonntag",
+    "Montag",
+    "Dienstag",
+    "Mittwoch",
+    "Donnerstag",
+    "Freitag",
+    "Samstag",
+  ];
+  const datum = new Date(datumString);
+  const tag = datum.getDate().toString().padStart(2, "0");
+  const monatsname = [
+    "Januar",
+    "Februar",
+    "März",
+    "April",
+    "Mai",
+    "Juni",
+    "Juli",
+    "August",
+    "September",
+    "Oktober",
+    "November",
+    "Dezember",
+  ][datum.getMonth()];
+  const jahr = datum.getFullYear();
+  const stunde = datum.getHours().toString().padStart(2, "0");
+  const minute = datum.getMinutes().toString().padStart(2, "0");
+
+  return `${stunde}:${minute} Uhr ${tag}.${monatsname}.${jahr}`;
+}
+function createTurnierbaum(koRunden) {
+    const turnierbaumElement = document.getElementById('turnierbaum');
+    turnierbaumElement.innerHTML = '';
+
+    // Standardhintergrundfarbe
+    const defaultBackgroundColor = '#B9D7F5';
+
+    // Erstelle die Runden
+    for (let runde = 0; runde < koRunden.length; runde++) {
+        const rundenElement = document.createElement('div');
+        rundenElement.classList.add('turnierbaum-runde');
+
+        // Holen Sie sich die Spiele für diese Runde aus der KO-Runde
+        const spiele = koRunden[runde].spiele;
+
+        // Erstelle die Spiele für diese Runde
+        spiele.forEach((spiel, spielNummer) => {
+            const spielElement = document.createElement('div');
+            spielElement.classList.add('turnierbaum-spiel');
+
+            // Holen Sie sich die Teamnamen aus dem aktuellen Spielobjekt
+            const team1Name = spiel.team1;
+            const team2Name = spiel.team2;
+
+            // Füge die Teams hinzu (als Text)
+            const team1 = document.createElement('div');
+            team1.classList.add('turnierbaum-team');
+            team1.textContent = `${team1Name}`;
+            team1.style.backgroundColor = spiel.punkteGewinner === 1 ? 'green' : (spiel.punkteGewinner === 2 ? 'red' : defaultBackgroundColor);
+
+            const team2 = document.createElement('div');
+            team2.classList.add('turnierbaum-team');
+            team2.textContent = `${team2Name}`;
+            team2.style.backgroundColor = spiel.punkteGewinner === 2 ? 'green' : (spiel.punkteGewinner === 1 ? 'red' : defaultBackgroundColor);
+
+            spielElement.appendChild(team1);
+            spielElement.appendChild(team2);
+
+            rundenElement.appendChild(spielElement);
+        });
+
+        // Füge die Runden-Texte außerhalb der turnierbaum-runde Klasse hinzu
+        const rundenText = document.createElement('div');
+        rundenText.classList.add('runden-text');
+        if (runde === 0) {
+            rundenText.textContent = 'Spiel um Platz 1';
+        } else if (runde === 1) {
+            rundenText.textContent = 'Spiel um Platz 3';
+        } else {
+            rundenText.textContent = `Runde ${koRunden.length-runde}`;
+        }
+
+        turnierbaumElement.appendChild(rundenText);
+        turnierbaumElement.appendChild(rundenElement);
+    }
+}
