@@ -7,54 +7,19 @@
     <title>Turnieranmeldung</title>
     <link rel="icon" type="image/png" href="./Logo.png">
 
-    <script src="../../node_modules/@smartdesign/toolbar/dist/toolbar-with-externals.js"></script>
     <script src="../../node_modules/@smartdesign/button/dist/button-with-externals.js"></script>
-
-
-
-    <link rel="stylesheet" href="../styles/style-anmelden-turnier.css">
+    
+    <script src="anmelden-turnier.js" defer></script>
+    
 
 </head>
 
 <body>
     <div id="declarative-example-root">
         <sd-toolbar>
-            <sd-button icon="cancel.svg" slot="left"></sd-button>
-            <sd-button slot="left" onclick="alert('Clicked!')">Abbrechen</sd-button>
             <h2>Anmeldung</h2>
-            <sd-button icon="check.svg" slot="right" onclick="">Speichern</sd-button>
-        </sd-toolbar>
-    </div>
+        <sd-button slot="right" onclick="speichernButtonClick()">Speichern</sd-button>
+    </sd-toolbar>
+</div>
 
-    
-
-   
-   
-    <div class="group-example">
-        <sd-group>
-            <div slot="teilnahme">Teilnahme</div>
-            <label>Datum</label>
-            <div>Value 1</div>
-            <label>Uhrzeit</label>
-            <div>Value 2</div>
-        </sd-group>
-        <sd-group>
-            <div slot="preisdetails">Preisdetails</div>
-            <label>Gesamtpreis</label>
-            <div>Value 1</div>
-        </sd-group>
-        <sd-group>
-            <div slot="teilnehmer">Teilnehmer</div>
-            <label>Anrede</label>
-            <div>Value 1</div>
-            <label>Vornahme</label>
-            <div>Value 2</div>
-            <label>Nachname</label>
-            <div>Value </div>
-            <label>Abteilung</label>
-            <div>Value 3</div>
-        </sd-group>
-    </div>
-    
-</body>
 </html>
