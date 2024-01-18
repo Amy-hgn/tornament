@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8" />
+    <title>Spiel Ergebnisse</title>
+    <script src="/node_modules/@smartdesign/header-layout/dist/header-layout-with-externals.js"></script>
+    <script src="/node_modules/@smartdesign/button/dist/button-with-externals.js"></script>
+    <script src="/node_modules/@smartdesign/lit-input/dist/input-with-externals.js"></script>
+    <script src="/node_modules/@smartdesign/combo-box/dist/combo-box-with-externals.js"></script>
+    <script src="/node_modules/@smartdesign/lit-slider/dist/slider-with-externals.js"></script>
+    <link rel="stylesheet" href="../styles/style.css">
+</head>
+<body>
+    <div id="turnier-info-container">
+        <sd-toolbar>
+            <h2 slot="middle">Spiel Ergebnisse Eintragen</h2>
+        </sd-toolbar>
+
+        <div class="examples">
+            <div class="example-container">
+                <span>Turniername:</span>
+                <div id="turnier-name"></div>
+            </div>
+            <div class="example-container">
+                <span>Veranstaltungsort:</span>
+                <div id="veranstaltungsort"></div>
+            </div>
+            <div class="example-container">
+                <span>Startdatum:</span>
+                <div id="start-datum"></div>
+            </div>
+        </div>
+
+        <div class="ergebnis-container">
+            <h2>Ergebnisse eintragen</h2>
+            <div id="team1-container">
+                <h3 id="team1name">Team 1</h3>
+                <label for="team1-ergebnis">Punkte:</label>
+                <sd-lit-input id="team1-ergebnis" type="text" name="team1-ergebnis" required></sd-lit-input>
+            </div>
+
+            <div id="team2-container">
+                <h3 id="team2name">Team 2</h3>
+                <label for="team2-ergebnis">Punkte:</label>
+                <sd-lit-input id="team2-ergebnis" type="text" name="team2-ergebnis" required></sd-lit-input>
+            </div>
+
+            <sd-button id="ergebnisse-absenden-btn" primary>Ergebnisse absenden</sd-button>
+
+        </div>
+    </div>
+
+<script src="/html/spiel-score.js"></script>
+</body>
+</html>
