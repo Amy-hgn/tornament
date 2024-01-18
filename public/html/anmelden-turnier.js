@@ -63,7 +63,7 @@ async function speichernButtonClick () {
   const urlParams = new URLSearchParams(window.location.search)
   const turnierId = urlParams.get('id')
 
-  const user = initialize
+  const user = userId
   // Speicherung turnierid user in object
   const myObjekt = { turnierId, user }
   try {
@@ -91,13 +91,13 @@ async function speichernButtonClick () {
   // Anpassung der freien Plätze -> Anbindung ans Frontend
 }
 
-const initialize = async () => {
+const userId = async () => {
   const api = await smartdesign.connect()
   try {
     const userDetails = await api
       .fetch('v7.0/user/self')
       .then(response => response.json())
-    return userDetails.id
+    return userDetails.fields.DISPLAYNAME
   } catch (error) {
     console.log(error)
     return null
