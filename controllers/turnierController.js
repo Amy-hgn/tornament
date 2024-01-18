@@ -393,7 +393,7 @@ class TurnierController {
 async assignUserToTeam(req, res) {
   try {
     const turnierId = req.body.turnierId;
-    const userId = req.body.user;
+    const personId = req.body.personId;
 
     // Check if turnierId is provided
     if (!turnierId) {
@@ -428,7 +428,7 @@ async assignUserToTeam(req, res) {
       return res.status(400).json({ message: 'Kein freier Platz in den Teams.' });
     }
 
-    foundTeam.teamMember.push(userId);
+    foundTeam.mitglieder.push(personId);
     await aktTurnier.save();
     console.log("Das Team:", foundTeam);
     res.status(200).json(aktTurnier);
