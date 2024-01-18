@@ -395,7 +395,17 @@ async assignUserToTeam(req, res) {
     const turnierId = req.body.turnierId;
     const userId = req.body.userId;
 
+    // Check if turnierId is provided
+    if (!turnierId) {
+      return res.status(400).json({ message: 'Turnier-ID fehlt in der Anfrage.' });
+    }
+
     const aktTurnier = await Turnier.Turnier.findById(turnierId).populate('turnierTeams');
+
+    // Check if the tournament is found
+    if (!aktTurnier) {
+      return res.status(404).json({ message: 'Turnier nicht gefunden.' });
+    }
 
     // Check if the tournament has already begun
     if (aktTurnier.turnierStatus === 'BEGONNEN' || aktTurnier.turnierStatus === 'ABGESCHLOSSEN') {
@@ -403,10 +413,6 @@ async assignUserToTeam(req, res) {
     }
 
     const aktTeams = aktTurnier.turnierTeams;
-
-    if (!aktTurnier) {
-      return res.status(404).json({ message: "Turnier nicht gefunden" });
-    }
 
     let foundTeam = null;
     aktTeams.some((team) => {
@@ -418,7 +424,7 @@ async assignUserToTeam(req, res) {
     });
 
     if (!foundTeam) {
-      return res.status(400).json({ message: "Kein freier Platz in den Teams" });
+      return res.status(400).json({ message: 'Kein freier Platz in den Teams.' });
     }
 
     foundTeam.teamMember.push(userId);
@@ -426,10 +432,9 @@ async assignUserToTeam(req, res) {
 
     res.status(200).json(aktTurnier);
   } catch (error) {
-    this.handleError(res, "Fehler beim Zuweisen des Nutzers zu einem Team", error);
+    this.handleError(res, 'Fehler beim Zuweisen des Nutzers zu einem Team', error);
   }
 }
-
 
 
   

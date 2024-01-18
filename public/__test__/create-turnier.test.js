@@ -61,14 +61,14 @@ describe('create-turnier', () => {
   });
 
   test('createTurnier sends data when called', async () => {
-
+    
     document.getElementById('turnierName').value = 'TestTurnier';
     document.getElementById('startDatum').value = '2023-01-01';
 
 
     await createTurnier();
 
-    expect(fetch).toHaveBeenCalledWith('/api/create-turnier', {
+        expect(fetch).toHaveBeenCalledWith('/api/create-turnier', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -79,4 +79,4 @@ describe('create-turnier', () => {
       }),
     });
   });
-});
+  });
