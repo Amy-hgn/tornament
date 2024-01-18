@@ -63,7 +63,7 @@ async function speichernButtonClick () {
   const urlParams = new URLSearchParams(window.location.search)
   const turnierId = urlParams.get('id')
 
-  const user = await userId();
+  const user = "123";
   // Speicherung turnierid user in object
   const myObjekt = { turnierId, user }
   try {

@@ -393,7 +393,7 @@ class TurnierController {
 async assignUserToTeam(req, res) {
   try {
     const turnierId = req.body.turnierId;
-    const userId = req.body.userId;
+    const userId = req.body.user;
 
     // Check if turnierId is provided
     if (!turnierId) {
@@ -416,8 +416,8 @@ async assignUserToTeam(req, res) {
 
     let foundTeam = null;
     aktTeams.some((team) => {
-      if (team.teamMember.length < team.teamMemberAnzahl) {
-        if (!foundTeam || team.teamMember.length < foundTeam.teamMember.length) {
+      if (Array.isArray(team.mitglieder) && team.mitglieder.length < team.teamMemberAnzahl) {
+        if (!foundTeam || (Array.isArray(foundTeam.mitglieder) && team.mitglieder.length < foundTeam.mitglieder.length)) {
           foundTeam = team;
         }
       }
