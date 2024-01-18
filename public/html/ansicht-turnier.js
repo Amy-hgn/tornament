@@ -8,12 +8,19 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         const turnierDetails = await fetchTurnierDetails(turnierId);
 
-        // Funktionen zum Anzeigen von Turnierdetails, Ko-Runden und Spielen aufrufen
+        // Funktionen zum Anzeigen von Turnierdetails aufrufen
         displayTurnierDetails(turnierDetails);
     } catch (error) {
         console.error("Fehler:", error);
     }
 });
+
+/**
+ * Leitet den Benutzer zur Seite zum Anmelden weiter
+ */
+function redirectToRegistration() {
+  window.location.href = "./anmelden-turnier";
+}
 
 /**
  * Holt Turnierdetails vom Server.
