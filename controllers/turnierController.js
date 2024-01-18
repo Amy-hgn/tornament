@@ -416,9 +416,10 @@ async assignUserToTeam(req, res) {
 
     let foundTeam = null;
     aktTeams.some((team) => {
-      if (Array.isArray(team.mitglieder) && team.mitglieder.length < team.teamMemberAnzahl) {
+      if (Array.isArray(team.mitglieder) && team.mitglieder.length < team.teamGröße) {
         if (!foundTeam || (Array.isArray(foundTeam.mitglieder) && team.mitglieder.length < foundTeam.mitglieder.length)) {
           foundTeam = team;
+          console.log("FoundTeam" + foundTeam)
         }
       }
     });
