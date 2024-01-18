@@ -361,9 +361,14 @@ class TurnierController {
 
     async setGameScore(req, res) {
         try {
+            const turnierId = req.body.turnierId;
+            const turnier = await Turnier.Turnier.findById(turnierId).populate('koRunden');
+            const tm = await Turnier.Person.findById(turnier.turnierMaster);
+            console.log('TM: ', turnier.turnierMaster);
+            console.log('TMid: ', tm.personId);
+            const koRunden = turnier.koRunden;
             const spielDaten = req.body.spielDetails;
             const spielId = spielDaten._id;
-            const turnierId = req.body.turnierId;
             const koId = req.body.rundeId;
             let aktRunde = -1;
             let spielNr = -1;
@@ -400,9 +405,6 @@ class TurnierController {
     
             const update2Obj = {};
             let nextGameNr;
-            const turnier = await Turnier.Turnier.findById(turnierId).populate('koRunden');
-            const koRunden = turnier.koRunden;
-            //const koRunden = await Turnier.KoRunde.find({ _id: { $in: koRundenIds } });
 
 
             if (!turnier) {
