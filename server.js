@@ -262,7 +262,6 @@ app.post("/api/create-ko-runde", async (req, res) => {
 });
 
 app.post('/api/turnier-anmelden', async (req, res) => {
-  console.log("api aufgerufen")
   await turnierController.assignUserToTeam(req,res);
 });
 

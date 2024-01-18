@@ -63,11 +63,8 @@ async function speichernButtonClick () {
   const urlParams = new URLSearchParams(window.location.search)
   const turnierId = urlParams.get('id')
 
-  const person = {
-    personId: "123456789", // Hier sollte die tatsächliche UUID aus SmartWE stehen
-    name: "Max Mustermann"
-  };  // Speicherung turnierid user in object
-  const myObjekt = { turnierId, person: person.personId }
+  const personId = userId // Speicherung turnierid user in object
+  const myObjekt = { turnierId, personId }
   try {
     const response = await fetch('/api/turnier-anmelden', {
       method: 'POST',
