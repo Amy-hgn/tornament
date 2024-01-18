@@ -35,8 +35,8 @@ async function fetchTeamName(teamId) {
 
 function displayTurnierDetails(turnierDetails) {
         document.getElementById('turnier-name').innerText = turnierDetails.turnierName;
-        document.getElementById('veranstaltungsort').innerText = `${turnierDetails.veranstaltungsort}`;
-        document.getElementById('start-datum').innerText = `${formatiereDatum(turnierDetails.startDatum)}`;
+        document.getElementById('veranstaltungsort').innerText = `Veranstaltungsort: ${turnierDetails.veranstaltungsort}`;
+        document.getElementById('start-datum').innerText = `Startdatum: ${formatiereDatum(turnierDetails.startDatum)}`;
 }
     // Funktion zum Abrufen der Spielinformationen aus den URL-Parametern
     function getSpielInformationen() {
@@ -121,7 +121,7 @@ function displayTurnierDetails(turnierDetails) {
         });
         if(response.status === 200){console.log("Spiel erfolgreich aktualisiert:", response);
         redirectToTurnierThisTurnier(turnierId);
-        }else{alert("Fehler");}
+        }else{alert("Fehler", response.status);}
         
         } catch (error) {
             console.error("Fehler beim Updaten des Spiels:", error);
