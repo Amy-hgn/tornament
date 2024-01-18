@@ -19,7 +19,7 @@
     }
 
 .Leiste-oben{
-    background-color: aliceblue;
+    /*background-color: aliceblue;*/
     padding: 16px;
     height: 6vw;
     width: 95%;
@@ -39,7 +39,7 @@
 
 
 .Beschreibung{
-    background-color: aliceblue;
+    /*background-color: aliceblue;*/
     height: 4vw;
     width: 90%;
     padding: 16px;
@@ -71,8 +71,8 @@
 
 .Infos{
     flex: 1;
-    background-color: aliceblue;
-   margin-right: 2%;
+    /*background-color: aliceblue;*/
+    margin-right: 2%;
     display: block;
     padding: 16px;
 }
@@ -81,7 +81,7 @@
 .Anmeldungen{
     flex: 1;
     padding: 16px;
-    background-color: aliceblue;
+    /*background-color: aliceblue;*/
     margin: 0.5px;
     box-sizing: border-box; 
     overflow: auto; 
@@ -105,14 +105,15 @@
             <span id="turnier-name"></span>
         </h1>
     <div class = "Anmeldebutton">
-        <sd-button primary icon="add-recipient.svg"><span>Anmelden</span></sd-button>
+        <sd-button primary icon="/node_modules/@smartdesign/icons/add-recipient.svg"><span>Anmelden</span>
+        </sd-button>
     </div>
     </div>
 
     <div class="Beschreibung">
         <h3>Beschreibung</h3>
         <p>
-            Bierpongturnier ist ein Turnier für Bierpongspiele.
+            <span id="beschreibung"></span>
         </p>
     </div>
 
