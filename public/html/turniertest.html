@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <title>Turniermanagement</title>
+  <style>
+    
+    
+    /* |||||MOBIL||||| */
+    @media only screen and (max-width: 600px) {
+      #pc-menu {
+        display: none; 
+      }
+	  #content {
+      width: 90%;
+      height: 100vh;
+      overflow-y: scroll;
+      padding-top: 50px;
+      }
+      #menu {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+		display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        padding: 5px;
+        background-color: lightgray;
+        z-index: 1;
+      }
+	  #mobilemenuicon {
+        display: block;
+        width: 30px;
+        height: 30px;
+		font-size: 30px
+        background-size: cover;
+        cursor: pointer;
+      }
+      #mobile-menu {
+        display: none;
+        position: fixed;
+        top: 40px;
+        left: 0;
+        width: 100%;
+        background-color: lightgray;
+        z-index: 1;
+        text-align: center;
+      }
+      #mobile-menu button {
+        display: block;
+        width: 100%;
+        margin: 5px 0;
+      }
+    }
+	/*|||||DESKTOP|||||*/
+    @media only screen and (min-width: 601px) {
+      #menu {
+        display: none; 
+      }
+      #content {
+      width: 90%;
+      height: 100vh;
+      overflow-y: scroll;
+	  padding-left: 10%;
+      }
+      #pc-menu {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        width: 10%;
+        flex-direction: column;
+        background-color: lightgray;
+        z-index: 1;
+      }
+      button {
+        width: 90%;
+        margin: 10px;
+      }
+	  .tour-list-single {
+      background-color: cyan;
+      border: 1px solid blue;
+      margin: 5px;
+      padding: 15px;
+      width: 80%;
+      cursor: pointer;
+    }
+    }
+	.bottom-div {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  .notpickeddiv {
+  background-color: gray;
+}
+}
+  </style>
+</head>
+<body>
+  <!-- Menü für Desktop -->
+  <div id="pc-menu">
+    <button onclick="changeContent(1)">Startseite</button>
+    <button onclick="changeContent(2)">Nächsten Spiele</button>
+    <button onclick="changeContent(3)">Alle Turniere</button>
+    <button onclick="changeContent(4)">Turnier Erstellen</button>
+    <button onclick="changeContent(5)">Einstellungen</button>
+  </div>
+
+  <!-- Menü für Mobile -->
+  <div id="menu">
+    <div id="mobilemenuicon" onclick="changeContent(1);mobileMenu(1)"><i class="material-icons" style="font-size:30px">home</i></div>
+	<div id="mobilemenuicon" onclick="mobileMenu(0)"><i class="fa fa-bars" style="font-size:30px"></i></div>
+    <div id="mobile-menu">
+      <button onclick="changeContent(1);mobileMenu(0)">Startseite</button>
+      <button onclick="changeContent(2);mobileMenu(0)">Nächsten Spiele</button>
+      <button onclick="changeContent(3);mobileMenu(0)">Alle Turniere</button>
+      <button onclick="changeContent(4);mobileMenu(0)">Turnier Erstellen</button>
+      <button onclick="changeContent(5);mobileMenu(0)">Einstellungen</button>
+    </div>
+  </div>
+
+  <div id="content">
+    Seite lädt.....
+  </div>
+
+<script>
+const userID = 1;
+ class Tournament {
+      constructor(name) {
+	    this.tournamentID;
+        this.name = name;
+		this.teams = [];
+		this.games = [];
+		this.tmas = []; // Berechtigte
+		this.maxPlayersPerTeam;
+		this.applicationRequired = true;
+		this.structure = '';
+		this.scoreNames = [];
+		this.scoreMultipliers = [];
+      }
+	  createGames(){
+	  if(this.structure[1] === 'K'){
+	  const gamesAmount = parseInt(this.structure.substring(2, 4));
+	  let gpr = 1;
+	  let gamescount = 1;
+	  while(gpr < gamesAmount){
+	  for(let i = 0; i < gpr; i++){
+	  this.games.push(new Game(this.tourID,gamescount));
+	  
+	  }gpr = gpr *2;
+	  }
+	  }
+	  }
+	  showTournamentOverview(menutab){
+	  var tab = menutab;
+	  const contentDiv = document.getElementById('content');
+	  contentDiv.innerHTML = "";
+	  const menuDiv = document.createElement('div');
+		menuDiv.classList.add('tourmenu'); // für CSS
+
+		const infosBtn = document.createElement('button');
+		infosBtn.textContent = 'Infos';
+		infosBtn.addEventListener('click', () => {
+		  this.showTournamentOverview(0);
+		});
+		const spieleBtn = document.createElement('button');
+		spieleBtn.textContent = 'Spiele';
+		spieleBtn.addEventListener('click', () => {
+		  this.showTournamentOverview(1);
+		});
+		const teamsBtn = document.createElement('button');
+		teamsBtn.textContent = 'Teams';
+		teamsBtn.addEventListener('click', () => {
+		  this.showTournamentOverview(2);
+		});
+
+		menuDiv.appendChild(infosBtn);
+		menuDiv.appendChild(spieleBtn);
+		menuDiv.appendChild(teamsBtn);
+		const varDiv = document.createElement('div');
+	if(tab === 0){
+		const settingsBtn = document.createElement('button');
+		settingsBtn.textContent = 'Einstellungen';
+		settingsBtn.addEventListener('click', () => {
+		  this.openSettings();
+		});
+		const settingsDiv = document.createElement('div');
+		settingsDiv.appendChild(settingsBtn);
+		const infoDiv = document.createElement('div');
+		infoDiv.textContent = this.name;
+
+		varDiv.appendChild(settingsDiv);
+		varDiv.appendChild(infoDiv);
+	}else if(tab === 1){
+		varDiv.innerHTML = '';
+		if(this.structure[1] === 'K'){
+		for (let i = 0; i < this.games.length; i++) {
+        if (this.games[i]) {
+          const listItem = document.createElement('div');
+          listItem.classList.add('tour-list-single');
+          listItem.textContent = this.games[i].gameid;
+          listItem.addEventListener('click', () => {
+            // funktion zu game i
+          });
+          varDiv.appendChild(listItem);
+		}}}
+	}else if(tab === 2){
+		varDiv.innerHTML = '';
+      for (let i = 1; i < this.teams.length; i++) {
+        if (this.teams[i]) {
+          const listItem = document.createElement('div');
+          listItem.classList.add('tour-list-single');
+          listItem.textContent = this.teams[i].name;
+          listItem.addEventListener('click', () => {
+            // funktion zu team i
+          });
+          varDiv.appendChild(listItem);
+        }
+      }
+	}else{}
+	contentDiv.appendChild(menuDiv);
+	contentDiv.appendChild(varDiv);
+	  if (this.tmas.includes(userID)){
+	  }
+	  }
+	  addPlayerToTeam(userID, team){
+	  if(team.memberCount < this.maxPlayersPerTeam && !this.applicationRequired){
+	  team.addMember(userID);}
+	  }
+	  generateStructure(teamamount){
+	  const teamsamount = teamamount;
+	  let koTeamsAmount = 2;
+	  let structureTopOptions = [];
+	  let structureOptions = [];
+	  let finalStructure = '';
+	  const contentDiv = document.getElementById('content');
+	    contentDiv.innerHTML = "";
+	  if (Number.isInteger(Math.log2(teamsamount))){
+		let structureko = 'K' + makeTwoDigits(teamsamount / 2);
+		structureTopOptions.push(structureko);
+		structureOptions.push(structureko);
+		console.log(structureko);///////
+	  }else {}
+	  while(koTeamsAmount < teamsamount/2){koTeamsAmount = koTeamsAmount * 2;} 
+	  for (let groupamount = 2; groupamount < teamsamount/3; groupamount=groupamount*2){
+	  let maxgroupsize = Math.ceil(teamsamount / groupamount);
+	  let mingroupsize = Math.floor(teamsamount / groupamount);
+	  //for(let teamsproceed = 1; teamsproceed < mingroupsize; teamsproceed=teamsproceed*2){}
+	  console.log(`Groupamo:${groupamount} grösse:${mingroupsize}-${maxgroupsize} ${Math.abs(groupamount - maxgroupsize)}--${teamsamount/15}`);
+	  let structuregr = 'G' + makeTwoDigits(groupamount) + makeTwoDigits(maxgroupsize);
+	  structureOptions.push(structuregr);
+	  if((maxgroupsize === mingroupsize && Math.abs(groupamount - maxgroupsize)<Math.ceil(teamsamount/10) )||(Math.abs(groupamount - maxgroupsize)<Math.ceil(teamsamount/15))){
+	  structureTopOptions.push(structuregr);}
+	  }
+	  let optionSelected;
+	  const lowerDiv = document.createElement('div');
+		lowerDiv.classList.add('bottom-div');
+		const inputsDiv = document.createElement('div');
+		const proceedDiv = document.createElement('div');
+		let teamsContinuePerGroup;
+	if (!(structureOptions === null)){
+		structureOptions = structureOptions.filter((option) => !structureTopOptions.includes(option));
+		structureOptions = structureTopOptions.concat(structureOptions);
+		const optionsDiv = document.createElement('div');
+		const singleOptionDiv = [];
+		const teamsContinueDiv = [];
+		if(!(structureTopOptions === null)){const topoptionsTitle = document.createElement('div');topoptionsTitle.innerHTML = "Empfohlen:";optionsDiv.appendChild(topoptionsTitle);}
+		for(let i = 0; i < structureOptions.length; i++){
+		if(structureTopOptions.length === i && structureOptions.length>structureTopOptions.length){const otheroptionsTitle = document.createElement('div');otheroptionsTitle.innerHTML = "Weitere Optionen:";optionsDiv.appendChild(otheroptionsTitle);}
+		singleOptionDiv[i] = document.createElement('div');
+		if(structureOptions[i][0] === 'G'){console.log(`uhiqwefdhuief`);singleOptionDiv[i].innerHTML = `Gruppen-Runde mit ${parseInt(structureOptions[i].substring(1, 3))} Gruppen mit bis zu ${parseInt(structureOptions[i].substring(3, 5))} Teams/Gruppe gefolgt von KO`;}
+		else{console.log(`uhiqwefdhuief`);singleOptionDiv[i].innerHTML = `KO-Runde mit ${parseInt(structureOptions[i].substring(1, 3))} Spielen in der ersten Runde`;}
+		singleOptionDiv[i].addEventListener('click', () => {
+			inputsDiv.innerHTML = 'Spiele/Team:';
+			optionSelected = i; singleOptionDiv[i].style.color = 'black'; 
+			for(let j = 0; j < i; j++){singleOptionDiv[j].style.color = 'lightgray';}
+			for(let j = i+1; j < structureOptions.length; j++){singleOptionDiv[j].style.color = 'lightgray';}
+			const gamesPerTeamInput = document.createElement('input');
+			gamesPerTeamInput.setAttribute('type', 'text');
+			gamesPerTeamInput.setAttribute('placeholder', 'Anzahl');
+			gamesPerTeamInput.addEventListener('change', (thisinput) => {});
+			inputsDiv.appendChild(gamesPerTeamInput);
+			
+			proceedDiv.innerHTML = 'Teams kommen weiter:';
+			//teamsContinueDiv.length = 0;
+			let k = 0;
+			for(let teamsproceed = 1; teamsproceed < parseInt(structureOptions[i].substring(3, 5)); teamsproceed=teamsproceed*2){
+			teamsContinueDiv[k] = document.createElement('div'); teamsContinueDiv[k].innerHTML = `${teamsproceed}`; teamsContinueDiv[k].addEventListener('click', () => {
+			teamsContinuePerGroup = teamsproceed; /*teamsContinueDiv[k].style.color = 'black'; /*for(let j = 0; j < k; j++){teamsContinueDiv[j].style.color = 'lightgray';}
+			for(let j = k+1; j < structureOptions.length; j++){teamsContinueDiv[j].style.color = 'lightgray';}*/});
+			proceedDiv.appendChild(teamsContinueDiv[k]); k = k + 1;}
+		});
+		optionsDiv.appendChild(singleOptionDiv[i]);
+	} contentDiv.appendChild(optionsDiv);}
+		const backButton = document.createElement('button');
+		backButton.textContent = 'Zurück';
+		backButton.addEventListener('click', () => {
+		  //setupTeams();
+		});
+		const nextButton = document.createElement('button');
+		nextButton.textContent = 'Weiter';
+		nextButton.addEventListener('click', () => {
+		  this.structure = this.structure + structureOptions[optionSelected];
+		  console.log(this.structure);
+		  this.createGames();
+		});
+		lowerDiv.appendChild(inputsDiv);
+		lowerDiv.appendChild(proceedDiv);
+		lowerDiv.appendChild(nextButton);
+		contentDiv.appendChild(lowerDiv);
+	  }
+	  
+	  setupTeams(teamran){
+	  const randomteams = teamran;
+	    var teamamount = 0;
+		const contentDiv = document.getElementById('content');
+	    contentDiv.innerHTML = "";
+		const preteamDiv = document.createElement('div');
+		const amountTeamInput = document.createElement('input');
+		amountTeamInput.setAttribute('type', 'text');
+		amountTeamInput.setAttribute('placeholder', 'Anzahl');
+		amountTeamInput.addEventListener('change', (thisinput) => {
+		if (isNaN(thisinput.target.value)){preteamDiv.innerHTML = "Keine Zahl";contentDiv.appendChild(preteamDiv);}else if (thisinput.target.value <= 128 && thisinput.target.value > 1){
+		
+		  preteamDiv.innerHTML = "";
+		  teamamount = parseInt(thisinput.target.value);
+		  //if(inputva){this.value}
+		  for(let i = 1; i <= teamamount; i++){
+		  const teamName = document.createElement('input');
+			teamName.setAttribute('type', 'text');
+			teamName.setAttribute('placeholder', `Team ${i}`);
+			preteamDiv.appendChild(teamName);
+		  }
+		  
+		  contentDiv.appendChild(preteamDiv);} else {preteamDiv.innerHTML = "";}
+		});
+		contentDiv.appendChild(amountTeamInput);
+		
+		const bottomDiv = document.createElement('div');
+		bottomDiv.classList.add('bottom-div');
+		const backButton = document.createElement('button');
+		backButton.textContent = 'Zurück';
+		backButton.addEventListener('click', () => {
+		  this.startSetup();
+		});
+		const nextButton = document.createElement('button');
+		nextButton.textContent = 'Weiter';
+		nextButton.addEventListener('click', () => {
+		  if (teamamount > 1 && teamamount <= 128){
+		  let allTeamNames = [];
+		  let inputCorrect = true;
+		  allTeamNames.push('RandomHold');
+		  const teamNameBoxes = preteamDiv.getElementsByTagName('input');
+		  for (let i = 0; i < teamNameBoxes.length; i++) {
+		  const teamNameBoxValue = teamNameBoxes[i].value;
+			if(teamNameBoxValue.replace(/\s/g, '') === ""){allTeamNames.push(`Team ${i + 1}`);} else if(teamNameBoxValue.length > 22 || allTeamNames.includes(teamNameBoxValue)){inputCorrect = false; teamNameBoxes[i].style.borderColor = 'red';} else{
+			allTeamNames.push(teamNameBoxValue);
+		  }}
+		  if (inputCorrect && allTeamNames.length === teamamount+1){
+		  for (let i = 0; i < allTeamNames.length; i++) {this.teams.push(new Team(this.tournamentID, allTeamNames[i])); } // teams in DB abspeichern!!!!!!!!!!!!!!!!
+		  this.structure = this.structure.split('');
+		  if (randomteams === 1){this.structure[0] = 'N';} else if (randomteams === 2){this.structure[0] = 'R';}
+		  this.structure = this.structure.join('');
+		  this.generateStructure(teamamount);}
+		  }
+		});
+		const saveButton = document.createElement('button');
+		saveButton.textContent = 'Speichern';
+		saveButton.addEventListener('click', () => {
+		  // Speichern teams
+		});
+		bottomDiv.appendChild(backButton);
+		bottomDiv.appendChild(nextButton);
+		bottomDiv.appendChild(saveButton);
+
+		contentDiv.appendChild(bottomDiv);
+	  }
+	  startSetup(){
+	  const contentDiv = document.getElementById('content');
+	  contentDiv.innerHTML = "";
+	  var teamrandom = 0;
+	  var teamamountdef = 0;
+	    const topDiv = document.createElement('div');
+		const randomDiv1 = document.createElement('div');
+		const randomDiv2 = document.createElement('div');
+		randomDiv1.textContent = 'Keine zufälligen Teams';
+		randomDiv1.addEventListener('click', () => {
+		  teamrandom = 1; randomDiv1.style.color = 'black'; randomDiv2.style.color = 'lightgray';
+		});
+		randomDiv2.textContent = 'Zufällige Teams';
+		randomDiv2.addEventListener('click', () => {
+		  teamrandom = 2; randomDiv1.style.color = 'lightgray'; randomDiv2.style.color = 'black';
+		});
+		const teamDiv1 = document.createElement('div');
+		const teamDiv2 = document.createElement('div');
+		teamDiv1.textContent = 'Anzahl Teams jetzt bestimmen und Turnierplan jetzt erstellen';
+		teamDiv1.addEventListener('click', () => {
+		  teamamountdef = 1; teamDiv1.style.color = 'black'; teamDiv2.style.color = 'lightgray';
+		});
+		teamDiv2.textContent = 'Anzahl Teams offen lassen';
+		teamDiv2.addEventListener('click', () => {
+		  teamamountdef = 2; teamDiv1.style.color = 'lightgray'; teamDiv2.style.color = 'black';
+		});
+
+		topDiv.appendChild(randomDiv1);
+		topDiv.appendChild(randomDiv2);
+		topDiv.appendChild(teamDiv1);
+		topDiv.appendChild(teamDiv2);
+
+		const lowerDiv = document.createElement('div');
+		lowerDiv.classList.add('bottom-div');
+		const backButton = document.createElement('button');
+		backButton.textContent = 'Zurück';
+		backButton.addEventListener('click', () => {
+		  this.showTournamentOverview(1);
+		});
+		const nextButton = document.createElement('button');
+		nextButton.textContent = 'Weiter';
+		nextButton.addEventListener('click', () => {
+		  if((teamamountdef === 1)&&(teamrandom === 1 || teamrandom === 2)){
+		  this.setupTeams(teamrandom);
+		  } if((teamamountdef === 2)&&(teamrandom === 1 || teamrandom === 2)){
+		  ////////////////////////////////////////////////////////////////////////
+		  }
+		  else{}
+		});
+		const saveButton = document.createElement('button');
+		saveButton.textContent = 'Speichern';
+		saveButton.addEventListener('click', () => {
+		  
+		});
+		lowerDiv.appendChild(backButton);
+		lowerDiv.appendChild(nextButton);
+		lowerDiv.appendChild(saveButton);
+
+		contentDiv.appendChild(topDiv);
+		contentDiv.appendChild(lowerDiv);	  
+	  }
+	  
+	  openSettings(){
+	  if(this.structure === ''){
+	  this.startSetup();
+	  }else {
+	  
+	  }
+	  }
+	  updateTournamentToDB(){/*alle daten speichern mit this.*/}
+ }
+	
+class Team{
+	constructor(tourid, name) {
+        this.name = name;
+		this.tourid = tourid;
+		this.members = [];
+		this.applications = [];
+		this.games = [];
+      }
+	updateTeamToDB(){try{//update in DB alle daten
+	} catch (error) {console.log("addmember fehler");}
+	}
+	addMember(memberid){
+	if(!this.members.includes(memberid)){
+	this.members.push(memberid);
+	updateTeamToDB();
+	}}
+	memberCount(){return this.members.length;}
+	
+}
+
+class Game{
+	constructor(tourid, gameid) {
+        this.gameid = gameid;
+		this.tourid = tourid;
+		this.participants = [];
+		this.participants = participants;
+		this.teamAscores = [];
+		this.teamBscores = [];
+    }
+}
+	function infoMessage(content){
+	
+	}
+	function makeTwoDigits(number) {
+  if (number < 10 && number >= 0) {
+    return `0${number}`;
+  } else if(number < 100){
+    return `${number}`;
+  }else {
+  return `00`;}
+}
+	function getGamesByTournament(tourID){
+	const listOfGames = [];// DB zugriff mit WHERE nach turnier ID
+    for (let i = 1; i <= 10; i++) {
+      listOfGames.push(new Game(`Game ${i}`));
+    }
+	return listOfGames;
+	}
+const listOfTournaments = [];
+    for (let i = 1; i <= 100; i++) {
+      listOfTournaments.push(new Tournament(`Turnier ${i}`));
+    }
+	
+  window.onload = changeContent(1);
+    function mobileMenu(sta) {
+      const mobile = document.getElementById('mobile-menu');
+      if ( sta === 0 && (mobile.style.display === 'none' || mobile.style.display === '')) {
+        mobile.style.display = 'block';
+      } else {
+        mobile.style.display = 'none';
+      }
+    }
+
+    // Funktion zum Ändern des Inhalts
+    function changeContent(conId) {
+      const contentDiv = document.getElementById('content');
+      switch (conId) {
+        case 1:
+          contentDiv.innerHTML = 'Startseite';
+          break;
+        case 2:
+          contentDiv.innerHTML = 'Inhalt 2';
+          break;
+        case 3:
+          contentDiv.innerHTML = 'Turniere werden geladen...';
+		  showTournamentList(30);
+          break;
+        case 4:
+          contentDiv.innerHTML = 'Inhalt 4';
+          break;
+        case 5:
+          contentDiv.innerHTML = 'Inhalt 5';
+          break;
+        default:
+          contentDiv.innerHTML = 'Startinhalt';
+      }
+    }
+	
+	
+	
+	function showTournamentList(perPage){
+	let currentPage = 1;
+	let tourPerPage = perPage; 
+	const contentDiv = document.getElementById('content');
+	contentDiv.innerHTML = '';
+	
+	const searchInput = document.createElement('input');
+	searchInput.setAttribute('type', 'text');
+	searchInput.setAttribute('placeholder', 'Suche..');
+	const tourListDiv = document.createElement('div');
+	const loadPrevTourBtn = document.createElement('div');
+	loadPrevTourBtn.setAttribute('style', 'display: none;');
+	loadPrevTourBtn.textContent = 'Vorherige Seite';
+	const loadNextTourBtn = document.createElement('div');
+	loadNextTourBtn.setAttribute('style', 'display: none;');
+	loadNextTourBtn.textContent = 'Nächste Seite';
+
+	contentDiv.appendChild(searchInput);
+	contentDiv.appendChild(tourListDiv);
+	contentDiv.appendChild(loadPrevTourBtn);
+	contentDiv.appendChild(loadNextTourBtn);
+	
+	function listTournamentsFromTo(start, end, thislistOfTournaments) {
+      tourListDiv.innerHTML = '';
+      for (let i = start; i < end; i++) {
+        if (thislistOfTournaments[i]) {
+          const listItem = document.createElement('div');
+          listItem.classList.add('tour-list-single');
+          listItem.textContent = thislistOfTournaments[i].name;
+          listItem.addEventListener('click', () => {
+            // funktion zu turnier(i)
+			thislistOfTournaments[i].showTournamentOverview(0);
+            console.log(`Turnier: ${thislistOfTournaments[i].name}`);
+          });
+          tourListDiv.appendChild(listItem);
+        }
+      }
+	  loadPrevTourBtn.style.display = currentPage > 1 ? 'block' : 'none';
+    }
+
+    function loadNextPage() {
+      const start = currentPage * tourPerPage;
+      const end = (currentPage + 1) * tourPerPage;
+      listTournamentsFromTo(start, end, listOfTournaments);
+      currentPage++;
+    }
+	function loadPrevPage() {
+      const start = (currentPage - 1) * tourPerPage;
+      const end = currentPage * tourPerPage;
+      listTournamentsFromTo(start, end, listOfTournaments);
+      currentPage--;
+    }
+  
+    loadNextTourBtn.addEventListener('click', loadNextPage);
+	loadPrevTourBtn.addEventListener('click', loadPrevPage);
+
+    searchInput.addEventListener('change', function(thisinput) {
+      const searchWord = thisinput.target.value.toLowerCase();
+      const filteredTour = listOfTournaments.filter(Tournament => Tournament.name.toLowerCase().includes(searchWord));
+      currentPage = 1;
+      listTournamentsFromTo(0, tourPerPage, filteredTour);
+      loadNextTourBtn.style.display = filteredTour.length > tourPerPage ? 'block' : 'none';
+	  loadPrevTourBtn.style.display = filteredTour.length > tourPerPage ? 'block' : 'none';
+    });
+
+
+
+    listTournamentsFromTo(0, tourPerPage, listOfTournaments);
+    if (listOfTournaments.length > tourPerPage) {
+      loadNextTourBtn.style.display = 'block';
+    }
+	}
+  </script>
+</body>
+</html>
+<!-- 
+/*
+const greetingContainer = document.getElementById("content");
+const initialize = async () => {
+  const api = await smartdesign.connect();
+  try {
+    const userDetails = await api
+      .fetch("v7.0/user/self")
+      .then((p) => p.json());
+    greetingContainer.innerText = `User: ${userDetails.id}`;
+  } catch (error) {
+    greetingContainer.innerText =
+      "An exception occured while accessing user details!";
+  }
+};
+initialize();*/
+
+/*
+const thisUserID;
+const initialize = async () => {
+  const api = await smartdesign.connect();
+  try {
+    const userDetails = await api
+      .fetch("v7.0/user/self")
+      .then((p) => p.json());
+    thisUserID = userDetails.id;
+  } catch (error) {
+    console.log(error);
+  }
+};  -->

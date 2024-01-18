@@ -114,31 +114,35 @@ function displayKoRunden(koRunden) {
     const koRundeElement = document.createElement("div");
     koRundeElement.innerText = `KO-Runde ${koRunde.tiefe}`;
     // Anzeigen der Spiele für jede KO-Runde
-    displaySpiele(koRunde.spiele, koRundeElement);
 
-    koRundenContainer.appendChild(koRundeElement);
-  });
-}
-/**
- * Spiele auf der Webseite anzeigen.
- *
- * @param {Array<Object>} spiele - Ein Array von Spielen.
- * @param {HTMLElement} parentElement - Das übergeordnete HTML-Element, in dem die Spiele angezeigt werden sollen.
- */
-function displaySpiele(spiele, parentElement) {
-  spiele.forEach((spiel) => {
-    const spielElement = document.createElement("div");
-    spielElement.innerText = `Spiel zwischen Team ${spiel.team1} und Team ${spiel.team2} - Status: ${spiel.spielStatus}`;
+        displaySpiele(koRunde.spiele, koRundeElement, koRunde._id);
 
-    parentElement.appendChild(spielElement);
-  });
+        koRundenContainer.appendChild(koRundeElement);
+    });
 }
-/**
- * Formatieren eines Datums in ein benutzerfreundliches Format.
- *
- * @param {string} datumString - Das zu formatierende Datum im String-Format.
- * @returns {string} - Das formatierte Datum.
- */
+
+function displaySpiele(spiele, parentElement, koRundeId) {
+
+    spiele.forEach(spiel => {
+        const spielElement = document.createElement('div');
+        spielElement.innerText = `Spiel zwischen Team ${spiel.team1} und Team ${spiel.team2} - Status: ${spiel.spielStatus}`;
+        spielElement.addEventListener('click', () => {
+            if(typeof spiel.team1 === 'undefined' || typeof spiel.team2 === 'undefined'){
+                alert('Team fehlt');
+            }else{
+                redirectToSpiel(spiel, parentElement, koRundeId);
+            }
+        });
+        parentElement.appendChild(spielElement);
+    });
+}
+async function redirectToSpiel(spiel, parentElement, koRundeId) {
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const turnierId = urlParams.get('id');
+    console.log(spiel.ObjectId);
+    window.location.href = `/spiel-byID?spiel=${spiel._id}&turnierId=${turnierId}&koRundeId=${koRundeId}`;
+}
 function formatiereDatum(datumString) {
   const wochentage = [
     "Sonntag",

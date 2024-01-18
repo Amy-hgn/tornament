@@ -357,8 +357,108 @@ class TurnierController {
       this.handleError(res, "Fehler beim Erstellen der Ko-Runde", error);
     }
   }
+ 
 
-/**
+    async setGameScore(req, res) {
+        try {
+            const spielDaten = req.body.spielDetails;
+            const spielId = spielDaten._id;
+            const turnierId = req.body.turnierId;
+            const koId = req.body.rundeId;
+            let aktRunde = -1;
+            let spielNr = -1;
+            let winner;
+            const notUpdatedSpiel = await Turnier.Spiel.findById(spielId);
+            console.log('teams:', notUpdatedSpiel.team1, notUpdatedSpiel.team2);
+            if(typeof notUpdatedSpiel.team1 === 'undefined' || typeof notUpdatedSpiel.team2 === 'undefined'){
+                return res.status(404).json({ message: 'Team nicht gefunden' });
+            }
+            const { punkteGewinner, spielStatus } = spielDaten;
+    
+            const updateObj = {};
+            if (punkteGewinner) {
+                updateObj.punkteGewinner = punkteGewinner;
+            }
+            if (spielStatus) {
+                updateObj.spielStatus = spielStatus;
+            }
+    
+            const updatedSpiel = await Turnier.Spiel.findByIdAndUpdate(
+                spielId,
+                updateObj,
+                { new: true }
+            );
+            if (!updatedSpiel) {
+                return res.status(404).json({ message: 'Spiel nicht gefunden' });
+            }
+    
+            if (punkteGewinner === 1) {
+                winner = updatedSpiel.team1;
+            } else {
+                winner = updatedSpiel.team2;
+            }
+    
+            const update2Obj = {};
+            let nextGameNr;
+            const turnier = await Turnier.Turnier.findById(turnierId).populate('koRunden');
+            const koRunden = turnier.koRunden;
+            //const koRunden = await Turnier.KoRunde.find({ _id: { $in: koRundenIds } });
+
+
+            if (!turnier) {
+                return res.status(404).json({ message: 'Turnier nicht gefunden' });
+            }
+    
+            for (let i = 0; i < koRunden.length; i++) {
+                if (koRunden[i]._id.toString() === koId) {
+                    aktRunde = i + 1;
+                    break;
+                }
+            }
+            if (aktRunde === -1) {
+                return res.status(404).json({ message: 'KO-Runden-ID ist falsch' });
+            } else if (aktRunde > 1) {
+                for (let i = 0; i < koRunden[aktRunde-1].koSpiele.length; i++) {
+                    console.log('for2spiele:', koRunden[aktRunde - 1].koSpiele[i]._id.toString());
+                    if (koRunden[aktRunde - 1].koSpiele[i]._id.toString() === spielId) {
+                        spielNr = i + 1;
+                        break;
+                    }
+                }
+    
+                if (spielNr === -1) {
+                    return res.status(404).json({ message: 'Spiel-ID ist falsch' });
+                } else if (spielNr % 2 === 0) {
+                    // gerade
+                    update2Obj.team2 = winner;
+                    nextGameNr = spielNr / 2;
+                } else {
+                    // ungerade
+                    update2Obj.team1 = winner;
+                    nextGameNr = Math.ceil(spielNr / 2);
+                }
+                console.log('update2Obj:', update2Obj);
+                const spiel2Id = koRunden[aktRunde-2].koSpiele[nextGameNr - 1];
+                const updated2Spiel = await Turnier.Spiel.findByIdAndUpdate(
+                    spiel2Id,
+                    update2Obj,
+                    { new: true }
+                );
+                if (!updated2Spiel) {
+                    return res.status(404).json({ message: 'nächstes Spiel nicht gefunden' });
+                }
+    
+                res.status(200).json({ updatedSpiel, updated2Spiel });
+            } else {
+
+                // turnierBeendet!!
+                res.status(200).json({ message: "Turnier Beendet!" });
+            }
+        } catch (error) {
+            this.handleError(res, 'Fehler beim Aktualisieren des Spiels', error);
+        }
+    }
+    /**
  * Hilfsmethode zum Behandeln von Fehlern.
  *
  * @param {Object} res - Das Response-Objekt.
@@ -368,7 +468,7 @@ class TurnierController {
   handleError(res, message, error) {
     console.error(message, error);
     res.status(500).json({ message });
-  }
-}
+  }    
 
+}
 module.exports = new TurnierController();

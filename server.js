@@ -65,6 +65,14 @@ app.get("/turnier-byID", (req, res) => {
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "html", "anzeige-turnier.html"));
 });
+/**
+ * Route zum Servieren der HTML-Datei für die Eintragung der Ergebnisse von einem Spiel.
+ * @route GET /
+ * @callback
+ */
+app.get('/spiel-byID', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'html', 'spiel-score.html'));
+});
 
 // GET-Endpunkte
 
@@ -255,6 +263,14 @@ app.post("/api/create-spiel", async (req, res) => {
  */
 app.post("/api/create-ko-runde", async (req, res) => {
   await turnierController.createKORunde(req, res);
+});
+
+
+
+
+
+app.post('/api/set-game-score', async (req, res) => {
+    await turnierController.setGameScore(req, res);
 });
 
 // MongoDB-Verbindung

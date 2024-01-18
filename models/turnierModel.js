@@ -140,6 +140,10 @@ const turnierSchema = mongoose.Schema(
             type: String,
             required: [true, "Bitte die Kosten angeben."]
         },
+        struktur: {
+            type: String,
+            required: [true, "Bitte die Struktur angeben."]
+        },
         turnierTeilnehmerAnzahl:{
             type: Number,
             required: [true, "Bitte Maximal Anzahl angeben"]
