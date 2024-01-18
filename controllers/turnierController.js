@@ -1,5 +1,4 @@
 const Turnier = require("../models/turnierModel");
-const smartdesign = require('@smartdesign')
 
 class TurnierController {
   // GET-Methoden
@@ -394,18 +393,7 @@ class TurnierController {
 async assignUserToTeam(req, res) {
   try {
     const turnierId = req.body.turnierId;
-  //  const personId = req.body.personId;
-  const personId = await (async () => {
-    try {
-      const api = await smartdesign.connect();
-      const userDetails = await api
-        .fetch('v7.0/user')
-        .then(response => response.json());
-      return userDetails;
-    } catch (error) {
-      console.log(error);
-      return null;
-    }})();
+  const personId = req.body.personId;
 
     // Check if turnierId is provided
     if (!turnierId) {

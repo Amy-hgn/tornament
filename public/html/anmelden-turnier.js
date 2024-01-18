@@ -60,88 +60,66 @@ async function speichernButtonClick () {
   // Logik für Zuweisung zu Teams (for schleife?)
 
   // holen aus URL id des turniers raus
-  console.log ('User Vollständig: ' + userId)
-  console.log ('Login: ' + login)
-  console.log ('MetaDaten: ' + metaData)
-  console.log ('UserGUId: ' + guid)
-  const urlParams = new URLSearchParams(window.location.search)
-  const turnierId = urlParams.get('id')
+    try {
+      // Fetch user ID
+      console.log('kfosoe' +personId);
 
-  const personId = userId 
-  const myObjekt = { turnierId, personId }
-  try {
-    const response = await fetch('/api/turnier-anmelden', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(myObjekt)
-    })
+      const personId = await userId();
 
-    if (!response.ok) {
-      throw new Error(`Fehlerhafter Netzwerkantwort-Status: ${response.status}`)
+      if (!personId) {
+        console.error('User ID not available');
+        return;
+      }
+  
+      // holen aus URL id des turniers raus
+      const urlParams = new URLSearchParams(window.location.search);
+      const turnierId = urlParams.get('id');
+  
+      // Construct myObjekt with turnierId and personId
+      const myObjekt = { turnierId, personId };
+  
+      // Make the POST request
+      try {
+        const response = await fetch('/api/turnier-anmelden', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(myObjekt),
+        });
+  
+        const data = await response.json();
+        console.log('Daten', data);
+  
+        console.log('Spiel erfolgreich aktualisiert:', myObjekt);
+      } catch (error) {
+        console.error('Fehler beim Updaten des Spiels:', error);
+      }
+      // man schickt es ins backend
+  
+      // Anpassung der freien Plätze -> Anbindung ans Frontend
+    } catch (error) {
+      console.error('Fehler beim Abrufen der Benutzerdetails:', error);
     }
 
-    const data = await response.json()
-    console.log('Daten', data)
-
-    console.log('Spiel erfolgreich aktualisiert:', myObjekt)
-  } catch (error) {
-    console.error('Fehler beim Updaten des Spiels:', error)
-  }
-  // man schickt es ins backend
-
-  // Anpassung der freien Plätze -> Anbindung ans Frontend
-}
-
 const userId = async () => {
-  const api = await smartdesign.connect()
   try {
-    const userDetails = await api
-      .fetch('v7.0/user')
-      .then(response => response.json())
-    return userDetails
+    const response = await fetch('/userS');
+    const userDetails = await response.json();
+    
+    if (userDetails) {
+      console.log("USER DET" +userDetails + userDetails.id)
+      return userDetails.id;
+    } else {
+      console.error('User ID not found in response:', userDetails);
+      return null;
+    }
   } catch (error) {
-    console.log(error)
-    return null
+    console.error('Error fetching user details:', error);
+    return null;
   }
-}
-const login = async () => {
-  const api = await smartdesign.connect()
-  try {
-    const userDetails = await api
-      .fetch('v7.0/checklogin')
-      .then(response => response.json())
-    return userDetails
-  } catch (error) {
-    console.log(error)
-    return null
-  }
-}
-const metaData = async () => {
-  const api = await smartdesign.connect()
-  try {
-    const userDetails = await api
-      .fetch('v7.0/user/self')
-      .then(response => response.json())
-    return userDetails
-  } catch (error) {
-    console.log(error)
-    return null
-  }
-}
-const guid = async () => {
-  const api = await smartdesign.connect()
-  try {
-    const userDetails = await api
-      .fetch('v7.0/user')
-      .then(response => response.json())
-    return userDetails.getGUID
-  } catch (error) {
-    console.log(error)
-    return null
-  }
-}
+}}
+
 
 //   try {
 //     const response = await fetch('https://ipinfo.io/json')
