@@ -63,9 +63,9 @@ async function speichernButtonClick () {
   const urlParams = new URLSearchParams(window.location.search)
   const turnierId = urlParams.get('id')
 
- // const user = await getUserID();
+ const user = initialize;
   // Speicherung turnierid user in object
-  const myObjekt = { turnierId, initialize }
+  const myObjekt = { turnierId, user }
   try {
     const response = await fetch('/api/turnier-anmelden', {
       method: 'POST',
