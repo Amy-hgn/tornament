@@ -120,4 +120,4 @@ const initialize = async () => {
 //     console.error('Fehler beim Abrufen der IP-Adresse:', error)
 //     return null
 //   }
-}
+//}
