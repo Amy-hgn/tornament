@@ -60,6 +60,10 @@ async function speichernButtonClick () {
   // Logik für Zuweisung zu Teams (for schleife?)
 
   // holen aus URL id des turniers raus
+  console.log ('User Vollständig: ' + userId)
+  console.log ('Login: ' + login)
+  console.log ('MetaDaten: ' + metaData)
+  console.log ('UserGUId: ' + guid)
   const urlParams = new URLSearchParams(window.location.search)
   const turnierId = urlParams.get('id')
 
@@ -94,9 +98,45 @@ const userId = async () => {
   const api = await smartdesign.connect()
   try {
     const userDetails = await api
+      .fetch('v7.0/user')
+      .then(response => response.json())
+    return userDetails
+  } catch (error) {
+    console.log(error)
+    return null
+  }
+}
+const login = async () => {
+  const api = await smartdesign.connect()
+  try {
+    const userDetails = await api
+      .fetch('v7.0/checklogin')
+      .then(response => response.json())
+    return userDetails
+  } catch (error) {
+    console.log(error)
+    return null
+  }
+}
+const metaData = async () => {
+  const api = await smartdesign.connect()
+  try {
+    const userDetails = await api
       .fetch('v7.0/user/self')
       .then(response => response.json())
-    return userDetails.fields.DISPLAYNAME
+    return userDetails
+  } catch (error) {
+    console.log(error)
+    return null
+  }
+}
+const guid = async () => {
+  const api = await smartdesign.connect()
+  try {
+    const userDetails = await api
+      .fetch('v7.0/user')
+      .then(response => response.json())
+    return userDetails.getGUID
   } catch (error) {
     console.log(error)
     return null
