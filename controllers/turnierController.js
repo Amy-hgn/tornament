@@ -374,7 +374,6 @@ class TurnierController {
             let spielNr = -1;
             let winner;
             const notUpdatedSpiel = await Turnier.Spiel.findById(spielId);
-            console.log('teams:', notUpdatedSpiel.team1, notUpdatedSpiel.team2);
             if(typeof notUpdatedSpiel.team1 === 'undefined' || typeof notUpdatedSpiel.team2 === 'undefined'){
                 return res.status(404).json({ message: 'Team nicht gefunden' });
             }
@@ -413,16 +412,15 @@ class TurnierController {
     
             for (let i = 0; i < koRunden.length; i++) {
                 if (koRunden[i]._id.toString() === koId) {
-                    aktRunde = i + 1;
+                    aktRunde = i;
                     break;
                 }
             }
             if (aktRunde === -1) {
                 return res.status(404).json({ message: 'KO-Runden-ID ist falsch' });
             } else if (aktRunde > 1) {
-                for (let i = 0; i < koRunden[aktRunde-1].koSpiele.length; i++) {
-                    console.log('for2spiele:', koRunden[aktRunde - 1].koSpiele[i]._id.toString());
-                    if (koRunden[aktRunde - 1].koSpiele[i]._id.toString() === spielId) {
+                for (let i = 0; i < koRunden[aktRunde].koSpiele.length; i++) {
+                    if (koRunden[aktRunde].koSpiele[i]._id.toString() === spielId) {
                         spielNr = i + 1;
                         break;
                     }
@@ -439,8 +437,7 @@ class TurnierController {
                     update2Obj.team1 = winner;
                     nextGameNr = Math.ceil(spielNr / 2);
                 }
-                console.log('update2Obj:', update2Obj);
-                const spiel2Id = koRunden[aktRunde-2].koSpiele[nextGameNr - 1];
+                const spiel2Id = koRunden[aktRunde-1].koSpiele[nextGameNr - 1];
                 const updated2Spiel = await Turnier.Spiel.findByIdAndUpdate(
                     spiel2Id,
                     update2Obj,
@@ -449,11 +446,34 @@ class TurnierController {
                 if (!updated2Spiel) {
                     return res.status(404).json({ message: 'nächstes Spiel nicht gefunden' });
                 }
-    
+                if (aktRunde === 2){
+                  let verlierer;
+                  if (punkteGewinner === 1) {
+                    verlierer = updatedSpiel.team2;
+                } else {
+                    verlierer = updatedSpiel.team1;
+                }
+                const update3Obj = {};
+                if (spielNr % 2 === 0) {
+                  // gerade
+                  update3Obj.team2 = verlierer;
+                  nextGameNr = 1;
+                } else {
+                  // ungerade
+                  update3Obj.team1 = verlierer;
+                  nextGameNr = 0;
+                }
+                const spiel3Id = koRunden[aktRunde-2].koSpiele[0];
+                const updated2Spiel = await Turnier.Spiel.findByIdAndUpdate(
+                    spiel3Id,
+                    update3Obj,
+                    { new: true }
+                );
+                }
                 res.status(200).json({ updatedSpiel, updated2Spiel });
             } else {
 
-                // turnierBeendet!!
+                // turnierBeendet!! wenn runde+1 auch fertig
                 res.status(200).json({ message: "Turnier Beendet!" });
             }
           }else{
