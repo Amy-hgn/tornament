@@ -28,6 +28,18 @@ async function fetchTurnierDetails(turnierId) {
 }
 
 /**
+ * Teamnamen vom Server abrufen.
+ *
+ * @param {string} teamId - Die ID des Teams.
+ * @returns {Promise<string>} - Ein Promise, das zu einem Teamnamen auflöst.
+ */
+async function fetchTeamName(teamId) {
+    const response = await fetch(`/team-ID?id=${teamId}`);
+    const team = await response.json();
+    return team.name;
+  }
+
+/**
  * Turnierdetails anzeigen
  *
  * @param {Object} turnierDetails - Die Details des Turniers.
@@ -35,11 +47,12 @@ async function fetchTurnierDetails(turnierId) {
 
 function displayTurnierDetails(turnierDetails) {
     document.getElementById('turnier-name').innerText = turnierDetails.turnierName;
-    document.getElementById('veranstaltungsort').innerText = `Veranstaltungsort: ${turnierDetails.veranstaltungsort}`;
-    document.getElementById('start-datum').innerText = `Startdatum: ${formatiereDatum(turnierDetails.startDatum)}`;
-    document.getElementById('anmelde-schluss').innerText = `Anmeldeschluss: ${formatiereDatum(turnierDetails.anmeldeSchluss)}`;
-    document.getElementById('kosten').innerText = `Kosten: ${turnierDetails.kosten}`;
-    document.getElementById('start-zeit').innerText = `Startzeit: ${formatiereDatum(turnierDetails.startZeit)}`;
+    document.getElementById('veranstaltungsort').innerText = ` ${turnierDetails.veranstaltungsort}`;
+    document.getElementById('start-datum').innerText = ` ${formatiereDatum(turnierDetails.startDatum)}`;
+    document.getElementById('anmelde-schluss').innerText = ` ${formatiereDatum(turnierDetails.endDatum)}`;
+    document.getElementById('kosten').innerText = ` €${turnierDetails.kosten}`;
+    document.getElementById('start-zeit').innerText = ` ${formatiereDatum(turnierDetails.startZeit)}`;
+    document.getElementById('beschreibung').innerText = turnierDetails.beschreibung;
 }
 
 /**
