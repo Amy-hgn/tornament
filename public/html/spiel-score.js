@@ -165,16 +165,5 @@ function redirectToTurnierThisTurnier(turnierId) {
       
         return `${stunde}:${minute} Uhr ${tag}.${monatsname}.${jahr}`;
       }
-    // Beispiel: Funktion zum Abrufen der Spielinformationen vom Server
-    /*async function fetchSpielDetails(turnierId, spielId) {
-        try {
-            const response = await fetch(`/api/spiel-details?turnierId=${turnierId}&spielId=${spielId}`);
-            const spielDetails = await response.json();
-            return spielDetails;
-        } catch (error) {
-            throw error;
-        }
-    }
 
-    // Rufen Sie die Funktion zum Abrufen der Spielinformationen auf, wenn die Seite geladen ist
-    //document.addEventListener("DOMContentLoaded", getSpielInformationen);*/
+    //document.addEventListener("DOMContentLoaded", getSpielInformationen);
