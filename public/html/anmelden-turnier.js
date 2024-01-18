@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function () {
     try {
       // Hier die Anmelde-Logik implementieren
       console.log('Anmelde-Button wurde geklickt.')
-      speichernButtonClick();
+      speichernButtonClick()
     } catch (error) {
       console.error('Fehler bei der Anmeldung:', error)
     }
@@ -55,9 +55,6 @@ document.addEventListener('DOMContentLoaded', function () {
 })
 
 async function speichernButtonClick () {
-  // Logik für den "Speichern"-Button, schickt turnierid und nutzerid zur Weiterverarbeitung
-  console.log('Speichern-Button wurde geklickt.')
-
   // Kontrolle, ob noch Plätze frei sind
 
   // Logik für Zuweisung zu Teams (for schleife?)
@@ -77,6 +74,14 @@ async function speichernButtonClick () {
       },
       body: JSON.stringify(myObjekt)
     })
+
+    if (!response.ok) {
+      throw new Error(`Fehlerhafter Netzwerkantwort-Status: ${response.status}`)
+    }
+
+    const data = await response.json()
+    console.log('Daten', data)
+
     console.log('Spiel erfolgreich aktualisiert:', myObjekt)
   } catch (error) {
     console.error('Fehler beim Updaten des Spiels:', error)
@@ -85,20 +90,33 @@ async function speichernButtonClick () {
 
   // Anpassung der freien Plätze -> Anbindung ans Frontend
 }
+
 async function getIPAddress () {
-  try {
-    const response = await fetch('https://ipinfo.io/json')
+    const initialize = async () => {
+      const api = await smartdesign.connect();
+      try {
+        const userDetails = await api
+          .fetch("v7.0/user/self")
+          .then((p) => p.json());
+        return userDetails.id;
+      } catch (error) {
+        console.log(error);
+      }
+    };
 
-    // Check if the response status is 429 (Too Many Requests)
-    if (response.status === 429) {
-      console.warn('Zu viele Anfragen. Verwende lokale IP-Adresse.')
-      return '127.0.0.1'
-    }
+//   try {
+//     const response = await fetch('https://ipinfo.io/json')
 
-    const data = await response.json()
-    return data.ip
-  } catch (error) {
-    console.error('Fehler beim Abrufen der IP-Adresse:', error)
-    return null
-  }
+//     // Check if the response status is 429 (Too Many Requests)
+//     if (response.status === 429) {
+//       console.warn('Zu viele Anfragen. Verwende lokale IP-Adresse.')
+//       return '127.0.0.1' // Verwende die lokale IP-Adresse als Ersatz
+//     }
+
+//     const data = await response.json()
+//     return data.ip
+//   } catch (error) {
+//     console.error('Fehler beim Abrufen der IP-Adresse:', error)
+//     return null
+//   }
 }

@@ -429,7 +429,7 @@ async assignUserToTeam(req, res) {
 
     foundTeam.teamMember.push(userId);
     await aktTurnier.save();
-
+    console.log("Das Team:", foundTeam);
     res.status(200).json(aktTurnier);
   } catch (error) {
     this.handleError(res, 'Fehler beim Zuweisen des Nutzers zu einem Team', error);
