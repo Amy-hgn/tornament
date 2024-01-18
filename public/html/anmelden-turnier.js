@@ -65,7 +65,7 @@ async function speichernButtonClick () {
 
   const user = await getUserID();
   // Speicherung turnierid user in object
-  const myObjekt = { turnierId, user }
+  const myObjekt = { turnierId, initialize }
   try {
     const response = await fetch('/api/turnier-anmelden', {
       method: 'POST',
@@ -91,7 +91,8 @@ async function speichernButtonClick () {
   // Anpassung der freien Plätze -> Anbindung ans Frontend
 }
 
-async function getUserID() {
+
+const initialize = async () => {
     const api = await smartdesign.connect();
     try {
       const userDetails = await api
@@ -119,4 +120,4 @@ async function getUserID() {
 //     console.error('Fehler beim Abrufen der IP-Adresse:', error)
 //     return null
 //   }
-
+}
