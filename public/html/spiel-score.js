@@ -165,5 +165,3 @@ function redirectToTurnierThisTurnier(turnierId) {
       
         return `${stunde}:${minute} Uhr ${tag}.${monatsname}.${jahr}`;
       }
-
-    //document.addEventListener("DOMContentLoaded", getSpielInformationen);
