@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ansicht Turnier</title>
     <script src="/node_modules/@smartdesign/button/dist/button-with-externals.js"></script>
-    <script src="/node_modules/@smartdesign/lit-input/dist/input-with-externals.js"></script>
 <style>
     body {
         margin: 40px;
@@ -20,7 +19,7 @@
     }
 
 .Leiste-oben{
-    background-color: aliceblue;
+    /*background-color: aliceblue;*/
     padding: 16px;
     height: 6vw;
     width: 95%;
@@ -40,7 +39,7 @@
 
 
 .Beschreibung{
-    background-color: aliceblue;
+    /*background-color: aliceblue;*/
     height: 4vw;
     width: 90%;
     padding: 16px;
@@ -72,8 +71,8 @@
 
 .Infos{
     flex: 1;
-    background-color: aliceblue;
-   margin-right: 2%;
+    /*background-color: aliceblue;*/
+    margin-right: 2%;
     display: block;
     padding: 16px;
 }
@@ -82,7 +81,7 @@
 .Anmeldungen{
     flex: 1;
     padding: 16px;
-    background-color: aliceblue;
+    /*background-color: aliceblue;*/
     margin: 0.5px;
     box-sizing: border-box; 
     overflow: auto; 
@@ -103,17 +102,18 @@
 <body>
     <div class="Leiste-oben">
         <h1 class = "Turniername">
-            Bierpongturnier
+            <span id="turnier-name"></span>
         </h1>
     <div class = "Anmeldebutton">
-        <sd-button primary icon="add-recipient.svg"><span>Anmelden</span></sd-button>
+        <sd-button primary icon="/node_modules/@smartdesign/icons/add-recipient.svg"><span>Anmelden</span>
+        </sd-button>
     </div>
     </div>
 
     <div class="Beschreibung">
         <h3>Beschreibung</h3>
         <p>
-            Bierpongturnier ist ein Turnier für Bierpongspiele.
+            <span id="beschreibung"></span>
         </p>
     </div>
 
@@ -121,11 +121,11 @@
         <div class ="Infos">
             <h3>Wichtigste Infos</h3>
             <p>
-                <b>Startdatum:</b> 31.02.2024<br>
-                <b>Anmeldeschluss:</b> 30.02.2024<br>
-                <b>Veranstaltungsort:</b> Karlsruhe<br>
-                <b>Startzeit:</b> 15:00 Uhr<br>
-                <b>Kosten:</b> € 10<br>
+                <b>Startdatum:</b> <span id="start-datum"></span><br>
+                <b>Anmeldeschluss:</b> <span id="anmelde-schluss"></span><br>
+                <b>Veranstaltungsort:</b> <span id="veranstaltungsort"></span><br>
+                <b>Startzeit:</b> <span id="start-zeit"></span><br>
+                <b>Kosten:</b> <span id="kosten"></span><br>
             </p>
         </div>
 
@@ -142,5 +142,6 @@
         </div>
 
     </div>
+    <script src="/html/ansicht-turnier.js"></script>
 </body>
 </html>

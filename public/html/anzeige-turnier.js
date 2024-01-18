@@ -330,3 +330,4 @@ function formatiereDatum(datumString) {
 
   return `${stunde}:${minute} Uhr ${tag}.${monatsname}.${jahr}`;
 }
+

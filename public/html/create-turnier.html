@@ -25,8 +25,15 @@
     <div class="examples" >
         <div class="example-container" >
             <span>Turniername</span>
-            <sd-lit-input id="turnierName" type="text" name="turnierName" required placeholder="Fußballturnier Controlling"></sd-lit-input>
-        </div>
+            <sd-lit-input
+                id="turnierName"
+                type="text"
+                name="turnierName"
+                required
+                placeholder="Fußballturnier Controlling"
+                onblur="validateTurnierName(this.value)"
+                ></sd-lit-input>
+    </div>
         <div class="example-container">
             <span>Startdatum</span>
             <sd-lit-input type="date" id="startDatum" name="startDatum" required class="smartdesign-global-smartsearch"></sd-lit-input>

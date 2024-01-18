@@ -1,4 +1,4 @@
-/*// Verbindung zur HTML Datei
+/*
 // Funktion, um den Inhalt einer externen HTML-Datei abzurufen
 async function loadHTML(filePath) {
     try {
@@ -51,6 +51,7 @@ const speichernBtn = document.getElementById('speichernButton');
 
 
     // Logik für Zuweisung zu Teams (for schleife?)
+
     // holen aus URL id des turniers raus
     const urlParams = new URLSearchParams(window.location.search);
     const turnierId = urlParams.get('turnierId');
