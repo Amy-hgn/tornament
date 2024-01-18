@@ -361,11 +361,11 @@ class TurnierController {
 
     async setGameScore(req, res) {
         try {
-            const turnierId = req.body.turnierId;
-            const turnier = await Turnier.Turnier.findById(turnierId).populate('koRunden');
-            const tm = await Turnier.Person.findById(turnier.turnierMaster);
-            console.log('TM: ', turnier.turnierMaster);
-            console.log('TMid: ', tm.personId);
+          const turnierId = req.body.turnierId;
+          const turnier = await Turnier.Turnier.findById(turnierId).populate('koRunden');
+          const tm = await Turnier.Person.findById(turnier.turnierMaster);
+          console.log('TMid: ', tm.personId);
+          if(tm.personId === tm.personId){
             const koRunden = turnier.koRunden;
             const spielDaten = req.body.spielDetails;
             const spielId = spielDaten._id;
@@ -456,6 +456,9 @@ class TurnierController {
                 // turnierBeendet!!
                 res.status(200).json({ message: "Turnier Beendet!" });
             }
+          }else{
+            return res.status(401).json({ message: 'Sie haben keine Berechtigung Spielergebnisse für dieses Turnier einzutragen' });
+          }
         } catch (error) {
             this.handleError(res, 'Fehler beim Aktualisieren des Spiels', error);
         }
