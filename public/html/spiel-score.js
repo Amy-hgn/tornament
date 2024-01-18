@@ -38,54 +38,6 @@ function displayTurnierDetails(turnierDetails) {
         document.getElementById('veranstaltungsort').innerText = `Veranstaltungsort: ${turnierDetails.veranstaltungsort}`;
         document.getElementById('start-datum').innerText = `Startdatum: ${formatiereDatum(turnierDetails.startDatum)}`;
 }
-    // Funktion zum Abrufen der Spielinformationen aus den URL-Parametern
-    function getSpielInformationen() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const spielId = urlParams.get('spiel');
-        const turnierId = urlParams.get('turnierId');
-
-        // Annahme: Hier wird eine API aufgerufen, um die Spielinformationen abzurufen
-        // Passen Sie dies an Ihre Implementierung an
-        fetchSpielDetails(turnierId, spielId)
-            .then(spielDetails => {
-                // Aktualisieren Sie Ihr HTML mit den Spielinformationen
-                // Beispiel: Annahme, dass spielDetails ein Objekt mit den Spielinformationen ist
-                console.log('Spielinformationen:', spielDetails);
-
-                // Hier können Sie die Spielinformationen in Ihr HTML einfügen
-                // ...
-            })
-            .catch(error => {
-                console.error('Fehler beim Abrufen der Spielinformationen:', error);
-            });
-    }
-
-    async function updateSpiel(spielData) {
-        try {
-          const response = await fetch("/api/create-spiel", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(spielData),
-          });
-      
-          if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-          }
-      
-          const data = await response.json();
-          if (!data._id) {
-            throw new Error("Spiel wurde nicht erfolgreich erstellt.");
-          }
-      
-          console.log("Spiel erstellt:", data);
-          return data;
-        } catch (error) {
-          console.error("Fehler beim Erstellen des Spiels:", error);
-          alert("Fehler beim Erstellen des Spiels. Bitte versuche es erneut.");
-        }
-      }
 
       const ergebnisseAbsendenBtn = document.getElementById('ergebnisse-absenden-btn');
       ergebnisseAbsendenBtn.addEventListener('click', submitErgebnisse);
@@ -98,18 +50,17 @@ function displayTurnierDetails(turnierDetails) {
         const turnierId = urlParams.get('turnierId');
         const rundeId = urlParams.get('koRundeId');
         const spielDetails = await fetchSpielDetails(spielId);
-        console.log('SpielDetails vor dem Update:', spielDetails);
         if (parseInt(team1Ergebnis) > parseInt(team2Ergebnis)){
             spielDetails.punkteGewinner = 1;
         } else if(parseInt(team1Ergebnis) < parseInt(team2Ergebnis)){
             spielDetails.punkteGewinner = 2;
         }else{
             console.log("Die Ergebnisse sind gleich.");
+            alert("Unentschieden ist nicht möglich");
             return;
         }
 
         spielDetails.spielStatus = 'completed';
-        console.log(spielDetails);
         const gameObjekt = { spielDetails, turnierId, rundeId };
         try {
         const response = await fetch("/api/set-game-score", {
@@ -121,7 +72,7 @@ function displayTurnierDetails(turnierDetails) {
         });
         if(response.status === 200){console.log("Spiel erfolgreich aktualisiert:", response);
         redirectToTurnierThisTurnier(turnierId);
-        }else{alert("Fehler", response.status);}
+        }else{alert("Fehler", response.message);}
         
         } catch (error) {
             console.error("Fehler beim Updaten des Spiels:", error);
