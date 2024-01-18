@@ -63,7 +63,7 @@ async function speichernButtonClick () {
   const urlParams = new URLSearchParams(window.location.search)
   const turnierId = urlParams.get('id')
 
-  const user = await getIPAddress()
+  const user = await getUserID();
   // Speicherung turnierid user in object
   const myObjekt = { turnierId, user }
   try {
@@ -91,18 +91,18 @@ async function speichernButtonClick () {
   // Anpassung der freien Plätze -> Anbindung ans Frontend
 }
 
-async function getIPAddress () {
-    const initialize = async () => {
-      const api = await smartdesign.connect();
-      try {
-        const userDetails = await api
-          .fetch("v7.0/user/self")
-          .then((p) => p.json());
-        return userDetails.id;
-      } catch (error) {
-        console.log(error);
-      }
-    };
+async function getUserID() {
+    const api = await smartdesign.connect();
+    try {
+      const userDetails = await api
+        .fetch("v7.0/user/self")
+        .then((response) => response.json());
+      return userDetails.id;
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
+  }
 
 //   try {
 //     const response = await fetch('https://ipinfo.io/json')
