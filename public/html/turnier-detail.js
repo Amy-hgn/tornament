@@ -130,13 +130,13 @@ function displaySpiele(spiele, parentElement, koRundeId) {
             if(typeof spiel.team1 === 'undefined' || typeof spiel.team2 === 'undefined'){
                 alert('Team fehlt');
             }else{
-                redirectToSpiel(spiel, parentElement, koRundeId);
+                redirectToSpiel(spiel, koRundeId);
             }
         });
         parentElement.appendChild(spielElement);
     });
 }
-async function redirectToSpiel(spiel, parentElement, koRundeId) {
+async function redirectToSpiel(spiel, koRundeId) {
 
     const urlParams = new URLSearchParams(window.location.search);
     const turnierId = urlParams.get('id');
