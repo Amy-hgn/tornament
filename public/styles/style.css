@@ -172,6 +172,8 @@ sd-button {
 sd-toolbar {
     border-bottom: 1px solid #ccc;
     display: flex;
+    justify-content: space-between; 
+    align-items: center;
 }
 
 sd-toolbar h2 {
@@ -262,4 +264,22 @@ sd-lit-slider {
     flex: 1;
     text-align: center;
     display: table-caption;
+}
+#search-bar {
+	min-height: 20px;
+	margin-bottom: 8px;
+    margin-right: 100px;
+	color: #333;
+	font-size: 14px;
+	line-height: 20px;
+	display: flex;
+}
+
+#search-bar > * {
+	flex: 1;
+}
+
+#search-bar label {
+	text-align: right;
+	padding: 4px;
 }

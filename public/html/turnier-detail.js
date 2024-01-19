@@ -18,8 +18,8 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
 
     // Funktionen zum Anzeigen von Turnierdetails, Ko-Runden und Spielen aufrufen
-    displayTurnierDetails(turnierDetails);
-    displayKoRunden(koRunden);
+    // displayTurnierDetails(turnierDetails);
+    // displayKoRunden(koRunden);
     createTurnierbaum(koRunden);
   } catch (error) {
     console.error("Fehler:", error);
@@ -87,55 +87,49 @@ async function fetchTeamName(teamId) {
   const team = await response.json();
   return team.name;
 }
-/**
- * Turnierdetails auf der Webseite anzeigen.
- *
- * @param {Object} turnierDetails - Die Details des Turniers.
- */
+// /**
+//  * Turnierdetails auf der Webseite anzeigen.
+//  *
+//  * @param {Object} turnierDetails - Die Details des Turniers.
+//  */
 
-function displayTurnierDetails(turnierDetails) {
-  document.getElementById("turnier-name").innerText =
-    turnierDetails.turnierName;
-  document.getElementById(
-    "veranstaltungsort"
-  ).innerText = `Veranstaltungsort: ${turnierDetails.veranstaltungsort}`;
-  document.getElementById(
-    "start-datum"
-  ).innerText = `Startdatum: ${formatiereDatum(turnierDetails.startDatum)}`;
-}
-/**
- * KO-Runden auf der Webseite anzeigen.
- *
- * @param {Array<Object>} koRunden - Ein Array von KO-Runden.
- */
-function displayKoRunden(koRunden) {
-  const koRundenContainer = document.getElementById("ko-runden");
-  koRunden.forEach((koRunde) => {
-    const koRundeElement = document.createElement("div");
-    koRundeElement.innerText = `KO-Runde ${koRunde.tiefe}`;
-    // Anzeigen der Spiele für jede KO-Runde
+// function displayTurnierDetails(turnierDetails) {
+//   document.getElementById("turnier-name").innerText =
+//     turnierDetails.turnierName;
+//   document.getElementById(
+//     "veranstaltungsort"
+//   ).innerText = `Veranstaltungsort: ${turnierDetails.veranstaltungsort}`;
+//   document.getElementById(
+//     "start-datum"
+//   ).innerText = `Startdatum: ${formatiereDatum(turnierDetails.startDatum)}`;
+// // }
+// /**
+//  * KO-Runden auf der Webseite anzeigen.
+//  *
+//  * @param {Array<Object>} koRunden - Ein Array von KO-Runden.
+//  */
+// function displayKoRunden(koRunden) {
+//   const koRundenContainer = document.getElementById("ko-runden");
+//   koRunden.forEach((koRunde) => {
+//     const koRundeElement = document.createElement("div");
+//     koRundeElement.innerText = `KO-Runde ${koRunde.tiefe}`;
+//     // Anzeigen der Spiele für jede KO-Runde
 
-        displaySpiele(koRunde.spiele, koRundeElement, koRunde._id);
+//         displaySpiele(koRunde.spiele, koRundeElement, koRunde._id);
 
-        koRundenContainer.appendChild(koRundeElement);
-    });
-}
+//         koRundenContainer.appendChild(koRundeElement);
+//     });
+// }
 
-function displaySpiele(spiele, parentElement, koRundeId) {
+// function displaySpiele(spiele, parentElement, koRundeId) {
 
-    spiele.forEach(spiel => {
-        const spielElement = document.createElement('div');
-        spielElement.innerText = `Spiel zwischen Team ${spiel.team1} und Team ${spiel.team2} - Status: ${spiel.spielStatus}`;
-        spielElement.addEventListener('click', () => {
-            if(typeof spiel.team1 === 'undefined' || typeof spiel.team2 === 'undefined'){
-                alert('Team fehlt');
-            }else{
-                redirectToSpiel(spiel, koRundeId);
-            }
-        });
-        parentElement.appendChild(spielElement);
-    });
-}
+//     spiele.forEach(spiel => {
+//         const spielElement = document.createElement('div');
+//         spielElement.innerText = `Spiel zwischen Team ${spiel.team1} und Team ${spiel.team2} - Status: ${spiel.spielStatus}`;
+
+//         parentElement.appendChild(spielElement);
+//     });
+// }
 async function redirectToSpiel(spiel, koRundeId) {
 
     const urlParams = new URLSearchParams(window.location.search);
@@ -189,12 +183,26 @@ function createTurnierbaum(koRunden) {
 
         // Holen Sie sich die Spiele für diese Runde aus der KO-Runde
         const spiele = koRunden[runde].spiele;
+        const koRundeId= koRunden[runde]._id
 
         // Erstelle die Spiele für diese Runde
-        spiele.forEach((spiel, spielNummer) => {
+        spiele.forEach((spiel) => {
             const spielElement = document.createElement('div');
             spielElement.classList.add('turnierbaum-spiel');
-
+            spielElement.addEventListener('mouseover', () => {
+                spielElement.style.border = '2px solid black';  // Hervorhebung bei Mausüber
+                spielElement.style.cursor = 'pointer';  // Ändern des Mauszeigers
+            });
+        
+            spielElement.addEventListener('mouseout', () => {
+                spielElement.style.border = 'none';  // Zurücksetzen der Hervorhebung bei Mausaustritt
+                spielElement.style.cursor = 'default';  // Zurücksetzen des Mauszeigers
+            });
+            spielElement.addEventListener('click', () => {
+        
+                redirectToSpiel(spiel, koRundeId);
+            
+        });
             // Holen Sie sich die Teamnamen aus dem aktuellen Spielobjekt
             const team1Name = spiel.team1;
             const team2Name = spiel.team2;

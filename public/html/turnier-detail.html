@@ -11,6 +11,21 @@
     <link rel="stylesheet" href="../styles/style.css" />
   </head>
   <body>
+    <div id="declarative-example-root">
+        <sd-toolbar>
+            <sd-button
+            icon="/node_modules/@smartdesign/icons/toolbar/cancel.svg"
+            slot="left"
+            onclick=""
+          ></sd-button>
+          <h2 slot="middle">Turnierbaum</h2>
+          <sd-button
+            icon="/node_modules/@smartdesign/icons/toolbar/refresh.svg"
+            slot="right"
+            onclick=""
+          ></sd-button>
+        </sd-toolbar>
+      </div>
     <div id="turnier-detail-root">
       <!-- Bereich für Turnier-Details -->
       <div id="turnier-details">
