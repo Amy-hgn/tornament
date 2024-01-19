@@ -265,19 +265,6 @@ app.post('/api/turnier-anmelden', async (req, res) => {
   await turnierController.assignUserToTeam(req,res);
 });
 
-app.get('/userS', async (req, res) => {
-  try {
-    const api = await smartdesign.connect();
-    const userDetails = await api
-      .fetch('v7.0/user')
-      .then(response => response.json());
-
-    res.json(userDetails);
-  } catch (error) {
-    console.error('Error fetching user details:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-});
 
 
 // MongoDB-Verbindung

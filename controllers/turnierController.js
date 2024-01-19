@@ -393,7 +393,7 @@ class TurnierController {
 async assignUserToTeam(req, res) {
   try {
     const turnierId = req.body.turnierId;
-  const personId = req.body.personId;
+    const personId = req.body.personId;
 
     // Check if turnierId is provided
     if (!turnierId) {
@@ -419,24 +419,20 @@ async assignUserToTeam(req, res) {
       if (Array.isArray(team.mitglieder) && team.mitglieder.length < team.teamGröße) {
         if (!foundTeam || (Array.isArray(foundTeam.mitglieder) && team.mitglieder.length < foundTeam.mitglieder.length)) {
           foundTeam = team;
+          console.log("FoundTeam" + foundTeam)
         }
       }
     });
-  
 
     if (!foundTeam) {
       return res.status(400).json({ message: 'Kein freier Platz in den Teams.' });
     }
 
-    //TODO Rausnehemen
-console.log("Person"+ personId)
-
     foundTeam.mitglieder.push(personId);
-    await aktTurnier.save();
+    await aktTurnier.save();    
     await foundTeam.save();
+
     res.status(200).json(aktTurnier);
-
-
   } catch (error) {
     this.handleError(res, 'Fehler beim Zuweisen des Nutzers zu einem Team', error);
   }
