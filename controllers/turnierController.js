@@ -359,6 +359,7 @@ class TurnierController {
   }
  
 
+<<<<<<< HEAD
     async setGameScore(req, res) {
         try {
           const turnierId = req.body.turnierId;
@@ -484,6 +485,92 @@ class TurnierController {
         }
     }
     /**
+=======
+  // 
+  async turnierAnmeldung(req, res) {
+    try {
+      console.log("Received data:", req.body);
+      const turnier = req.body.turnierId;
+      const user = req.body.user;
+      const aktTurnier = await Turnier.Turnier.findById(turnier);
+
+      const teams = aktTurnier.turnierTeams;
+      console.log(teams);
+      return res.status(200).json(teams);
+      // res.status(200).json(teams);
+    } catch (error) {
+      this.handleError(res, "Fehler", error);
+    }
+  }
+
+  // Kontrolle, wie viele Spieler bereits im Team sind, wie viele maximal
+
+
+
+  // hinzufügen von einem user in das 1. Team, welches einen freien Platz hat
+  /**
+ * Assigns a user to the next available team in a turnier.
+ *
+/**
+ * Assigns a user to the next available team in a turnier.
+ *
+ * @param {Object} req - The request object with the turnierId and userId in the body.
+ * @param {Object} res - The response object.
+ * @returns {Object} - The updated turnier with the assigned user in the JSON format.
+ */
+async assignUserToTeam(req, res) {
+  try {
+    const turnierId = req.body.turnierId;
+    const personId = req.body.personId;
+
+    // Check if turnierId is provided
+    if (!turnierId) {
+      return res.status(400).json({ message: 'Turnier-ID fehlt in der Anfrage.' });
+    }
+
+    const aktTurnier = await Turnier.Turnier.findById(turnierId).populate('turnierTeams');
+
+    // Check if the tournament is found
+    if (!aktTurnier) {
+      return res.status(404).json({ message: 'Turnier nicht gefunden.' });
+    }
+
+    // Check if the tournament has already begun
+    if (aktTurnier.turnierStatus === 'BEGONNEN' || aktTurnier.turnierStatus === 'ABGESCHLOSSEN') {
+      return res.status(400).json({ message: 'Das Turnier hat bereits begonnen, eine Teilnahme ist nicht mehr möglich.' });
+    }
+
+    const aktTeams = aktTurnier.turnierTeams;
+
+    let foundTeam = null;
+    aktTeams.some((team) => {
+      if (Array.isArray(team.mitglieder) && team.mitglieder.length < team.teamGröße) {
+        if (!foundTeam || (Array.isArray(foundTeam.mitglieder) && team.mitglieder.length < foundTeam.mitglieder.length)) {
+          foundTeam = team;
+          console.log("FoundTeam" + foundTeam)
+        }
+      }
+    });
+
+    if (!foundTeam) {
+      return res.status(400).json({ message: 'Kein freier Platz in den Teams.' });
+    }
+
+    foundTeam.mitglieder.push(personId);
+    await aktTurnier.save();    
+    await foundTeam.save();
+
+    res.status(200).json(aktTurnier);
+  } catch (error) {
+    this.handleError(res, 'Fehler beim Zuweisen des Nutzers zu einem Team', error);
+  }
+}
+
+
+  
+
+/**
+>>>>>>> turnieranmeldung
  * Hilfsmethode zum Behandeln von Fehlern.
  *
  * @param {Object} res - Das Response-Objekt.
@@ -495,5 +582,9 @@ class TurnierController {
     res.status(500).json({ message });
   }    
 
+<<<<<<< HEAD
 }
 module.exports = new TurnierController();
+=======
+module.exports = new TurnierController();
+>>>>>>> turnieranmeldung

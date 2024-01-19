@@ -55,7 +55,7 @@ app.get("/anzeige-turnier", (req, res) => {
  * @param {express.Response} res - Express-Antwortobjekt.
  */
 app.get("/turnier-byID", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "html", "turnier-detail.html"));
+  res.sendFile(path.join(__dirname, "public", "html", "ansicht-turnier.html"));
 });
 /**
  * Route zum Servieren der HTML-Datei für die Hauptansicht der Turniere.
@@ -72,6 +72,10 @@ app.get("/", (req, res) => {
  */
 app.get('/spiel-byID', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'html', 'spiel-score.html'));
+});
+
+app.get("/anmeldung", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "html", "anmelden-turnier.html"));
 });
 
 // GET-Endpunkte
@@ -265,6 +269,7 @@ app.post("/api/create-ko-runde", async (req, res) => {
   await turnierController.createKORunde(req, res);
 });
 
+<<<<<<< HEAD
 
 
 
@@ -273,6 +278,14 @@ app.post('/api/set-game-score', async (req, res) => {
     await turnierController.setGameScore(req, res);
 });
 
+=======
+app.post('/api/turnier-anmelden', async (req, res) => {
+  await turnierController.assignUserToTeam(req,res);
+});
+
+
+
+>>>>>>> turnieranmeldung
 // MongoDB-Verbindung
 
 /**

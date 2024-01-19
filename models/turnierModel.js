@@ -35,7 +35,7 @@ const teamSchema = mongoose.Schema(
             }],
             teamGröße: {
                 type: Number,
-                default: 4
+                default: 2
             },
     },
     {
