@@ -359,7 +359,6 @@ class TurnierController {
   }
  
 
-<<<<<<< HEAD
     async setGameScore(req, res) {
         try {
           const turnierId = req.body.turnierId;
@@ -485,7 +484,6 @@ class TurnierController {
         }
     }
     /**
-=======
   // 
   async turnierAnmeldung(req, res) {
     try {
@@ -570,7 +568,6 @@ async assignUserToTeam(req, res) {
   
 
 /**
->>>>>>> turnieranmeldung
  * Hilfsmethode zum Behandeln von Fehlern.
  *
  * @param {Object} res - Das Response-Objekt.
@@ -582,9 +579,5 @@ async assignUserToTeam(req, res) {
     res.status(500).json({ message });
   }    
 
-<<<<<<< HEAD
 }
 module.exports = new TurnierController();
-=======
-module.exports = new TurnierController();
->>>>>>> turnieranmeldung
