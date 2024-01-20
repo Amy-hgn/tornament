@@ -1,4 +1,11 @@
 /**
+ * Weiterleitung des Benutzers zur Startseite.
+ */
+function redirectToHomePage () {
+    window.location.href = window.location.origin
+  }
+
+/**
  * Event-Listener für das DOMContentLoaded-Ereignis. Holt und zeigt Turnierdetails an
  */
 document.addEventListener("DOMContentLoaded", async function () {
