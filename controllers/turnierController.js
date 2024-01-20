@@ -538,17 +538,20 @@ async assignUserToTeam(req, res) {
       return res.status(400).json({ message: 'Das Turnier hat bereits begonnen, eine Teilnahme ist nicht mehr möglich.' });
     }
 
+    // Zuweisung ins erste Team mit einem offenen Platz
     const aktTeams = aktTurnier.turnierTeams;
 
-    let foundTeam = null;
-    aktTeams.some((team) => {
-      if (Array.isArray(team.mitglieder) && team.mitglieder.length < team.teamGröße) {
-        if (!foundTeam || (Array.isArray(foundTeam.mitglieder) && team.mitglieder.length < foundTeam.mitglieder.length)) {
-          foundTeam = team;
-          console.log("FoundTeam" + foundTeam)
-        }
+    for (let i = 0; i < aktTeams.length; i++) {
+      if (aktTeams[i].mitglieder.length < aktTeams[i].teamGröße) {
+         aktTeams[i].mitglieder.push(personId);
+         await aktTeams[i].save();
+         // console.log('Test, ob geht.', aktTeams[i]);
+         return res.status(200).json(aktTurnier);
       }
-    });
+    }
+
+    console.log('personId, turnierId');
+     
 
     if (!foundTeam) {
       return res.status(400).json({ message: 'Kein freier Platz in den Teams.' });

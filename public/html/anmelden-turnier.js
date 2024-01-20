@@ -14,10 +14,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 async function speichernButtonClick() {
-  // Kontrolle, ob noch Plätze frei sind
-
-  // Logik für Zuweisung zu Teams (for schleife?)
-
+ 
   // holen aus URL id des turniers raus
   const urlParams = new URLSearchParams(window.location.search);
   const turnierId = urlParams.get("id");
