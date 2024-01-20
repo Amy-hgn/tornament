@@ -15,12 +15,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
 });
 
-// /**
-//  * Leitet den Benutzer zur Seite zum Anmelden weiter
-//  */
-// function redirectToRegistration() {
-//   window.location.href = "./anmelden-turnier";
-// }
 
 /**
  * Holt Turnierdetails vom Server.
