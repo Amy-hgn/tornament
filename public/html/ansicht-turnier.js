@@ -83,16 +83,14 @@ async function displayTurnierDetails(turnierDetails) {
         listenelement.caption = "Team leer";
         console.log(teamDetails[i].name);
         listenelement.description = teamDetails[i].name;
-        const liste = document.getElementById('anmeldeliste');
-        liste.appendChild(listenelement);
+        anmeldeliste.appendChild(listenelement);
       }else {
       for(let j = 0; j < mitglieder.length; j++){
         const spielerimteam = await fetchPersonName(mitglieder[j]);
         const listenelement = document.createElement('sd-list-item');
-        listenelement.caption = mitglieder[j].toString();
+        listenelement.caption = spielerimteam.toString();
         listenelement.description = teamDetails.name;
-        const liste = document.getElementById('anmeldeliste');
-        liste.appendChild(listenelement);
+        anmeldeliste.appendChild(listenelement);
       }}
     }
 
