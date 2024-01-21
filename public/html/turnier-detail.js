@@ -36,6 +36,11 @@ async function fetchTurnierDetails(turnierId) {
   const turnierDetails = await response.json();
   return turnierDetails;
 }
+function redirectToTurnierThisTurnier() {
+  const urlParams = new URLSearchParams(window.location.search);
+    const turnierId = urlParams.get("id");
+  window.location.href = `/turnier-byID?id=${turnierId}`;
+}
 /**
  * Holt KO-Runden vom Server basierend auf ihren IDs.
  *

@@ -81,7 +81,7 @@ function displayTurnierDetails(turnierDetails) {
     }
 
 function redirectToTurnierThisTurnier(turnierId) {
-    window.location.href = `/turnier-byID?id=${turnierId}`;
+    window.location.href = `/turnierbaum-byID?id=${turnierId}`;
 }
 
     function formatiereDatum(datumString) {
