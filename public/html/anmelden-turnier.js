@@ -1,30 +1,12 @@
-/*
-document.addEventListener("DOMContentLoaded", function () {
-  const anmeldeButton = document.querySelector(".Anmeldebutton sd-button");
-  anmeldeButton.addEventListener("click", anmeldeButtonClick);
-
-  async function anmeldeButtonClick() {
-    try {
-      // Hier die Anmelde-Logik implementieren
-      console.log("Anmelde-Button wurde geklickt.");
-      speichernButtonClick();
-    } catch (error) {
-      console.error("Fehler bei der Anmeldung:", error);
-    }
-  }
-});
-*/
-
+// Holt und aktualisiert Benutzerdaten in einem Turnier, auf Grundlage ihrer IP-Adresse.
 async function speichernButtonClick() {
-  // Kontrolle, ob noch Plätze frei sind
-
-  // Logik für Zuweisung zu Teams (for schleife?)
-
-  // holen aus URL id des turniers raus
   const urlParams = new URLSearchParams(window.location.search);
   const turnierId = urlParams.get("id");
 
-  const personId = await getIPAddress();
+  const personDaten = await getIPAddress();
+  const personTeilnehmer = await fetch('/myId?personId=${personDaten}');
+  const personId = await personTeilnehmer.json();
+
   const myObjekt = { turnierId, person: personId };
   try {
     const response = await fetch("/api/turnier-anmelden", {
@@ -48,16 +30,14 @@ async function speichernButtonClick() {
   } catch (error) {
     console.error("Fehler beim Updaten des Spiels:", error);
   }
-  // man schickt es ins backend
-
-  // Anpassung der freien Plätze -> Anbindung ans Frontend
 }
 
+
+// Holt die IP-Adresse des Benutzers oder gibt die lokale IP zurück, wenn zu viele Anfragen gestellt wurden.
 async function getIPAddress() {
   try {
     const response = await fetch("https://ipinfo.io/json");
 
-    // Check if the response status is 429 (Too Many Requests)
     if (response.status === 429) {
       console.warn("Zu viele Anfragen. Verwende lokale IP-Adresse.");
       return "127.0.0.1";
