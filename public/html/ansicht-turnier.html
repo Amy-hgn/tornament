@@ -2,21 +2,16 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ansicht Turnier</title>
     <script src="/node_modules/@smartdesign/button/dist/button-with-externals.js"></script>
     <script src="/node_modules/@smartdesign/toolbar/dist/toolbar-with-externals.js"></script>
-    
+    <script src="/node_modules/@smartdesign/list/dist/list-with-externals.js"></script>
+    <script src="/html/ansicht-turnier.js"></script>
+    <script src="/html/anmelden-turnier.js"></script>
+    <link rel="stylesheet" href="../styles/style.css">
+     
 </head>
 <style>
-    .sd-web-app {
-	display: inline-block;
-}
-
-.sd-web-app > * {
-	/* Simulate a layout with spacing */
-	margin: 8px;
-}
 
 sd-toolbar {
 	border-bottom: 1px solid #ccc;
@@ -30,54 +25,52 @@ sd-toolbar h2 {
 	line-height: 32px;
 	font-weight: lighter;
 }
+
+    #turnier-name {
+        text-align: center;
+        margin: 0 auto;
+    }
+
 </style>
 
 <body>
-    <div id="Turnieransicht">
-        <div class="sd-web-app">
-            <div class="Leiste oben">
-                <sd-toolbar>
-                    <sd-button icon="/node_modules/@smartdesign/icons/cancel.svg" slot="left"></sd-button>
-                    <h2><span id="turnier-name"></span></h2>
-                    <sd-button primary icon="/node_modules/@smartdesign/icons/add-recipient.svg" onclick="speichernButtonClick()"><span>Anmelden</span></sd-button>
-                </sd-toolbar>
-            </div>
-            <div class="sd-separator-line"></div>
-            <div><span id="beschreibung"></span></div>
-            <div class="sd-large-padding sd-content-background" style="width: calc(50% - 64px); float: left">
-                <div class="sd-content-heading">Wichtige Infos</div>
-                <div class="sd-primary-text">Startdatum</div>
-                <div class="sd-secondary-text"><span id="start-datum"></span></div>
-                <div class="sd-separator-line sd-tiny-margin"></div>
-                <div class="sd-primary-text">Anmeldeschluss</div>
-                <div class="sd-secondary-text"><span id="anmelde-schluss"></span></div>
-                <div class="sd-separator-line sd-tiny-margin"></div>
-                <div class="sd-primary-text">Veranstaltungsort</div>
-                <div class="sd-secondary-text"><span id="veranstaltungsort"></span></div>
-                <div class="sd-separator-line sd-tiny-margin"></div>
-                <div class="sd-primary-text">Startzeit</div>
-                <div class="sd-secondary-text"><span id="start-zeit"></span></div>
-                <div class="sd-primary-text">Kosten</div>
-                <div class="sd-secondary-text"><span id="kosten"></span></div>
-            </div>
-            <div class="sd-large-padding sd-content-background" style="width: calc(50% - 64px); float: left">
-                <div class="sd-content-heading">Anmeldungen</div>
-                <div class="sd-primary-text">Item caption</div>
-                <div class="sd-secondary-text">Item description</div>
-                <div class="sd-separator-line sd-tiny-margin"></div>
-                <div class="sd-primary-text">Item caption</div>
-                <div class="sd-secondary-text">Item description</div>
-                <div class="sd-separator-line sd-tiny-margin"></div>
-                <div class="sd-primary-text">Item caption</div>
-                <div class="sd-secondary-text">Item description</div>
-                <div class="sd-separator-line sd-tiny-margin"></div>
-                <div class="sd-primary-text">Item caption</div>
-                <div class="sd-secondary-text">Item description</div>
-            </div>
-            </div>
-        </div>
+    <div id="declarative-example-root">
+        <sd-toolbar>
+            <sd-button icon="/node_modules/@smartdesign/icons/toolbar/cancel.svg" slot="left" onclick="redirectToHomePage()"></sd-button>
+            <h1 id="turnier-name"></h1>
+            <sd-button slot="right" onclick="anmeldeButtonClick()"><span>Anmelden</span></sd-button>
+        </sd-toolbar>
     </div>
-    <script src="ansicht-turnier.js"></script>
-    <script src="/html/anmelden-turnier.js"></script>
+
+    <div class="Beschreibung">
+        <h3>Beschreibung</h3>
+        <p>
+            <span id="beschreibung"></span>
+        </p>
+    </div>
+
+    <div class="Turnieransicht">
+            <sd-list class="declarative" tabindex="0" style="width: calc(50% - 64px); float: left">
+                <sd-list-item caption="Wichtige Infos" icon="icon.svg" ></sd-list-item>
+                <sd-list-item caption="Startdatum" ></sd-list-item>
+                    <span id="start-datum"></span>
+                <sd-list-item caption="Anmeldeschluss" ></sd-list-item>
+                    <span id="anmelde-schluss"></span>
+                <sd-list-item caption="Veranstaltungsort" ></sd-list-item>
+                    <span id="veranstaltungsort"></span>
+                <sd-list-item caption="Startzeit" ></sd-list-item>
+                    <span id="start-zeit"></span>
+                <sd-list-item caption="Kosten" ></sd-list-item>
+                    <span id="kosten"></span>
+            </sd-list>
+            <sd-list class="Anmeldungen" tabindex="0" style="width: calc(50% - 64px); float: right">
+                <sd-list-item caption="Anmeldungen" icon="icon.svg"></sd-list-item>
+                <sd-list-item caption="Lional Bukac" description="Full time employee" ></sd-list-item>
+                <sd-list-item caption="Lucho Giacopello" description="Full time employee" ></sd-list-item>
+                <sd-list-item caption="Rik Lapham" description="Student" ></sd-list-item>
+                <sd-list-item caption="Gunner Dewsbury" description="Student" ></sd-list-item>
+            </sd-list>
+        </div>   
+    </div>
 </body>
 </html>
