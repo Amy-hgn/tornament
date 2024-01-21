@@ -86,13 +86,14 @@ async function fetchTeamName(teamId) {
   const response = await fetch(`/team-ID?id=${teamId}`);
   const team = await response.json();
   return team.name;
+}
 
 function openOverview(){
   const urlParams = new URLSearchParams(window.location.search);
   const turnierId = urlParams.get("id");
   window.location.href = `/turnier-byID?id=${turnierId}`;
 }
-}
+
 // /**
 //  * Turnierdetails auf der Webseite anzeigen.
 //  *
