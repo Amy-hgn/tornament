@@ -17,7 +17,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     
 
 async function fetchTurnierDetails(turnierId) {
-    // Implementieren Sie die Funktion zum Abrufen von Turnierdetails vom Server
     const response = await fetch(`/turnier-ID?id=${turnierId}`);
     const turnierDetails = await response.json();
     return turnierDetails;
@@ -28,7 +27,6 @@ async function fetchSpielDetails(spielId) {
     return spielDetails;
 }
 async function fetchTeamName(teamId) {
-    // Implementieren Sie die Funktion zum Abrufen des Team-Namens vom Server
     const response = await fetch(`/team-ID?id=${teamId}`);
     const team = await response.json();
     return team.name;}
