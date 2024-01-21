@@ -58,6 +58,9 @@ app.get("/turnier-byID", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "html", "ansicht-turnier.html"));
 });
 
+app.get("/turnierbaum-byID", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "html", "turnier-detail.html"));
+});
 app.get("/spielen-byID", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "html", "turnier-detail.html"));
 });

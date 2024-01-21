@@ -380,12 +380,12 @@ class TurnierController {
             const { punkteGewinner, spielStatus } = spielDaten;
     
             const updateObj = {};
-            if (punkteGewinner) {
+            if (punkteGewinner === 1 || punkteGewinner === 0) {
                 updateObj.punkteGewinner = punkteGewinner;
-            }
-            if (spielStatus) {
+            }else{return res.status(404).json({ message: 'nur 1 oder 2' });}
+            if (spielStatus === 'completed') {
                 updateObj.spielStatus = spielStatus;
-            }
+            }else{return res.status(404).json({ message: 'Spiel nicht fertig?' });}
     
             const updatedSpiel = await Turnier.Spiel.findByIdAndUpdate(
                 spielId,
@@ -455,11 +455,9 @@ class TurnierController {
                 }
                 const update3Obj = {};
                 if (spielNr % 2 === 0) {
-                  // gerade
                   update3Obj.team2 = verlierer;
                   nextGameNr = 1;
                 } else {
-                  // ungerade
                   update3Obj.team1 = verlierer;
                   nextGameNr = 0;
                 }
@@ -472,9 +470,10 @@ class TurnierController {
                 }
                 res.status(200).json({ updatedSpiel, updated2Spiel });
             } else {
-
-                // turnierBeendet!! wenn runde+1 auch fertig
+              const finale = await Turnier.Spiel.findById(koRunden[1].koSpiele[0]);
+                if(finale.spielStatus === 'completed'){
                 res.status(200).json({ message: "Turnier Beendet!" });
+                }
             }
           }else{
             return res.status(401).json({ message: 'Sie haben keine Berechtigung Spielergebnisse für dieses Turnier einzutragen' });
@@ -483,7 +482,8 @@ class TurnierController {
             this.handleError(res, 'Fehler beim Aktualisieren des Spiels', error);
         }
     }
-    /**
+ 
+/**
   // 
   async turnierAnmeldung(req, res) {
     try {
@@ -501,7 +501,7 @@ class TurnierController {
     }
   }
 
-  
+
 /**
  * Fügt einen User dem nächsten verfügbaren Team in einem Turnier hinzu.
  *

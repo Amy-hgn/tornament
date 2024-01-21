@@ -14,7 +14,6 @@ document.addEventListener("DOMContentLoaded", async function () {
         const turnierId = urlParams.get('id');
 
         const turnierDetails = await fetchTurnierDetails(turnierId);
-
         // Funktionen zum Anzeigen von Turnierdetails aufrufen
         displayTurnierDetails(turnierDetails);
     } catch (error) {
@@ -41,10 +40,10 @@ async function fetchTurnierDetails(turnierId) {
  * @param {string} teamId - Die ID des Teams.
  * @returns {Promise<string>} - Ein Promise, das zu einem Teamnamen auflöst.
  */
-async function fetchTeamName(teamId) {
+async function fetchTeam(teamId) {
     const response = await fetch(`/team-ID?id=${teamId}`);
     const team = await response.json();
-    return team.name;
+    return team;
   }
 
   /**
@@ -65,7 +64,7 @@ async function fetchPersonName(personId) {
  * @param {Object} turnierDetails - Die Details des Turniers.
  */
 
-function displayTurnierDetails(turnierDetails) {
+async function displayTurnierDetails(turnierDetails) {
     document.getElementById('turnier-name').innerText = turnierDetails.turnierName;
     document.getElementById('veranstaltungsort').description = ` ${turnierDetails.veranstaltungsort}`;
     document.getElementById('start-datum').description = ` ${formatiereDatum(turnierDetails.startDatum)}`;
@@ -74,16 +73,33 @@ function displayTurnierDetails(turnierDetails) {
     document.getElementById('start-zeit').description = turnierDetails.startZeit + " Uhr";
     document.getElementById('beschreibung').innerText = turnierDetails.beschreibung;
     const anmeldeliste = document.getElementById('anmeldeliste');
+    const teams = turnierDetails.turnierTeams;
+    let teamDetails = [];
+    for (let i = 0; i < teams.length; i++){
+      teamDetails.push(await fetchTeam(teams[i]));
+      const mitglieder = teamDetails.mitglieder;
+      if(typeof mitglieder === 'undefined'){
+        const listenelement = document.createElement('sd-list-item');
+        listenelement.caption = "Team leer";
+        console.log(teamDetails[i].name);
+        listenelement.description = teamDetails[i].name;
+        anmeldeliste.appendChild(listenelement);
+      }else {
+      for(let j = 0; j < mitglieder.length; j++){
+        const spielerimteam = await fetchPersonName(mitglieder[j]);
+        const listenelement = document.createElement('sd-list-item');
+        listenelement.caption = spielerimteam.toString();
+        listenelement.description = teamDetails.name;
+        anmeldeliste.appendChild(listenelement);
+      }}
+    }
+
 }
 
-function spielen() {
-
+function redirectToBaum() {
   const urlParams = new URLSearchParams(window.location.search);
   const turnierId = urlParams.get('id');
-  const detailPageUrl = `/spielen-byID?id=${turnierId}`;
-
-  // Weiterleitung zur Detailseite
-  window.location.href = detailPageUrl;
+  window.location.href = `/turnierbaum-byID?id=${turnierId}`;
 }
 
 
