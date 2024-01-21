@@ -183,7 +183,7 @@ function createTurnierbaum(koRunden) {
     const defaultBackgroundColor = '#B9D7F5';
 
     // Erstelle die Runden
-    for (let runde = 0; runde < koRunden.length; runde++) {
+    for (let runde = 1; runde < koRunden.length; runde++) {
         const rundenElement = document.createElement('div');
         rundenElement.classList.add('turnierbaum-runde');
 
@@ -234,14 +234,19 @@ function createTurnierbaum(koRunden) {
         const rundenText = document.createElement('div');
         rundenText.classList.add('runden-text');
         if (runde === 0) {
-            rundenText.textContent = 'Spiel um Platz 1';
-        } else if (runde === 1) {
             rundenText.textContent = 'Spiel um Platz 3';
+        } else if (runde === 1) {
+            rundenText.textContent = 'Spiel um Platz 1';
         } else {
             rundenText.textContent = `Runde ${koRunden.length-runde}`;
         }
 
         turnierbaumElement.appendChild(rundenText);
         turnierbaumElement.appendChild(rundenElement);
+        if(runde === 1){
+          runde = -1;
+        }else if(runde === 0){
+          runde++;
+        }
     }
 }
