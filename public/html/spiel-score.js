@@ -71,7 +71,10 @@ function displayTurnierDetails(turnierDetails) {
             body: JSON.stringify(gameObjekt),
         });
         if(response.status === 200){console.log("Spiel erfolgreich aktualisiert:", response);
-        window.history.back();
+        window.location.replace(document.referrer);
+        setTimeout(function() {
+            location.reload();
+        }, 1000);
         }else{alert("Fehler", response.message);}
         
         } catch (error) {
