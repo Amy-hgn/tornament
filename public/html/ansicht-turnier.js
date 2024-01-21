@@ -73,7 +73,10 @@ function displayTurnierDetails(turnierDetails) {
     document.getElementById('kosten').description = `${turnierDetails.kosten}`;
     document.getElementById('start-zeit').description = turnierDetails.startZeit + " Uhr";
     document.getElementById('beschreibung').innerText = turnierDetails.beschreibung;
+    const anmeldeliste = document.getElementById('anmeldeliste');
 }
+
+
 
 /*
 // Neue Anmeldungen der Liste hinzufügen
