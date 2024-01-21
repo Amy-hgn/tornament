@@ -67,11 +67,11 @@ async function fetchPersonName(personId) {
 
 function displayTurnierDetails(turnierDetails) {
     document.getElementById('turnier-name').innerText = turnierDetails.turnierName;
-    document.getElementById('veranstaltungsort').innerText = ` ${turnierDetails.veranstaltungsort}`;
-    document.getElementById('start-datum').innerText = ` ${formatiereDatum(turnierDetails.startDatum)}`;
-    document.getElementById('anmelde-schluss').innerText = ` ${formatiereDatum(turnierDetails.endDatum)}`;
-    document.getElementById('kosten').innerText = `${turnierDetails.kosten}`;
-    document.getElementById('start-zeit').innerText = turnierDetails.startZeit + " Uhr";
+    document.getElementById('veranstaltungsort').description = ` ${turnierDetails.veranstaltungsort}`;
+    document.getElementById('start-datum').description = ` ${formatiereDatum(turnierDetails.startDatum)}`;
+    document.getElementById('anmelde-schluss').description = ` ${formatiereDatum(turnierDetails.endDatum)}`;
+    document.getElementById('kosten').description = `${turnierDetails.kosten}`;
+    document.getElementById('start-zeit').description = turnierDetails.startZeit + " Uhr";
     document.getElementById('beschreibung').innerText = turnierDetails.beschreibung;
 }
 
