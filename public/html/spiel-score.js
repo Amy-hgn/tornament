@@ -6,7 +6,6 @@ document.addEventListener("DOMContentLoaded", async function () {
         const turnierDetails = await fetchTurnierDetails(turnierId);
         const spielDetails = await fetchSpielDetails(spielId);
         displayTurnierDetails(turnierDetails);
-        console.log(spielDetails.team1);
         document.getElementById('team1name').innerText =spielDetails.team1 ? await fetchTeamName(spielDetails.team1) : 'Noch Offen';
         document.getElementById('team2name').innerText =spielDetails.team2 ? await fetchTeamName(spielDetails.team2) : 'Noch Offen';
     } catch (error) {
@@ -17,7 +16,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     
 
 async function fetchTurnierDetails(turnierId) {
-    // Implementieren Sie die Funktion zum Abrufen von Turnierdetails vom Server
     const response = await fetch(`/turnier-ID?id=${turnierId}`);
     const turnierDetails = await response.json();
     return turnierDetails;
@@ -28,7 +26,6 @@ async function fetchSpielDetails(spielId) {
     return spielDetails;
 }
 async function fetchTeamName(teamId) {
-    // Implementieren Sie die Funktion zum Abrufen des Team-Namens vom Server
     const response = await fetch(`/team-ID?id=${teamId}`);
     const team = await response.json();
     return team.name;}
@@ -71,7 +68,10 @@ function displayTurnierDetails(turnierDetails) {
             body: JSON.stringify(gameObjekt),
         });
         if(response.status === 200){console.log("Spiel erfolgreich aktualisiert:", response);
-        redirectToTurnierThisTurnier(turnierId);
+        window.location.replace(document.referrer);
+        setTimeout(function() {
+            location.reload();
+        }, 1000);
         }else{alert("Fehler", response.message);}
         
         } catch (error) {

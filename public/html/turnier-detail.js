@@ -92,6 +92,13 @@ async function fetchTeamName(teamId) {
   const team = await response.json();
   return team.name;
 }
+
+function openOverview(){
+  const urlParams = new URLSearchParams(window.location.search);
+  const turnierId = urlParams.get("id");
+  window.location.href = `/turnier-byID?id=${turnierId}`;
+}
+
 // /**
 //  * Turnierdetails auf der Webseite anzeigen.
 //  *
@@ -139,7 +146,6 @@ async function redirectToSpiel(spiel, koRundeId) {
 
     const urlParams = new URLSearchParams(window.location.search);
     const turnierId = urlParams.get('id');
-    console.log(spiel.ObjectId);
     window.location.href = `/spiel-byID?spiel=${spiel._id}&turnierId=${turnierId}&koRundeId=${koRundeId}`;
 }
 function formatiereDatum(datumString) {
