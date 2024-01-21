@@ -380,7 +380,7 @@ class TurnierController {
             const { punkteGewinner, spielStatus } = spielDaten;
     
             const updateObj = {};
-            if (punkteGewinner === 1 || punkteGewinner === 0) {
+            if (punkteGewinner === 1 || punkteGewinner === 2) {
                 updateObj.punkteGewinner = punkteGewinner;
             }else{return res.status(404).json({ message: 'nur 1 oder 2' });}
             if (spielStatus === 'completed') {
