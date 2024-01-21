@@ -81,7 +81,6 @@ async function displayTurnierDetails(turnierDetails) {
       if(typeof mitglieder === 'undefined'){
         const listenelement = document.createElement('sd-list-item');
         listenelement.caption = "Team leer";
-        console.log(teamDetails[i].name);
         listenelement.description = teamDetails[i].name;
         anmeldeliste.appendChild(listenelement);
       }else {

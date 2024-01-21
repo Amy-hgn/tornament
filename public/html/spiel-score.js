@@ -6,7 +6,6 @@ document.addEventListener("DOMContentLoaded", async function () {
         const turnierDetails = await fetchTurnierDetails(turnierId);
         const spielDetails = await fetchSpielDetails(spielId);
         displayTurnierDetails(turnierDetails);
-        console.log(spielDetails.team1);
         document.getElementById('team1name').innerText =spielDetails.team1 ? await fetchTeamName(spielDetails.team1) : 'Noch Offen';
         document.getElementById('team2name').innerText =spielDetails.team2 ? await fetchTeamName(spielDetails.team2) : 'Noch Offen';
     } catch (error) {
