@@ -36,13 +36,16 @@ async function speichernButtonClick() {
 
     const data = await response.json();
     console.log("Daten", data);
-
+    reloadPage();
     console.log("Spiel erfolgreich aktualisiert:", myObjekt);
   } catch (error) {
     console.error("Fehler beim Updaten des Spiels:", error);
   }
 }
 
+function reloadPage () {
+  window.location.reload()
+}
 
 // Holt die IP-Adresse des Benutzers oder gibt die lokale IP zurück, wenn zu viele Anfragen gestellt wurden.
 async function getIPAddress() {

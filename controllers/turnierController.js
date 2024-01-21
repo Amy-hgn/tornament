@@ -229,8 +229,8 @@ class TurnierController {
   async getPerson(req, res) {
     try {
       const personId = req.query.personId;
-      const person = await Turnier.Person.find({ personId }).limit(1);
-      res.status(200).json({ person });
+      const person = await Turnier.Person.findOne({ _id:personId });
+      res.status(200).json(person);
     } catch (error) {
       this.handleError(res, "Fehler beim Abrufen der Person", error);
     }

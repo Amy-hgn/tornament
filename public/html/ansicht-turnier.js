@@ -53,9 +53,10 @@ async function fetchTeam(teamId) {
  * @returns {Promise<string>} - Ein Promise, das zu einem Spielernamen auflöst.
  */
 async function fetchPersonName(personId) {
-  const response = await fetch(`/person-ID?id=${personId}`);
+  const response = await fetch(`/person?personId=${personId}`);
   const person = await response.json();
-  return person.name;
+  let Name = person.name
+  return Name;
 }
 
 /**
@@ -75,23 +76,20 @@ async function displayTurnierDetails(turnierDetails) {
     const anmeldeliste = document.getElementById('anmeldeliste');
     const teams = turnierDetails.turnierTeams;
     let teamDetails = [];
-    for (let i = 0; i < teams.length; i++){
-      teamDetails.push(await fetchTeam(teams[i]));
+    for (let i = 0; i < teams.length; i++) {
+      const teamDetails = await fetchTeam(teams[i]);
       const mitglieder = teamDetails.mitglieder;
-      if(typeof mitglieder === 'undefined'){
-        const listenelement = document.createElement('sd-list-item');
-        listenelement.caption = "Team leer";
-        console.log(teamDetails[i].name);
-        listenelement.description = teamDetails[i].name;
-        anmeldeliste.appendChild(listenelement);
-      }else {
-      for(let j = 0; j < mitglieder.length; j++){
-        const spielerimteam = await fetchPersonName(mitglieder[j]);
-        const listenelement = document.createElement('sd-list-item');
-        listenelement.caption = spielerimteam.toString();
-        listenelement.description = teamDetails.name;
-        anmeldeliste.appendChild(listenelement);
-      }}
+    
+      // Überprüfe, ob das Team Mitglieder hat
+      if (mitglieder && mitglieder.length > 0) {
+        for (let j = 0; j < mitglieder.length; j++) {
+          let spielerimteam = await fetchPersonName(mitglieder[j]);
+          const listenelement = document.createElement('sd-list-item');
+          listenelement.caption = spielerimteam;
+          listenelement.description = "Im Team: " + teamDetails.name;
+          anmeldeliste.appendChild(listenelement);
+        }
+      }
     }
 
 }
@@ -100,6 +98,29 @@ function redirectToBaum() {
   const urlParams = new URLSearchParams(window.location.search);
   const turnierId = urlParams.get('id');
   window.location.href = `/turnierbaum-byID?id=${turnierId}`;
+}
+
+/**
+ * Abrufen der IP-Adresse des Benutzers.
+ *
+ * @returns {Promise<string|null>} - Die IP-Adresse oder null bei einem Fehler.
+ */
+async function getIPAddress () {
+  try {
+    const response = await fetch('https://ipinfo.io/json')
+
+    // Check if the response status is 429 (Too Many Requests)
+    if (response.status === 429) {
+      console.warn('Zu viele Anfragen. Verwende lokale IP-Adresse.')
+      return '127.0.0.1'
+    }
+
+    const data = await response.json()
+    return data.ip
+  } catch (error) {
+    console.error('Fehler beim Abrufen der IP-Adresse:', error)
+    return null
+  }
 }
 
 
