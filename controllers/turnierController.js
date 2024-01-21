@@ -501,62 +501,56 @@ class TurnierController {
     }
   }
 
-  // Kontrolle, wie viele Spieler bereits im Team sind, wie viele maximal
 
 
-
-  // hinzufügen von einem user in das 1. Team, welches einen freien Platz hat
-  /**
- * Assigns a user to the next available team in a turnier.
- *
 /**
- * Assigns a user to the next available team in a turnier.
+ * Fügt einen User dem nächsten verfügbaren Team in einem Turnier hinzu.
  *
- * @param {Object} req - The request object with the turnierId and userId in the body.
- * @param {Object} res - The response object.
- * @returns {Object} - The updated turnier with the assigned user in the JSON format.
+ * @param {Object} req - Request-Objekt mit der turnierId und userId im Body.
+ * @param {Object} res - Das Response-Objekt.
+ * @returns {Object} - Das aktualisierte Turnier mit dem zugewiesenen Benutzer im JSON-Format.
  */
 async assignUserToTeam(req, res) {
   try {
     const turnierId = req.body.turnierId;
     const personId = req.body.personId;
 
-    // Check if turnierId is provided
+    // Prüfen, ob die turnierId vorhanden ist.
     if (!turnierId) {
       return res.status(400).json({ message: 'Turnier-ID fehlt in der Anfrage.' });
     }
 
     const aktTurnier = await Turnier.Turnier.findById(turnierId).populate('turnierTeams');
 
-    // Check if the tournament is found
+    // Prüft, ob das Turnier gefunden wurde.
     if (!aktTurnier) {
       return res.status(404).json({ message: 'Turnier nicht gefunden.' });
     }
 
-    // Check if the tournament has already begun
+    // Prüft, ob das Turnier bereits begonnen hat. Wenn ja, kommt die Meldung, dass eine Teilnahme nicht mehr möglich ist.
     if (aktTurnier.turnierStatus === 'BEGONNEN' || aktTurnier.turnierStatus === 'ABGESCHLOSSEN') {
       return res.status(400).json({ message: 'Das Turnier hat bereits begonnen, eine Teilnahme ist nicht mehr möglich.' });
     }
 
-    // Zuweisung ins erste Team mit einem offenen Platz
+    // Zuweisung ins erste Team mit einem offenen Platz. Ein Team wird nach dem nächsten gefüllt.
     const aktTeams = aktTurnier.turnierTeams;
 
     for (let i = 0; i < aktTeams.length; i++) {
       if (aktTeams[i].mitglieder.length < aktTeams[i].teamGröße) {
          aktTeams[i].mitglieder.push(personId);
          await aktTeams[i].save();
-         // console.log('Test, ob geht.', aktTeams[i]);
          return res.status(200).json(aktTurnier);
       }
     }
 
     console.log('personId, turnierId');
      
-
+    // Meldung, falls es keinen freien Platz mehr in einem Team gibt.
     if (!foundTeam) {
       return res.status(400).json({ message: 'Kein freier Platz in den Teams.' });
     }
 
+    // Fügt eine Person in die Mitgliederliste eines Teams hinzu und speichert das aktuelle Turnier mit dem aktualisierten Team ab.
     foundTeam.mitglieder.push(personId);
     await aktTurnier.save();    
     await foundTeam.save();
