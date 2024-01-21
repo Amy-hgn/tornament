@@ -24,7 +24,11 @@ async function speichernButtonClick() {
   const urlParams = new URLSearchParams(window.location.search);
   const turnierId = urlParams.get("id");
 
-  const personId = await getIPAddress();
+  
+  const personDaten = await getIPAddress();
+  const personTeilnehmer = await fetch('/myId?personId=${personDaten}');
+  const personId = await personTeilnehmer.json();
+
   const myObjekt = { turnierId, person: personId };
   try {
     const response = await fetch("/api/turnier-anmelden", {
