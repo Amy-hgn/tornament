@@ -63,6 +63,17 @@ function displayTurnierDetails(turnierDetails) {
     document.getElementById('beschreibung').innerText = turnierDetails.beschreibung;
 }
 
+// Neue Anmeldungen der Liste hinzufügen
+function addName(caption, description) {
+  var list = document.querySelector('.Anmeldungen');
+
+  var newName = document.createElement('sd-list-item');
+  newName.setAttribute('caption', caption);
+  newName.setAttribute('description', description);
+
+  list.appendChild(newName);
+}
+
 /**
  * Formatieren eines Datums in ein benutzerfreundliches Format.
  *

@@ -2,13 +2,14 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ansicht Turnier</title>
     <script src="/node_modules/@smartdesign/button/dist/button-with-externals.js"></script>
     <script src="/node_modules/@smartdesign/toolbar/dist/toolbar-with-externals.js"></script>
     <script src="/node_modules/@smartdesign/list/dist/list-with-externals.js"></script>
     <script src="/public/html/ansicht-turnier.js"></script>
-    
+    <script src="/public/html/anmelden-turnier.js"></script>
+    <link rel="stylesheet" href="../styles/style.css">
+     
 </head>
 <style>
 
@@ -31,25 +32,32 @@ sd-toolbar h2 {
         <sd-toolbar>
             <sd-button icon="/node_modules/@smartdesign/icons/toolbar/cancel.svg" slot="left" onclick="redirectToHomePage()"></sd-button>
             <h1 id="turnier-name"></h1>
-            <sd-button primary icon="/node_modules/@smartdesign/icons/toolbar/add-recipient.svg" slot="right" onclick="redirectToHomePage()"><span>Anmelden</span></sd-button>
+            <sd-button slot="right" onclick="anmeldeButtonClick()"><span>Anmelden</span></sd-button>
         </sd-toolbar>
+    </div>
+
+    <div class="Beschreibung">
+        <h3>Beschreibung</h3>
+        <p>
+            <span id="beschreibung"></span>
+        </p>
     </div>
 
     <div class="Turnieransicht">
             <sd-list class="declarative" tabindex="0" style="width: calc(50% - 64px); float: left">
                 <sd-list-item caption="Wichtige Infos"></sd-list-item>
-                <sd-list-item caption="Startdatum" description= "Freifickmuschi"  icon="icon.svg"></sd-list-item>
-                <sd-list-item caption="Anmeldeschluss" description="Full time employee" icon="icon.svg"></sd-list-item>
-                <sd-list-item caption="Veranstaltungsort" description="Student" icon="icon.svg"></sd-list-item>
-                <sd-list-item caption="Startzeit" description="Student" icon="icon.svg"></sd-list-item>
-                <sd-list-item caption="Kosten" description="Student" icon="icon.svg"></sd-list-item>
+                <sd-list-item caption="Startdatum" id= "start-datum" ></sd-list-item>
+                <sd-list-item caption="Anmeldeschluss" id="anmelde-schluss" ></sd-list-item>
+                <sd-list-item caption="Veranstaltungsort" id="veranstaltungsort" ></sd-list-item>
+                <sd-list-item caption="Startzeit" id="start-zeit" ></sd-list-item>
+                <sd-list-item caption="Kosten" id="kosten" ></sd-list-item>
             </sd-list>
             <sd-list class="Anmeldungen" tabindex="0" style="width: calc(50% - 64px); float: right">
                 <sd-list-item caption="Anmeldungen"></sd-list-item>
-                <sd-list-item caption="Lional Bukac" description="Full time employee" icon="icon.svg"></sd-list-item>
-                <sd-list-item caption="Lucho Giacopello" description="Full time employee" icon="icon.svg"></sd-list-item>
-                <sd-list-item caption="Rik Lapham" description="Student" icon="icon.svg"></sd-list-item>
-                <sd-list-item caption="Gunner Dewsbury" description="Student" icon="icon.svg"></sd-list-item>
+                <sd-list-item caption="Lional Bukac" description="Full time employee" ></sd-list-item>
+                <sd-list-item caption="Lucho Giacopello" description="Full time employee" ></sd-list-item>
+                <sd-list-item caption="Rik Lapham" description="Student" ></sd-list-item>
+                <sd-list-item caption="Gunner Dewsbury" description="Student" ></sd-list-item>
             </sd-list>
         </div>   
     </div>
