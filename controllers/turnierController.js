@@ -380,12 +380,12 @@ class TurnierController {
             const { punkteGewinner, spielStatus } = spielDaten;
     
             const updateObj = {};
-            if (punkteGewinner) {
+            if (punkteGewinner === 1 || punkteGewinner === 0) {
                 updateObj.punkteGewinner = punkteGewinner;
-            }
-            if (spielStatus) {
+            }else{return res.status(404).json({ message: 'nur 1 oder 2' });}
+            if (spielStatus === 'completed') {
                 updateObj.spielStatus = spielStatus;
-            }
+            }else{return res.status(404).json({ message: 'Spiel nicht fertig?' });}
     
             const updatedSpiel = await Turnier.Spiel.findByIdAndUpdate(
                 spielId,
@@ -455,11 +455,9 @@ class TurnierController {
                 }
                 const update3Obj = {};
                 if (spielNr % 2 === 0) {
-                  // gerade
                   update3Obj.team2 = verlierer;
                   nextGameNr = 1;
                 } else {
-                  // ungerade
                   update3Obj.team1 = verlierer;
                   nextGameNr = 0;
                 }
@@ -472,9 +470,10 @@ class TurnierController {
                 }
                 res.status(200).json({ updatedSpiel, updated2Spiel });
             } else {
-
-                // turnierBeendet!! wenn runde+1 auch fertig
+              const finale = await Turnier.Spiel.findById(koRunden[1].koSpiele[0]);
+                if(finale.spielStatus === 'completed'){
                 res.status(200).json({ message: "Turnier Beendet!" });
+                }
             }
           }else{
             return res.status(401).json({ message: 'Sie haben keine Berechtigung Spielergebnisse für dieses Turnier einzutragen' });
@@ -483,82 +482,7 @@ class TurnierController {
             this.handleError(res, 'Fehler beim Aktualisieren des Spiels', error);
         }
     }
-    /**
-  // 
-  async turnierAnmeldung(req, res) {
-    try {
-      console.log("Received data:", req.body);
-      const turnier = req.body.turnierId;
-      const user = req.body.user;
-      const aktTurnier = await Turnier.Turnier.findById(turnier);
-
-      const teams = aktTurnier.turnierTeams;
-      console.log(teams);
-      return res.status(200).json(teams);
-      // res.status(200).json(teams);
-    } catch (error) {
-      this.handleError(res, "Fehler", error);
-    }
-  }
-
-  
-/**
- * Fügt einen User dem nächsten verfügbaren Team in einem Turnier hinzu.
- *
- * @param {Object} req - Request-Objekt mit der turnierId und userId im Body.
- * @param {Object} res - Das Response-Objekt.
- * @returns {Object} - Das aktualisierte Turnier mit dem zugewiesenen Benutzer im JSON-Format.
- */
-async assignUserToTeam(req, res) {
-  try {
-    const turnierId = req.body.turnierId;
-    const personId = req.body.personId;
-
-    // Prüfen, ob die turnierId vorhanden ist.
-    if (!turnierId) {
-      return res.status(400).json({ message: 'Turnier-ID fehlt in der Anfrage.' });
-    }
-
-    const aktTurnier = await Turnier.Turnier.findById(turnierId).populate('turnierTeams');
-
-    // Prüft, ob das Turnier gefunden wurde.
-    if (!aktTurnier) {
-      return res.status(404).json({ message: 'Turnier nicht gefunden.' });
-    }
-
-    // Prüft, ob das Turnier bereits begonnen hat. Wenn ja, kommt die Meldung, dass eine Teilnahme nicht mehr möglich ist.
-    if (aktTurnier.turnierStatus === 'BEGONNEN' || aktTurnier.turnierStatus === 'ABGESCHLOSSEN') {
-      return res.status(400).json({ message: 'Das Turnier hat bereits begonnen, eine Teilnahme ist nicht mehr möglich.' });
-    }
-
-    // Zuweisung ins erste Team mit einem offenen Platz. Zuerst wird ein Team komplett gefüllt, danach geht es zum nächsten weiter.
-    const aktTeams = aktTurnier.turnierTeams;
-
-    for (let i = 0; i < aktTeams.length; i++) {
-      if (aktTeams[i].mitglieder.length < aktTeams[i].teamGröße) {
-         aktTeams[i].mitglieder.push(personId);
-         await aktTeams[i].save();
-         return res.status(200).json(aktTurnier);
-      }
-    }
-
-    console.log('personId, turnierId');
-     
-    // Meldung, falls es keinen freien Platz mehr in einem Team gibt.
-    if (!foundTeam) {
-      return res.status(400).json({ message: 'Kein freier Platz in den Teams.' });
-    }
-
-    // Fügt eine Person in die Mitgliederliste eines Teams hinzu und speichert das aktuelle Turnier mit dem aktualisierten Team ab.
-    foundTeam.mitglieder.push(personId);
-    await aktTurnier.save();    
-    await foundTeam.save();
-
-    res.status(200).json(aktTurnier);
-  } catch (error) {
-    this.handleError(res, 'Fehler beim Zuweisen des Nutzers zu einem Team', error);
-  }
-}
+ 
 
 
   
