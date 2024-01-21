@@ -6,8 +6,8 @@
     <script src="/node_modules/@smartdesign/button/dist/button-with-externals.js"></script>
     <script src="/node_modules/@smartdesign/toolbar/dist/toolbar-with-externals.js"></script>
     <script src="/node_modules/@smartdesign/list/dist/list-with-externals.js"></script>
-    <script src="/public/html/ansicht-turnier.js"></script>
-    <script src="/public/html/anmelden-turnier.js"></script>
+    <script src="/html/ansicht-turnier.js"></script>
+    <script src="/html/anmelden-turnier.js"></script>
     <link rel="stylesheet" href="../styles/style.css">
      
 </head>
@@ -25,6 +25,12 @@ sd-toolbar h2 {
 	line-height: 32px;
 	font-weight: lighter;
 }
+
+    #turnier-name {
+        text-align: center;
+        margin: 0 auto;
+    }
+
 </style>
 
 <body>
@@ -45,7 +51,7 @@ sd-toolbar h2 {
 
     <div class="Turnieransicht">
             <sd-list class="declarative" tabindex="0" style="width: calc(50% - 64px); float: left">
-                <sd-list-item caption="Wichtige Infos" icon="icon.svg"></sd-list-item>
+                <sd-list-item caption="Wichtige Infos" icon="icon.svg" ></sd-list-item>
                 <sd-list-item caption="Startdatum" id= "start-datum" ></sd-list-item>
                 <sd-list-item caption="Anmeldeschluss" id="anmelde-schluss" ></sd-list-item>
                 <sd-list-item caption="Veranstaltungsort" id="veranstaltungsort" ></sd-list-item>
