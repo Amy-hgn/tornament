@@ -47,6 +47,18 @@ async function fetchTeamName(teamId) {
     return team.name;
   }
 
+  /**
+ * Spielernamen vom Server abrufen.
+ *
+ * @param {string} personId - Die ID des Spielers.
+ * @returns {Promise<string>} - Ein Promise, das zu einem Spielernamen auflöst.
+ */
+async function fetchPersonName(personId) {
+  const response = await fetch(`/person-ID?id=${personId}`);
+  const person = await response.json();
+  return person.name;
+}
+
 /**
  * Turnierdetails anzeigen
  *
@@ -58,11 +70,12 @@ function displayTurnierDetails(turnierDetails) {
     document.getElementById('veranstaltungsort').innerText = ` ${turnierDetails.veranstaltungsort}`;
     document.getElementById('start-datum').innerText = ` ${formatiereDatum(turnierDetails.startDatum)}`;
     document.getElementById('anmelde-schluss').innerText = ` ${formatiereDatum(turnierDetails.endDatum)}`;
-    document.getElementById('kosten').innerText = ` €${turnierDetails.kosten}`;
-    document.getElementById('start-zeit').innerText = ` ${formatiereDatum(turnierDetails.startZeit)}`;
+    document.getElementById('kosten').innerText = `${turnierDetails.kosten}`;
+    document.getElementById('start-zeit').innerText = turnierDetails.startZeit + " Uhr";
     document.getElementById('beschreibung').innerText = turnierDetails.beschreibung;
 }
 
+/*
 // Neue Anmeldungen der Liste hinzufügen
 function addName(caption, description) {
   var list = document.querySelector('.Anmeldungen');
@@ -73,6 +86,7 @@ function addName(caption, description) {
 
   list.appendChild(newName);
 }
+*/
 
 /**
  * Formatieren eines Datums in ein benutzerfreundliches Format.
