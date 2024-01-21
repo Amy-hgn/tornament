@@ -1,3 +1,4 @@
+/*
 document.addEventListener("DOMContentLoaded", function () {
   const anmeldeButton = document.querySelector(".Anmeldebutton sd-button");
   anmeldeButton.addEventListener("click", anmeldeButtonClick);
@@ -12,6 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 });
+*/
 
 async function speichernButtonClick() {
   // Kontrolle, ob noch Plätze frei sind
