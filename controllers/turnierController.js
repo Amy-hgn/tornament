@@ -483,7 +483,32 @@ class TurnierController {
         }
     }
  
+/**
+  // 
+  async turnierAnmeldung(req, res) {
+    try {
+      console.log("Received data:", req.body);
+      const turnier = req.body.turnierId;
+      const user = req.body.user;
+      const aktTurnier = await Turnier.Turnier.findById(turnier);
 
+      const teams = aktTurnier.turnierTeams;
+      console.log(teams);
+      return res.status(200).json(teams);
+      // res.status(200).json(teams);
+    } catch (error) {
+      this.handleError(res, "Fehler", error);
+    }
+  }
+
+
+/**
+ * Fügt einen User dem nächsten verfügbaren Team in einem Turnier hinzu.
+ *
+ * @param {Object} req - Request-Objekt mit der turnierId und userId im Body.
+ * @param {Object} res - Das Response-Objekt.
+ * @returns {Object} - Das aktualisierte Turnier mit dem zugewiesenen Benutzer im JSON-Format.
+ */
     async assignUserToTeam(req, res) {
       try {
         const turnierId = req.body.turnierId;
