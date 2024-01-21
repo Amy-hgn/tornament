@@ -57,6 +57,10 @@ app.get("/anzeige-turnier", (req, res) => {
 app.get("/turnier-byID", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "html", "ansicht-turnier.html"));
 });
+
+app.get("/turnierbaum-byID", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "html", "turnier-detail.html"));
+});
 /**
  * Route zum Servieren der HTML-Datei für die Hauptansicht der Turniere.
  * @route GET /
