@@ -38,8 +38,9 @@ sd-toolbar h2 {
         <sd-toolbar>
             <sd-button icon="/node_modules/@smartdesign/icons/toolbar/cancel.svg" slot="left" onclick="redirectToHomePage()"></sd-button>
             <h1 id="turnier-name"></h1>
-            <sd-button slot="right" onclick="anmeldeButtonClick()"><span>Anmelden</span></sd-button>
-        </sd-toolbar>
+            <sd-button slot="right" onclick="speichernButtonClick()"><span>Anmelden</span></sd-button>
+            <sd-button slot="right" onclick="spielen()"><span>Spielen</span></sd-button>
+                    </sd-toolbar>
     </div>
 
     <div class="Beschreibung">
@@ -50,21 +51,21 @@ sd-toolbar h2 {
     </div>
 
     <div class="Turnieransicht">
-            <sd-list class="declarative" tabindex="0" style="width: calc(50% - 64px); float: left">
-                <sd-list-item caption="Wichtige Infos" icon="/node_modules/@smartdesign/icons/toolbar/info.svg" ></sd-list-item>
-                <sd-list-item caption="Startdatum" id="start-datum" ></sd-list-item>
-                <sd-list-item caption="Anmeldeschluss" id="anmelde-schluss" ></sd-list-item>
-                <sd-list-item caption="Veranstaltungsort" id="veranstaltungsort" ></sd-list-item>
-                <sd-list-item caption="Startzeit" id="start-zeit" ></sd-list-item>
-                <sd-list-item caption="Kosten" id="kosten" ></sd-list-item>
-            </sd-list>
-            <sd-list id = "anmeldeliste" class="Anmeldungen" tabindex="0" style="width: calc(50% - 64px); float: right">
-                <sd-list-item caption="Anmeldungen" icon="/node_modules/@smartdesign/icons/toolbar/add-recipient.svg"></sd-list-item>
-                <sd-list-item caption="Eric Wollmann" description="Team Wolle" ></sd-list-item>
-                <sd-list-item caption="Dimitrij Schick" description="Team Schick" ></sd-list-item>
-                <sd-list-item caption="Elena Vogel" description="Team Vogel" ></sd-list-item>
-                <sd-list-item caption="Daniel Waldenburg" description="Team Wald" ></sd-list-item>
-                <sd-list-item caption="Amanda Hagan" description="Team Mandy" ></sd-list-item>
+        <sd-list class="declarative" tabindex="0" style="width: calc(50% - 64px); float: left">
+            <sd-list-item caption="Wichtige Infos" icon="/node_modules/@smartdesign/icons/toolbar/info.svg" ></sd-list-item>
+            <sd-list-item caption="Startdatum" id="start-datum" ></sd-list-item>
+            <sd-list-item caption="Anmeldeschluss" id="anmelde-schluss" ></sd-list-item>
+            <sd-list-item caption="Veranstaltungsort" id="veranstaltungsort" ></sd-list-item>
+            <sd-list-item caption="Startzeit" id="start-zeit" ></sd-list-item>
+            <sd-list-item caption="Kosten" id="kosten" ></sd-list-item>
+        </sd-list>
+        <sd-list id = "anmeldeliste" class="Anmeldungen" tabindex="0" style="width: calc(50% - 64px); float: right">
+            <sd-list-item caption="Anmeldungen" icon="/node_modules/@smartdesign/icons/toolbar/add-recipient.svg"></sd-list-item>
+            <sd-list-item caption="Eric Wollmann" description="Team Wolle" ></sd-list-item>
+            <sd-list-item caption="Dimitrij Schick" description="Team Schick" ></sd-list-item>
+            <sd-list-item caption="Elena Vogel" description="Team Vogel" ></sd-list-item>
+            <sd-list-item caption="Daniel Waldenburg" description="Team Wald" ></sd-list-item>
+            <sd-list-item caption="Amanda Hagan" description="Team Mandy" ></sd-list-item>
             </sd-list>
         </div>   
     </div>

@@ -76,6 +76,15 @@ function displayTurnierDetails(turnierDetails) {
     const anmeldeliste = document.getElementById('anmeldeliste');
 }
 
+function spielen() {
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const turnierId = urlParams.get('id');
+  const detailPageUrl = `/spielen-byID?id=${turnierId}`;
+
+  // Weiterleitung zur Detailseite
+  window.location.href = detailPageUrl;
+}
 
 
 /*

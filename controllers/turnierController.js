@@ -527,18 +527,19 @@ async assignUserToTeam(req, res) {
     }
 
     // Prüft, ob das Turnier bereits begonnen hat. Wenn ja, kommt die Meldung, dass eine Teilnahme nicht mehr möglich ist.
-    if (aktTurnier.turnierStatus === 'BEGONNEN' || aktTurnier.turnierStatus === 'ABGESCHLOSSEN') {
-      return res.status(400).json({ message: 'Das Turnier hat bereits begonnen, eine Teilnahme ist nicht mehr möglich.' });
-    }
+    // if (aktTurnier.turnierStatus === 'BEGONNEN' || aktTurnier.turnierStatus === 'ABGESCHLOSSEN') {
+    //   return res.status(400).json({ message: 'Das Turnier hat bereits begonnen, eine Teilnahme ist nicht mehr möglich.' });
+    // }
 
     // Zuweisung ins erste Team mit einem offenen Platz. Zuerst wird ein Team komplett gefüllt, danach geht es zum nächsten weiter.
     const aktTeams = aktTurnier.turnierTeams;
 
+    let foundTeam;
+  
     for (let i = 0; i < aktTeams.length; i++) {
       if (aktTeams[i].mitglieder.length < aktTeams[i].teamGröße) {
-         aktTeams[i].mitglieder.push(personId);
-         await aktTeams[i].save();
-         return res.status(200).json(aktTurnier);
+        foundTeam = aktTeams[i];
+        break;
       }
     }
 
@@ -548,12 +549,13 @@ async assignUserToTeam(req, res) {
     if (!foundTeam) {
       return res.status(400).json({ message: 'Kein freier Platz in den Teams.' });
     }
-
-    // Fügt eine Person in die Mitgliederliste eines Teams hinzu und speichert das aktuelle Turnier mit dem aktualisierten Team ab.
-    foundTeam.mitglieder.push(personId);
-    await aktTurnier.save();    
+    else{
+      foundTeam.mitglieder.push(personId);
     await foundTeam.save();
+    }
 
+    console.log(foundTeam);
+    
     res.status(200).json(aktTurnier);
   } catch (error) {
     this.handleError(res, 'Fehler beim Zuweisen des Nutzers zu einem Team', error);

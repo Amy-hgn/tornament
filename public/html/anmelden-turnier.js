@@ -3,11 +3,22 @@ async function speichernButtonClick() {
   const urlParams = new URLSearchParams(window.location.search);
   const turnierId = urlParams.get("id");
 
-  const personDaten = await getIPAddress();
-  const personTeilnehmer = await fetch('/myId?personId=${personDaten}');
-  const personId = await personTeilnehmer.json();
 
-  const myObjekt = { turnierId, person: personId };
+  const hostname = await getIPAddress()
+  let aPerson = await fetch(`/myId?personId=${hostname}`)
+  const isAPerson = await aPerson.json()
+  console.log(isAPerson)
+
+  if (Object.keys(isAPerson).length === 0) {
+    // JSON-Body ist leer, also createPerson() aufrufen
+    aPerson = await createPerson(hostname)
+  } else {
+    // JSON-Body enthält Daten, also master auf _id setzen
+    console.log(isAPerson)
+    aPerson = isAPerson._id
+  }
+
+  const myObjekt = { turnierId, personId: aPerson };
   try {
     const response = await fetch("/api/turnier-anmelden", {
       method: "POST",
