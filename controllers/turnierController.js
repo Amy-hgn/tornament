@@ -481,7 +481,40 @@ class TurnierController {
         } catch (error) {
             this.handleError(res, 'Fehler beim Aktualisieren des Spiels', error);
         }
+  }
+
+  async deleteTurnier(req, res) {
+    try {
+      const turnierId = req.body.turnierId;
+      const turnier = await Turnier.Turnier.findById(turnierId);
+      if (!turnier) {
+        return res.status(404).json({ message: 'Turnier nicht gefunden'});
+      }
+      const tm = await Turnier.Person.findById(turnier.turnierMaster);
+      if(tm.personId === tm.personId){      
+      const deleteTurnier = await Turnier.Turnier.findByIdAndDelete(turnierId);
+      for (const teamId of deleteTurnier.turnierTeams) {
+        const deleteTeam = await Turnier.Team.findByIdAndDelete(teamId);
+      }
+      for (const koRundeId of deleteTurnier.koRunden) {
+        const deleteKo = await Turnier.KoRunde.findByIdAndDelete(koRundeId);
+        for (const SpielId of deleteKo.koSpiele) {
+          const deleteSpiel = await Turnier.Spiel.findByIdAndDelete(SpielId); 
+        }
+      }
+      for (const platzierungId of deleteTurnier.turnierPlatzierungen) {
+        const deletePlatzierugn = await Turnier.Platzierung.findByIdAndDelete(platzierungId);
+      }
+      //await turnier.remove();
+      console.log('Turnier und verbundene Daten erfolgreich gelöscht');
+      res.status(200).json({  message: "Turnier Gelöscht!" });
+    }else{
+      return res.status(401).json({ message: 'Sie haben keine Berechtigung dieses Turnier zu löschen' });
     }
+    } catch (error) {
+      console.error('Fehler beim Löschen des Turniers', error);
+    }
+  }
  
 /**
   // 

@@ -16,9 +16,14 @@ document.addEventListener("DOMContentLoaded", async function () {
         const turnierDetails = await fetchTurnierDetails(turnierId);
         // Funktionen zum Anzeigen von Turnierdetails aufrufen
         displayTurnierDetails(turnierDetails);
+        const tm = await fetchPersonName(turnierDetails.turnierMaster);
+        if (tm === tm){
+          loeschTaste(turnierId);
+        }
     } catch (error) {
         console.error("Fehler:", error);
     }
+
 });
 
 
@@ -59,6 +64,7 @@ async function fetchPersonName(personId) {
   return Name;
 }
 
+
 /**
  * Turnierdetails anzeigen
  *
@@ -92,6 +98,52 @@ async function displayTurnierDetails(turnierDetails) {
       }
     }
 
+}
+async function loeschTaste(turnierId){
+    const infoliste = document.getElementById('infoliste');
+      const delDiv = document.createElement('div');
+        const delbutton = document.createElement('sd-button');
+          delbutton.addEventListener('click', function() {
+              delDiv.innerHTML = "";
+              const delSubmitText = document.createElement('span');
+              delSubmitText.innerText = 'Eingeben: LÖSCHEN  ';
+              const delInput = document.createElement('input');
+              delInput.type = 'text';
+              delInput.placeholder = 'LÖSCHEN';
+              const delSubmit = document.createElement('button');
+              delSubmit.textContent = 'Bestätigen';
+              delSubmit.addEventListener('click', async function() {
+                if(delInput.value === 'LÖSCHEN' || delInput.value === 'DELETE'){
+                  const delturnier = { turnierId };
+                try {
+                const response = await fetch("/api/delete-turnier", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(delturnier),
+                });
+                if(response.status === 200){console.log("Turnier gelöscht:", response);
+                redirectToHomePage();
+                alert("Turniers gelöscht");
+                }else{alert("Fehler", response.message);}
+                  }catch (error) {
+                    console.error("Fehler beim Löschen des Turniers:", error);
+                    alert("Fehler beim Löschen des Turniers");
+                  }
+                }
+              });
+              delDiv.appendChild(delSubmitText);
+              delDiv.appendChild(delInput);
+              delDiv.appendChild(delSubmit);
+              infoliste.appendChild(delDiv);
+          });
+          const delText = document.createElement('span');
+          delText.innerText = 'Turnier Löschen';
+          delText.style.color = 'red';
+          delbutton.appendChild(delText);
+          delDiv.appendChild(delbutton);
+          infoliste.appendChild(delDiv);
 }
 
 function redirectToBaum() {

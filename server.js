@@ -281,6 +281,10 @@ app.post("/api/set-game-score", async (req, res) => {
   await turnierController.setGameScore(req, res);
 });
 
+app.post("/api/delete-turnier", async (req, res) => {
+  await turnierController.deleteTurnier(req, res);
+});
+
 app.post("/api/turnier-anmelden", async (req, res) => {
   await turnierController.assignUserToTeam(req, res);
 });
