@@ -440,10 +440,6 @@ class TurnierController {
     
             const update2Obj = {};
             let nextGameNr;
-
-
-            
-    
             for (let i = 0; i < koRunden.length; i++) {
                 if (koRunden[i]._id.toString() === koId) {
                     aktRunde = i;
