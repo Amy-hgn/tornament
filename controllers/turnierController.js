@@ -547,7 +547,7 @@ class TurnierController {
         }
   }
 /**
- * 
+ * Funktion zum löschen eines Turniers und aller verbundenen Daten
  * @param {Object} req Request-Objekt mit der turnierId im Body.
  * @param {Object} res - Das Response-Objekt.
  * @returns {Object} - Status und Message
@@ -560,6 +560,7 @@ class TurnierController {
         return res.status(404).json({ message: 'Turnier nicht gefunden'});
       }
       const tm = await Turnier.Person.findById(turnier.turnierMaster);
+      // hier überprüfung der Berechtigung
       if(tm.personId === tm.personId){      
       const deleteTurnier = await Turnier.Turnier.findByIdAndDelete(turnierId);
       for (const teamId of deleteTurnier.turnierTeams) {
