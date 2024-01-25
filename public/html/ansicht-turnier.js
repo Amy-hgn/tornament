@@ -20,10 +20,10 @@ document.addEventListener("DOMContentLoaded", async function () {
         if (tm === tm){
           loeschTaste(turnierId);
         }
-        const currentDate = new Date();
-        if (new Date(turnierDetails.endDatum) < currentDate) {
+        
+       //if (new Date(turnierDetails.endDatum) < currentDate) {
           getRanking(turnierDetails);
-        }
+        //}
     } catch (error) {
         console.error("Fehler:", error);
     }
@@ -165,6 +165,7 @@ async function getRanking(turnierDetails){
       top[platz] = teamDetails.name;
     }
   }
+  if(top[1] && top[2] && top[3]){
   const infoliste = document.getElementById('infoliste');
   for(let i = 0; i<4; i++){
           const listenelement = document.createElement('sd-list-item');
@@ -172,6 +173,7 @@ async function getRanking(turnierDetails){
     	    if(i>0){
           listenelement.description = "Platz " + i;}
           infoliste.appendChild(listenelement);
+  }
   }
 }
 
