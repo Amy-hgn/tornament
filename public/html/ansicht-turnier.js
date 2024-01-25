@@ -21,9 +21,9 @@ document.addEventListener("DOMContentLoaded", async function () {
           loeschTaste(turnierId);
         }
         const currentDate = new Date();
-        //if (turnierDetails.endDatum <= currentDate) {
+        if (new Date(turnierDetails.endDatum) < currentDate) {
           getRanking(turnierDetails);
-        //}
+        }
     } catch (error) {
         console.error("Fehler:", error);
     }

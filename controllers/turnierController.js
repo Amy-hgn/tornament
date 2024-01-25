@@ -526,10 +526,11 @@ class TurnierController {
                       { new: true }
                   );
                   }
-                  turnier.endDatum = new Date();
+                  const updateTurn = {};
+                  updateTurn.endDatum = new Date();
                   const updatedTurnier = await Turnier.Turnier.findByIdAndUpdate(
                     turnierId,
-                    turnier,
+                    updateTurn,
                     { new: true }
                 );
                 res.status(200).json({ message: "Turnier Beendet!" });
