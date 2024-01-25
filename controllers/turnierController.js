@@ -384,7 +384,12 @@ class TurnierController {
     }
   }
  
-
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
     async setGameScore(req, res) {
         try {
           const turnierId = req.body.turnierId;
@@ -394,6 +399,7 @@ class TurnierController {
         }
           const tm = await Turnier.Person.findById(turnier.turnierMaster);
           console.log('TMid: ', tm.personId);
+          //überprüfung ob berechtigung vorhanden einbauen
           if(tm.personId === tm.personId){
             const koRunden = turnier.koRunden;
             const spielDaten = req.body.spielDetails;
@@ -526,13 +532,13 @@ class TurnierController {
                       { new: true }
                   );
                   }
-                  const updateTurn = {};
+                  /*const updateTurn = {};
                   updateTurn.endDatum = new Date();
                   const updatedTurnier = await Turnier.Turnier.findByIdAndUpdate(
                     turnierId,
                     updateTurn,
                     { new: true }
-                );
+                ); // aktuelles als Enddatum des Turniers speichern*/
                 res.status(200).json({ message: "Turnier Beendet!" });
                 }
             }
