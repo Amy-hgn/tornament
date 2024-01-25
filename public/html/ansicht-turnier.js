@@ -20,6 +20,10 @@ document.addEventListener("DOMContentLoaded", async function () {
         if (tm === tm){
           loeschTaste(turnierId);
         }
+        const currentDate = new Date();
+        //if (turnierDetails.endDatum <= currentDate) {
+          getRanking(turnierDetails);
+        //}
     } catch (error) {
         console.error("Fehler:", error);
     }
@@ -49,6 +53,11 @@ async function fetchTeam(teamId) {
     const response = await fetch(`/team-ID?id=${teamId}`);
     const team = await response.json();
     return team;
+  }
+  async function fetchPlatz(plId) {
+    const response = await fetch(`/platzierung-ID?id=${plId}`);
+    const platzier = await response.json();
+    return platzier.platz;
   }
 
   /**
@@ -144,6 +153,26 @@ async function loeschTaste(turnierId){
           delbutton.appendChild(delText);
           delDiv.appendChild(delbutton);
           infoliste.appendChild(delDiv);
+}
+
+async function getRanking(turnierDetails){
+  let top = [];
+  top[0] = 'Platzierungen:';
+  for (const teamId of turnierDetails.turnierTeams) {
+    const teamDetails = await fetchTeam(teamId);
+    if(teamDetails.teamPlatzierungen){
+      const platz = await fetchPlatz(teamDetails.teamPlatzierungen);
+      top[platz] = teamDetails.name;
+    }
+  }
+  const infoliste = document.getElementById('infoliste');
+  for(let i = 0; i<4; i++){
+          const listenelement = document.createElement('sd-list-item');
+          listenelement.caption = top[i];
+    	    if(i>0){
+          listenelement.description = "Platz " + i;}
+          infoliste.appendChild(listenelement);
+  }
 }
 
 function redirectToBaum() {

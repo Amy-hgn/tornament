@@ -140,6 +140,14 @@ app.get("/spiel-ID", async (req, res) => {
 app.get("/team-ID", async (req, res) => {
   await turnierController.getTeamById(req, res);
 });
+
+
+
+
+app.get("/platzierung-ID", async (req, res) => {
+  await turnierController.getPlatzierungById(req, res);
+});
+
 /**
  * Route zum Abrufen der neuesten Turniere für den Turnier-Meister.
  * @route GET /recent-turniereMaster

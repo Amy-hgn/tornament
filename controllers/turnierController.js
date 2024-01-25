@@ -88,6 +88,32 @@ class TurnierController {
       this.handleError(res, "Fehler beim Abrufen des Spiels", error);
     }
   }
+
+
+
+
+/**
+   * Holt eine Platzierung anhand seiner ID.
+   *
+   * @param {Object} req - Das Request-Objekt mit der ID der Platzierung in der Abfrage.
+   * @param {Object} res - Das Response-Objekt.
+   * @returns {Object} - Die gefundene Platzierung im JSON-Format.
+   */
+  async getPlatzierungById(req, res) {
+    try {
+      const spielId = req.query.id;
+
+      const foundSpiel = await Turnier.Platzierung.findById(spielId); // Annahme: Das Modell für Spiele heißt Spiel
+
+      if (!foundSpiel) {
+        return res.status(404).json({ message: "PLatzierung nicht gefunden" });
+      }
+
+      res.status(200).json(foundSpiel);
+    } catch (error) {
+      this.handleError(res, "Fehler beim Abrufen der PLatzierung", error);
+    }
+  }
   /**
    * Holt ein Team anhand seiner ID.
    *
@@ -363,6 +389,9 @@ class TurnierController {
         try {
           const turnierId = req.body.turnierId;
           const turnier = await Turnier.Turnier.findById(turnierId).populate('koRunden');
+          if (!turnier) {
+            return res.status(404).json({ message: 'Turnier nicht gefunden' });
+        }
           const tm = await Turnier.Person.findById(turnier.turnierMaster);
           console.log('TMid: ', tm.personId);
           if(tm.personId === tm.personId){
@@ -406,9 +435,7 @@ class TurnierController {
             let nextGameNr;
 
 
-            if (!turnier) {
-                return res.status(404).json({ message: 'Turnier nicht gefunden' });
-            }
+            
     
             for (let i = 0; i < koRunden.length; i++) {
                 if (koRunden[i]._id.toString() === koId) {
@@ -471,7 +498,40 @@ class TurnierController {
                 res.status(200).json({ updatedSpiel, updated2Spiel });
             } else {
               const finale = await Turnier.Spiel.findById(koRunden[1].koSpiele[0]);
-                if(finale.spielStatus === 'completed'){
+              const platzdreispiel = await Turnier.Spiel.findById(koRunden[0].koSpiele[0]);
+                if(finale.spielStatus === 'completed' && platzdreispiel.spielStatus === 'completed'){
+                  let platz = [];
+                  if(finale.punkteGewinner === 1){
+                  platz[0] = finale.team1;
+                  platz[1] = finale.team2;}
+                  else{
+                  platz[0] = finale.team2;
+                  platz[1] = finale.team1;
+                  }
+                  if(platzdreispiel.punkteGewinner === 1){
+                  platz[2] = platzdreispiel.team1;
+                  platz[3] = platzdreispiel.team2;}
+                  else{
+                  platz[2] = platzdreispiel.team2;
+                  platz[3] = platzdreispiel.team1;
+                  }
+                  const turnierPlatz = await Turnier.Turnier.findById(turnierId).populate('turnierPlatzierungen');
+                  const platzierungen = turnierPlatz.turnierPlatzierungen;
+                  for(let i = 0; i<4; i++){
+                    const updatePlatz = {};
+                    updatePlatz.teamPlatzierungen = platzierungen[i];
+                    const updatedTeamPlatz = await Turnier.Team.findByIdAndUpdate(
+                      platz[i],
+                      updatePlatz,
+                      { new: true }
+                  );
+                  }
+                  turnier.endDatum = new Date();
+                  const updatedTurnier = await Turnier.Turnier.findByIdAndUpdate(
+                    turnierId,
+                    turnier,
+                    { new: true }
+                );
                 res.status(200).json({ message: "Turnier Beendet!" });
                 }
             }
