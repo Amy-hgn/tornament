@@ -1,4 +1,8 @@
-// Holt und aktualisiert Benutzerdaten in einem Turnier, auf Grundlage ihrer IP-Adresse.
+/**
+ * Holt und aktualisiert Benutzerdaten in einem Turnier, auf Grundlage ihrer IP-Adresse.
+ *
+ * @returns {Promise<void>} - Promise, die keinen Wert zurückgibt, nachdem die Funktion abgeschlossen ist.
+ */
 async function speichernButtonClick() {
   const urlParams = new URLSearchParams(window.location.search);
   const turnierId = urlParams.get("id");
@@ -43,11 +47,18 @@ async function speichernButtonClick() {
   }
 }
 
+/**
+ * Aktualisierung der Seite.
+ */
 function reloadPage () {
   window.location.reload()
 }
 
-// Holt die IP-Adresse des Benutzers oder gibt die lokale IP zurück, wenn zu viele Anfragen gestellt wurden.
+/**
+ * Holt die IP-Adresse des Benutzers oder gibt die lokale IP zurück, wenn zu viele Anfragen gestellt wurden.
+ *
+ * @returns {Promise<string|null>} - Promise, das entweder die IP-Adresse des Benutzers oder die lokale IP-Adresse oder null bei Fehlern enthält.
+ */
 async function getIPAddress() {
   try {
     const response = await fetch("https://ipinfo.io/json");
