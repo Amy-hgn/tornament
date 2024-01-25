@@ -14,22 +14,42 @@ document.addEventListener("DOMContentLoaded", async function () {
 });
 
     
-
+/**
+ * Holt Turnierdetails vom Server.
+ *
+ * @param {string} turnierId - Die ID des Turniers.
+ * @returns {Promise<Object>} - Ein Promise, das zu den Turnierdetails auflöst.
+ */
 async function fetchTurnierDetails(turnierId) {
     const response = await fetch(`/turnier-ID?id=${turnierId}`);
     const turnierDetails = await response.json();
     return turnierDetails;
 }
+/**
+ * Holt Spieldetails vom Server.
+ *
+ * @param {string} spielId - Die ID des Spiels.
+ * @returns {Promise<Object>} - Ein Promise, das zu den Spieldetails auflöst.
+ */
 async function fetchSpielDetails(spielId) {
     const response = await fetch(`/spiel-ID?id=${spielId}`);
     const spielDetails = await response.json();
     return spielDetails;
 }
+/**
+ * Teamnamen vom Server abrufen.
+ *
+ * @param {string} teamId - Die ID des Teams.
+ * @returns {Promise<string>} - Ein Promise, das zu einem Teamnamen auflöst.
+ */
 async function fetchTeamName(teamId) {
     const response = await fetch(`/team-ID?id=${teamId}`);
     const team = await response.json();
     return team.name;}
-
+/**
+ * Turnier Infos darstellen
+ * @param {Object} turnierDetails - TurnierDetails
+ */
 function displayTurnierDetails(turnierDetails) {
         document.getElementById('turnier-name').innerText = turnierDetails.turnierName;
         document.getElementById('veranstaltungsort').innerText = `Veranstaltungsort: ${turnierDetails.veranstaltungsort}`;
@@ -38,7 +58,10 @@ function displayTurnierDetails(turnierDetails) {
 
       const ergebnisseAbsendenBtn = document.getElementById('ergebnisse-absenden-btn');
       ergebnisseAbsendenBtn.addEventListener('click', submitErgebnisse);
-
+/**
+ * Auslesen der Ergebnis-Eingaben deren überprüfung und aufruf von SetGameScore
+ * 
+ */
     async function submitErgebnisse() {
         const team1Ergebnis = document.getElementById('team1-ergebnis').value;
         const team2Ergebnis = document.getElementById('team2-ergebnis').value;
@@ -79,11 +102,18 @@ function displayTurnierDetails(turnierDetails) {
             alert("Fehler beim Updaten des Spiels. Bitte versuche es erneut.");
           }
     }
-
+/**
+ * Weiterleitung zum turnierbaum
+ * @param {string} turnierId 
+ */
 function redirectToTurnierThisTurnier(turnierId) {
     window.location.href = `/turnierbaum-byID?id=${turnierId}`;
 }
-
+/**
+ * Datum Formatieren zum darstellen
+ * @param {string} datumString 
+ * @returns {string} - formatiertes Datum
+ */
     function formatiereDatum(datumString) {
         const wochentage = [
           "Sonntag",

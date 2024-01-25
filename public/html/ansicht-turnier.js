@@ -20,10 +20,10 @@ document.addEventListener("DOMContentLoaded", async function () {
         if (tm === tm){
           loeschTaste(turnierId);
         }
-        const currentDate = new Date();
-        if (new Date(turnierDetails.endDatum) < currentDate) {
+        
+       //if (new Date(turnierDetails.endDatum) < currentDate) {
           getRanking(turnierDetails);
-        }
+        //}
     } catch (error) {
         console.error("Fehler:", error);
     }
@@ -44,16 +44,22 @@ async function fetchTurnierDetails(turnierId) {
 }
 
 /**
- * Teamnamen vom Server abrufen.
+ * Team vom Server abrufen.
  *
  * @param {string} teamId - Die ID des Teams.
- * @returns {Promise<string>} - Ein Promise, das zu einem Teamnamen auflöst.
+ * @returns {Promise<string>} - Ein Promise, das zu einem Team auflöst.
  */
 async function fetchTeam(teamId) {
     const response = await fetch(`/team-ID?id=${teamId}`);
     const team = await response.json();
     return team;
   }
+  /**
+ * Platzierung vom Server abrufen.
+ *
+ * @param {string} plId - Die ID der Platzierung.
+ * @returns {Promise<string>} - Ein Promise, das zu einer Platzierung auflöst.
+ */
   async function fetchPlatz(plId) {
     const response = await fetch(`/platzierung-ID?id=${plId}`);
     const platzier = await response.json();
@@ -108,6 +114,10 @@ async function displayTurnierDetails(turnierDetails) {
     }
 
 }
+/**
+ * LöschTaste erzeugen und turnier-löschung
+ * @param {string} turnierId 
+ */
 async function loeschTaste(turnierId){
     const infoliste = document.getElementById('infoliste');
       const delDiv = document.createElement('div');
@@ -154,7 +164,10 @@ async function loeschTaste(turnierId){
           delDiv.appendChild(delbutton);
           infoliste.appendChild(delDiv);
 }
-
+/** Falls Turnier vorbei, top 3 anzeigen lassen
+ * 
+ * @param {Object} turnierDetails 
+ */
 async function getRanking(turnierDetails){
   let top = [];
   top[0] = 'Platzierungen:';
@@ -165,6 +178,7 @@ async function getRanking(turnierDetails){
       top[platz] = teamDetails.name;
     }
   }
+  if(top[1] && top[2] && top[3]){
   const infoliste = document.getElementById('infoliste');
   for(let i = 0; i<4; i++){
           const listenelement = document.createElement('sd-list-item');
@@ -172,6 +186,7 @@ async function getRanking(turnierDetails){
     	    if(i>0){
           listenelement.description = "Platz " + i;}
           infoliste.appendChild(listenelement);
+  }
   }
 }
 

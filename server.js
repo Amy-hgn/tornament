@@ -57,7 +57,13 @@ app.get("/anzeige-turnier", (req, res) => {
 app.get("/turnier-byID", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "html", "ansicht-turnier.html"));
 });
-
+/**
+ * Route zum Servieren der HTML-Datei für die Baumansicht eines Turniers anhand der ID.
+ * @route GET /turnierbaum-byID
+ * @callback
+ * @param {express.Request} req - Express-Anfrageobjekt mit der Turnier-ID als Query-Parameter.
+ * @param {express.Response} res - Express-Antwortobjekt.
+ */
 app.get("/turnierbaum-byID", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "html", "turnier-detail.html"));
 });
@@ -77,6 +83,8 @@ app.get("/", (req, res) => {
  * Route zum Servieren der HTML-Datei für die Eintragung der Ergebnisse von einem Spiel.
  * @route GET /
  * @callback
+ * @param {express.Request} req - Express-Anfrageobjekt mit der Turnier-ID, Runden-ID und Spiel-ID als Query-Parameter.
+ * @param {express.Response} res - Express-Antwortobjekt.
  */
 app.get("/spiel-byID", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "html", "spiel-score.html"));
@@ -140,10 +148,14 @@ app.get("/spiel-ID", async (req, res) => {
 app.get("/team-ID", async (req, res) => {
   await turnierController.getTeamById(req, res);
 });
-
-
-
-
+/**
+ * Route zum Abrufen einer Platzierung anhand der ID.
+ * @route GET /platzierung-ID
+ * @async
+ * @callback
+ * @param {express.Request} req - Express-Anfrageobjekt mit der Platzierung-ID als Query-Parameter.
+ * @param {express.Response} res - Express-Antwortobjekt.
+ */
 app.get("/platzierung-ID", async (req, res) => {
   await turnierController.getPlatzierungById(req, res);
 });
@@ -284,11 +296,24 @@ app.post("/api/create-spiel", async (req, res) => {
 app.post("/api/create-ko-runde", async (req, res) => {
   await turnierController.createKORunde(req, res);
 });
-
+/**Funktion zum Einsenden des Spielergebnisses, Speicherung des aktuellen spiels, Aktualisierung der Folgespiele, 
+ * Erkennen wenn Turnier vorbei ist und speicherung der Platzierung in den top-4 Teams
+ * @route POST /api/set-game-score
+ * @async
+ * @callback
+ * @param {express.Request} req - Express-Anfrageobjekt mit { spielDetails{punkteGewinner, spielStatus}, turnierId, rundeId } im Anfragekörper.
+ * @param {express.Response} res - Express-Antwortobjekt.
+ */
 app.post("/api/set-game-score", async (req, res) => {
   await turnierController.setGameScore(req, res);
 });
-
+/**Funktion zum Löschen eines turniers
+ * @route POST /api/delete-turnier
+ * @async
+ * @callback
+ * @param {express.Request} req - Express-Anfrageobjekt mit der TurnierId im Anfragekörper.
+ * @param {express.Response} res - Express-Antwortobjekt.
+ */
 app.post("/api/delete-turnier", async (req, res) => {
   await turnierController.deleteTurnier(req, res);
 });

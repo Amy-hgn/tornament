@@ -36,6 +36,9 @@ async function fetchTurnierDetails(turnierId) {
   const turnierDetails = await response.json();
   return turnierDetails;
 }
+/**
+ * Turnier-Infoseite aufrufen
+ */
 function redirectToTurnierThisTurnier() {
   const urlParams = new URLSearchParams(window.location.search);
     const turnierId = urlParams.get("id");
@@ -93,11 +96,6 @@ async function fetchTeamName(teamId) {
   return team.name;
 }
 
-function openOverview(){
-  const urlParams = new URLSearchParams(window.location.search);
-  const turnierId = urlParams.get("id");
-  window.location.href = `/turnier-byID?id=${turnierId}`;
-}
 
 // /**
 //  * Turnierdetails auf der Webseite anzeigen.
@@ -142,11 +140,17 @@ function openOverview(){
 //         parentElement.appendChild(spielElement);
 //     });
 // }
-async function redirectToSpiel(spiel, koRundeId) {
+
+/**
+ * Weiterleitung zu set-game-score
+ * @param {string} spielId - Id des Spield
+ * @param {string} koRundeId - id der KO-Runde 
+ */
+async function redirectToSpiel(spielId, koRundeId) {
 
     const urlParams = new URLSearchParams(window.location.search);
     const turnierId = urlParams.get('id');
-    window.location.href = `/spiel-byID?spiel=${spiel._id}&turnierId=${turnierId}&koRundeId=${koRundeId}`;
+    window.location.href = `/spiel-byID?spiel=${spielId}&turnierId=${turnierId}&koRundeId=${koRundeId}`;
 }
 function formatiereDatum(datumString) {
   const wochentage = [
@@ -211,7 +215,7 @@ function createTurnierbaum(koRunden) {
             });
             spielElement.addEventListener('click', () => {
         
-                redirectToSpiel(spiel, koRundeId);
+                redirectToSpiel(spiel._id, koRundeId);
             
         });
             // Holen Sie sich die Teamnamen aus dem aktuellen Spielobjekt

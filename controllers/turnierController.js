@@ -384,7 +384,13 @@ class TurnierController {
     }
   }
  
-
+/**
+ * Funktion zum bearbeiten des Spielergebnisses, Speicherung des aktuellen spiels, Aktualisierung der Folgespiele, 
+ * Erkennen wenn Turnier vorbei ist und speicherung der Platzierung in den top-4 Teams
+ * @param {Object} req - Das Request-Objekt mit den Daten: { spielDetails{punkteGewinner, spielStatus}, turnierId, rundeId }
+ * @param {Object} res - Das Response-Objekt.
+ * @returns {Object} - Status und Message
+ */
     async setGameScore(req, res) {
         try {
           const turnierId = req.body.turnierId;
@@ -394,6 +400,7 @@ class TurnierController {
         }
           const tm = await Turnier.Person.findById(turnier.turnierMaster);
           console.log('TMid: ', tm.personId);
+          //überprüfung ob berechtigung vorhanden einbauen
           if(tm.personId === tm.personId){
             const koRunden = turnier.koRunden;
             const spielDaten = req.body.spielDetails;
@@ -403,7 +410,7 @@ class TurnierController {
             let spielNr = -1;
             let winner;
             const notUpdatedSpiel = await Turnier.Spiel.findById(spielId);
-            if(typeof notUpdatedSpiel.team1 === 'undefined' || typeof notUpdatedSpiel.team2 === 'undefined'){
+            if(typeof notUpdatedSpiel.team1 === 'undefined' || typeof notUpdatedSpiel.team2 === 'undefined'){ //überprüfung teams
                 return res.status(404).json({ message: 'Team nicht gefunden' });
             }
             const { punkteGewinner, spielStatus } = spielDaten;
@@ -416,7 +423,7 @@ class TurnierController {
                 updateObj.spielStatus = spielStatus;
             }else{return res.status(404).json({ message: 'Spiel nicht fertig?' });}
     
-            const updatedSpiel = await Turnier.Spiel.findByIdAndUpdate(
+            const updatedSpiel = await Turnier.Spiel.findByIdAndUpdate( // aktualisierung des aktuellen Spiels
                 spielId,
                 updateObj,
                 { new: true }
@@ -433,10 +440,6 @@ class TurnierController {
     
             const update2Obj = {};
             let nextGameNr;
-
-
-            
-    
             for (let i = 0; i < koRunden.length; i++) {
                 if (koRunden[i]._id.toString() === koId) {
                     aktRunde = i;
@@ -465,7 +468,7 @@ class TurnierController {
                     nextGameNr = Math.ceil(spielNr / 2);
                 }
                 const spiel2Id = koRunden[aktRunde-1].koSpiele[nextGameNr - 1];
-                const updated2Spiel = await Turnier.Spiel.findByIdAndUpdate(
+                const updated2Spiel = await Turnier.Spiel.findByIdAndUpdate( // aktualisierung des folgespiels
                     spiel2Id,
                     update2Obj,
                     { new: true }
@@ -489,13 +492,13 @@ class TurnierController {
                   nextGameNr = 0;
                 }
                 const spiel3Id = koRunden[aktRunde-2].koSpiele[0];
-                const updated2Spiel = await Turnier.Spiel.findByIdAndUpdate(
+                const updated2Spiel = await Turnier.Spiel.findByIdAndUpdate( // aktualisierung spiel um platz 3. Nur wenn aktuelle runde: halbfinale
                     spiel3Id,
                     update3Obj,
                     { new: true }
                 );
                 }
-                res.status(200).json({ updatedSpiel, updated2Spiel });
+                res.status(200).json({ message: "Aktualisiert" });
             } else {
               const finale = await Turnier.Spiel.findById(koRunden[1].koSpiele[0]);
               const platzdreispiel = await Turnier.Spiel.findById(koRunden[0].koSpiele[0]);
@@ -520,19 +523,19 @@ class TurnierController {
                   for(let i = 0; i<4; i++){
                     const updatePlatz = {};
                     updatePlatz.teamPlatzierungen = platzierungen[i];
-                    const updatedTeamPlatz = await Turnier.Team.findByIdAndUpdate(
+                    const updatedTeamPlatz = await Turnier.Team.findByIdAndUpdate( // aktualisierung der Teams mit den Platzierungen wenn das Turnier Vorbei ist
                       platz[i],
                       updatePlatz,
                       { new: true }
                   );
                   }
-                  const updateTurn = {};
+                  /*const updateTurn = {};
                   updateTurn.endDatum = new Date();
                   const updatedTurnier = await Turnier.Turnier.findByIdAndUpdate(
                     turnierId,
                     updateTurn,
                     { new: true }
-                );
+                ); // aktuelles als Enddatum des Turniers speichern*/
                 res.status(200).json({ message: "Turnier Beendet!" });
                 }
             }
@@ -543,7 +546,12 @@ class TurnierController {
             this.handleError(res, 'Fehler beim Aktualisieren des Spiels', error);
         }
   }
-
+/**
+ * Funktion zum löschen eines Turniers und aller verbundenen Daten
+ * @param {Object} req Request-Objekt mit der turnierId im Body.
+ * @param {Object} res - Das Response-Objekt.
+ * @returns {Object} - Status und Message
+ */
   async deleteTurnier(req, res) {
     try {
       const turnierId = req.body.turnierId;
@@ -552,6 +560,7 @@ class TurnierController {
         return res.status(404).json({ message: 'Turnier nicht gefunden'});
       }
       const tm = await Turnier.Person.findById(turnier.turnierMaster);
+      // hier überprüfung der Berechtigung
       if(tm.personId === tm.personId){      
       const deleteTurnier = await Turnier.Turnier.findByIdAndDelete(turnierId);
       for (const teamId of deleteTurnier.turnierTeams) {
@@ -566,7 +575,6 @@ class TurnierController {
       for (const platzierungId of deleteTurnier.turnierPlatzierungen) {
         const deletePlatzierugn = await Turnier.Platzierung.findByIdAndDelete(platzierungId);
       }
-      //await turnier.remove();
       console.log('Turnier und verbundene Daten erfolgreich gelöscht');
       res.status(200).json({  message: "Turnier Gelöscht!" });
     }else{
