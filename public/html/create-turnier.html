@@ -75,7 +75,6 @@
                     <sd-combo-box label="Turnierformat">
                         <sd-list-item caption="KO-System" description="Verlierer geht, Sieger steigt"></sd-list-item>
                     </sd-combo-box>
-                </form>
             </div>
             <div class="combobox-example" declarative>
                 <sd-combo-box label="Teams" display-value-path="caption">
@@ -84,28 +83,26 @@
                     <sd-list-item caption="16"></sd-list-item>
                     <sd-list-item caption="32"></sd-list-item>
                 </sd-combo-box>
-            </form>
-        </div>
+            </div>
         <div class="combobox-example" declarative>
             <sd-combo-box label="Platzierungen">
                 <sd-list-item caption="1 bis 3"></sd-list-item>
              </sd-combo-box>
-        </form>
-
         </div>
+        </div>
+        
         <form id="tournamentForm">
             <div class="parent-container">
                 <sd-button type="submit" primary onclick="versteckeSeite2();zeigeSeite1()">Zurück</sd-button>
             </div>
         </form>  
-    <hr>
+    <hr></hr>
 
         <form id="tournamentForm">
             <div class="parent-container">
                 <sd-button type="submit" primary onclick="generiereTeamInputFelder();versteckeSeite2();zeigeSeite3()">Weiter</sd-button>
             </div>
         </form>  
-        </div>
     </div>
 
     <div class="Seite3">
